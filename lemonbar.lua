@@ -101,6 +101,13 @@ bar["func"] = {
 }
 
 bar["net"] = {
+  fgc1 = bar.colors.fgc1,
+  fgc2 = bar.colors.fgc4,
+  bgc  = bar.colors.bgc1,
+  sfg  = bar.colors.sfg1,
+  sbg  = bar.colors.sbg2,
+  sep  = bar.seperators.tar,
+  icon = bar.symbols.net,
   rx_cur  = 0,
   rx_last = 0,
   tx_cur  = 0,
@@ -138,16 +145,16 @@ bar["net"] = {
 
   show = function ()
     local mc, ac, cinv, cnorm, c1, c2, rxstr, txstr, symmail, symcon
-    c1            = bar.colors.fgc1
-    c2            = bar.colors.fgc4
+    c1            = bar.net.fgc1
+    c2            = bar.net.fgc2
     cinv          = bar.colors.inv
-    cnorm         = bar.colors.fgc1
-    local net     = bar.symbols.net
+    cnorm         = bar.net.fgc1
+    local icon    = bar.net.icon
     local con     = bar.symbols.con
     local mail    = bar.symbols.mail
-    local bc      = bar.colors.bgc1
-    local sf      = bar.colors.sfg1
-    local sb      = bar.colors.sbg2
+    local bc      = bar.net.bgc
+    local sf      = bar.net.sfg
+    local sb      = bar.net.sbg
     local bs      = bar.colors.bgstop
     local symbol  = bar.seperators.tar
     local sep     = bar.func.seperator(symbol, sf, sb, 3 )
@@ -167,7 +174,7 @@ bar["net"] = {
       mc = bar.colors.fgc1
     end
 
-    return string.format("%s%s%s  %s: %s%s %s %s%s %s%s", sep, bc, c2, net, c1, rxstr, txstr, mc, mail, ac, con)
+    return string.format("%s%s%s  %s: %s%s %s %s%s %s%s", sep, bc, c2, icon, c1, rxstr, txstr, mc, mail, ac, con)
 
   end,
 
@@ -179,6 +186,13 @@ bar["net"] = {
 }
 
 bar["tmp"] = {
+  fgc1 = bar.colors.fgc1,
+  fgc2 = bar.colors.fgc2,
+  bgc  = bar.colors.bgc1,
+  sfg  = bar.colors.sfg1,
+  sbg  = bar.colors.sbg3,
+  sep  = bar.seperators.tar,
+  icon = bar.symbols.temp,
   ct_qstr = "/sys/class/hwmon/hwmon1/temp2_input",
   st_qstr = "/sys/class/hwmon/hwmon1/temp1_input",
   gt_qstr = "nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits",
@@ -196,21 +210,28 @@ bar["tmp"] = {
   end,
 
   show = function ()
-    local c1      = bar.colors.fgc1
-    local c2      = bar.colors.fgc2
-    local bc      = bar.colors.bgc1
-    local sf      = bar.colors.sfg1
-    local sb      = bar.colors.sbg3
+    local c1      = bar.tmp.fgc1
+    local c2      = bar.tmp.fgc2
+    local bc      = bar.tmp.bgc
+    local sf      = bar.tmp.sfg
+    local sb      = bar.tmp.sbg
     local bs      = bar.colors.bgstop
-    local temp    = bar.symbols.temp
+    local icon    = bar.symbols.temp
     local symbol  = bar.seperators.tar
     local sep     = bar.func.seperator(symbol, sf, sb, 3 )
 
-    return string.format("%s%s%s  %s: %s%s  %s  %s", sep, bc, c2, temp, c1, bar.tmp.c_tmp(), bar.tmp.s_tmp(), bar.tmp.g_tmp(), bs)
+    return string.format("%s%s%s  %s: %s%s  %s  %s", sep, bc, c2, icon, c1, bar.tmp.c_tmp(), bar.tmp.s_tmp(), bar.tmp.g_tmp(), bs)
   end
 }
 
 bar["fan"] = {
+  fgc1 = bar.colors.fgc1,
+  fgc2 = bar.colors.fgc3,
+  bgc  = bar.colors.bgc1,
+  sfg  = bar.colors.sfg1,
+  sbg  = bar.colors.sbg1,
+  sep  = bar.seperators.tar,
+  icon = bar.symbols.fan,
   cf_qstr = "/sys/class/hwmon/hwmon1/fan1_input",
   sf_qstr = "/sys/class/hwmon/hwmon1/fan2_input",
 
@@ -223,23 +244,30 @@ bar["fan"] = {
   end,
 
   show = function ()
-    local c1      = bar.colors.fgc1
-    local c2      = bar.colors.fgc3
-    local cinv    = bar.colors.inv
-    local cnorm   = bar.colors.fgc1
-    local bc      = bar.colors.bgc1
-    local sf      = bar.colors.sfg1
-    local sb      = bar.colors.sbg1
+    local c1      = bar.fan.fgc1
+    local c2      = bar.fan.fgc2
+    local cnorm   = bar.fan.fgc1
+    local bc      = bar.fan.bgc
+    local sf      = bar.fan.sfg
+    local sb      = bar.fan.sbg
     local bs      = bar.colors.bgstop
-    local fan     = bar.symbols.fan
+    local cinv    = bar.colors.inv
+    local icon    = bar.symbols.fan
     local symbol  = bar.seperators.tar
     local sep     = bar.func.seperator(symbol, sf, sb, 3 )
 
-    return string.format("%s%s%s  %s: %s%s  %s", sep, bc, c2, fan, c1, bar.func.pad(bar.fan.c_fan(), 4, "l", cinv, cnorm), bar.fan.s_fan())
+    return string.format("%s%s%s  %s: %s%s  %s", sep, bc, c2, icon, c1, bar.func.pad(bar.fan.c_fan(), 4, "l", cinv, cnorm), bar.fan.s_fan())
   end
 }
 
 bar["load"] = {
+  fgc1   = bar.colors.fgc1,
+  fgc2   = bar.colors.fgc6,
+  bgc    = bar.colors.bgc2,
+  sfg    = bar.colors.sfg2,
+  sbg    = bar.colors.sbg1,
+  sep    = bar.seperators.tar,
+  icon   = bar.symbols.cpu,
   st_qstr = "/proc/stat",
   cpu_last = 0,
   cpu_last_sum = 0,
@@ -290,17 +318,17 @@ bar["load"] = {
   end,
 
   show = function ()
-    local c1      = bar.colors.fgc1
-    local c2      = bar.colors.fgc6
-    local bc      = bar.colors.bgc2
-    local sf      = bar.colors.sfg2
-    local sb      = bar.colors.sbg1
+    local c1      = bar.load.fgc1
+    local c2      = bar.load.fgc2
+    local bc      = bar.load.bgc
+    local sf      = bar.load.sfg
+    local sb      = bar.load.sbg
     local bs      = bar.colors.bgstop
     local cinv    = bar.colors.inv
-    local cpu     = bar.symbols.cpu
+    local icon    = bar.load.icon
     local symbol  = bar.seperators.tar
     local sep     = bar.func.seperator(symbol, sf, sb, 3 )
-    return string.format("%s%s%s  %s: %s%s ", sep, bc, c2, cpu, c1, bar.func.pad(bar.load.cp_load() .. "%", 3, "l", cinv, c1), bs)
+    return string.format("%s%s%s  %s: %s%s ", sep, bc, c2, icon, c1, bar.func.pad(bar.load.cp_load() .. "%", 3, "l", cinv, c1), bs)
   end
 }
 
@@ -338,6 +366,7 @@ bar["weather"] = {
   sfg    = bar.colors.sfg1,
   sbg    = bar.colors.sbg3,
   sep    = bar.seperators.tal,
+  icon  = "",
   w_qstr = 'ansiweather | cut -d ":" -f 2',
   prev   = "",
   secs   = 0,
@@ -402,11 +431,24 @@ end
 
 local mybar = bar
 
-mybar.date.bgc    = "%{B#1a1b26}"
-mybar.date.sfg    = "%{F#1a1b26}"
-mybar.date.sbg    = "%{B#251132}"
-mybar.weather.bgc = "%{B#251132}"
-mybar.weather.sfg = "%{F#251132}"
+mybar.date.bgc    = "%{B#211b2c}"
+mybar.date.sfg    = "%{F#211b2c}"
+mybar.date.sbg    = bar.colors.bgc1
+mybar.tmp.bgc     = bar.colors.bgc1
+mybar.tmp.sfg     = bar.colors.sfg1
+mybar.tmp.sbg     = bar.colors.sbg3
+mybar.tmp.bgc     = bar.colors.bgc1
+mybar.tmp.sfg     = bar.colors.sfg1
+mybar.weather.sbg = bar.colors.sbg3
+mybar.net.bgc     = "%{B#211b2c}"
+mybar.net.sfg     = "%{F#211b2c}"
+mybar.net.sbg     = bar.colors.sbg1
+mybar.fan.bgc     = "%{B#211b2c}"
+mybar.fan.sfg     = "%{F#211b2c}"
+mybar.fan.sbg     = bar.colors.sbg1
+mybar.load.bgc    = bar.colors.bgc1
+mybar.load.sfg    = bar.colors.sfg1
+mybar.load.sbg    = "%{B#211b2c}"
 -- mybar.colors.sbg1 = "%{B#251132}"
 -- mybar.colors.sfg1 = "%{F#251132}"
 
