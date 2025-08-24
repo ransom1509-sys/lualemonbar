@@ -101,13 +101,13 @@ bar["func"] = {
 }
 
 bar["net"] = {
-  fgc1 = bar.colors.fgc1,
-  fgc2 = bar.colors.fgc4,
-  bgc  = bar.colors.bgc1,
-  sfg  = bar.colors.sfg1,
-  sbg  = bar.colors.sbg2,
-  sep  = bar.seperators.tar,
-  icon = bar.symbols.net,
+  fgc1    = bar.colors.fgc1,
+  fgc2    = bar.colors.fgc4,
+  bgc     = bar.colors.bgc1,
+  sfg     = bar.colors.sfg1,
+  sbg     = bar.colors.sbg2,
+  sep     = bar.seperators.tar,
+  icon    = bar.symbols.net,
   rx_cur  = 0,
   rx_last = 0,
   tx_cur  = 0,
@@ -186,13 +186,13 @@ bar["net"] = {
 }
 
 bar["tmp"] = {
-  fgc1 = bar.colors.fgc1,
-  fgc2 = bar.colors.fgc2,
-  bgc  = bar.colors.bgc1,
-  sfg  = bar.colors.sfg1,
-  sbg  = bar.colors.sbg3,
-  sep  = bar.seperators.tar,
-  icon = bar.symbols.temp,
+  fgc1    = bar.colors.fgc1,
+  fgc2    = bar.colors.fgc2,
+  bgc     = bar.colors.bgc1,
+  sfg     = bar.colors.sfg1,
+  sbg     = bar.colors.sbg3,
+  sep     = bar.seperators.tar,
+  icon    = bar.symbols.temp,
   ct_qstr = "/sys/class/hwmon/hwmon1/temp2_input",
   st_qstr = "/sys/class/hwmon/hwmon1/temp1_input",
   gt_qstr = "nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits",
@@ -225,13 +225,13 @@ bar["tmp"] = {
 }
 
 bar["fan"] = {
-  fgc1 = bar.colors.fgc1,
-  fgc2 = bar.colors.fgc3,
-  bgc  = bar.colors.bgc1,
-  sfg  = bar.colors.sfg1,
-  sbg  = bar.colors.sbg1,
-  sep  = bar.seperators.tar,
-  icon = bar.symbols.fan,
+  fgc1    = bar.colors.fgc1,
+  fgc2    = bar.colors.fgc3,
+  bgc     = bar.colors.bgc1,
+  sfg     = bar.colors.sfg1,
+  sbg     = bar.colors.sbg1,
+  sep     = bar.seperators.tar,
+  icon    = bar.symbols.fan,
   cf_qstr = "/sys/class/hwmon/hwmon1/fan1_input",
   sf_qstr = "/sys/class/hwmon/hwmon1/fan2_input",
 
@@ -261,16 +261,16 @@ bar["fan"] = {
 }
 
 bar["load"] = {
-  fgc1   = bar.colors.fgc1,
-  fgc2   = bar.colors.fgc6,
-  bgc    = bar.colors.bgc2,
-  sfg    = bar.colors.sfg2,
-  sbg    = bar.colors.sbg1,
-  sep    = bar.seperators.tar,
-  icon   = bar.symbols.cpu,
-  st_qstr = "/proc/stat",
-  cpu_last = 0,
-  cpu_last_sum = 0,
+  fgc1          = bar.colors.fgc1,
+  fgc2          = bar.colors.fgc6,
+  bgc           = bar.colors.bgc2,
+  sfg           = bar.colors.sfg2,
+  sbg           = bar.colors.sbg1,
+  sep           = bar.seperators.tar,
+  icon          = bar.symbols.cpu,
+  st_qstr       = "/proc/stat",
+  cpu_last      = 0,
+  cpu_last_sum  = 0,
 
   cp_load = function ()
     local cpu_now   = {}
@@ -333,12 +333,12 @@ bar["load"] = {
 }
 
 bar["date"] = {
-  fgc1 = bar.colors.fgc3,
-  fgc2 = bar.colors.fgc1,
-  bgc  = bar.colors.bgc1,
-  sfg  = bar.colors.sfg1,
-  sbg  = bar.colors.sbg1,
-  sep  = bar.seperators.tal,
+  fgc1    = bar.colors.fgc3,
+  fgc2    = bar.colors.fgc1,
+  bgc     = bar.colors.bgc1,
+  sfg     = bar.colors.sfg1,
+  sbg     = bar.colors.sbg1,
+  sep     = bar.seperators.tal,
   getdate = function ()
     local d = bar.func.getprog('date +"%a %d.%m.%Y %H:%M"')
     return d
