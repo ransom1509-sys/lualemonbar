@@ -4,6 +4,7 @@
 Script for lemonbar-xft
 From left to right:
 Date - Weater - Temp (CPU. system, GPU) - Fan speed - Load - Net KiB/s - New mail - Vonnect status
+TODO: Movef format codes to bar["formats"]
 ]]
 local posix = require("posix")
 
@@ -144,7 +145,7 @@ bar["net"] = {
   end,
 
   show = function ()
-    local mc, ac, cinv, cnorm, c1, c2, rxstr, txstr, symmail, symcon
+    local mc, ac, cinv, cnorm, c1, c2, rxstr, txstr
     c1            = bar.net.fgc1
     c2            = bar.net.fgc2
     cinv          = bar.colors.inv
@@ -155,7 +156,6 @@ bar["net"] = {
     local bc      = bar.net.bgc
     local sf      = bar.net.sfg
     local sb      = bar.net.sbg
-    local bs      = bar.colors.bgstop
     local symbol  = bar.seperators.tar
     local sep     = bar.func.seperator(symbol, sf, sb, 3 )
 
@@ -250,7 +250,6 @@ bar["fan"] = {
     local bc      = bar.fan.bgc
     local sf      = bar.fan.sfg
     local sb      = bar.fan.sbg
-    local bs      = bar.colors.bgstop
     local cinv    = bar.colors.inv
     local icon    = bar.symbols.fan
     local symbol  = bar.seperators.tar
@@ -403,7 +402,6 @@ bar["weather"] = {
     local bc      = bar.weather.bgc
     local sf      = bar.weather.sfg
     local sb      = bar.weather.sbg
-    local bs      = bar.weather.bgstop
     local symbol  = bar.weather.sep
     local w_str   = string.format("%%{A:%s:}%s%%{A}", action, bar.weather.getcur(int))
     local sep     = bar.func.seperator(symbol, sf, sb, 3 )
@@ -418,14 +416,13 @@ bar.init = function ()
 end
 
 bar.show = function ()
-  local pg = bar.colors.panelbg
   local fl = "%{l}"
   local fr = "%{r}"
   local fc = "%{c}"
   local ml = "%{O20}"
   local mr = "%{O20}"
 
-  print(string.format("%s%s%s%s   %s%s  %s  %s  %s  %s", fl, bar.date.show(), bar.weather.show(), fr, pg, bar.tmp.show(), bar.fan.show(), bar.load.show(), bar.net.show(), bar.colors.bgstop))
+  print(string.format("%s%s%s%s   %s  %s  %s  %s  %s", fl, bar.date.show(), bar.weather.show(), fr, bar.tmp.show(), bar.fan.show(), bar.load.show(), bar.net.show(), bar.colors.bgstop))
 
 end
 
