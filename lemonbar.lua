@@ -402,7 +402,7 @@ bar["weather"] = {
     local bc      = bar.weather.bgc
     local sf      = bar.weather.sfg
     local sb      = bar.weather.sbg
-    local symbol  = bar.weather.sep
+    local symbol  = bar.seperators.tal
     local w_str   = string.format("%%{A:%s:}%s%%{A}", action, bar.weather.getcur(int))
     local sep     = bar.func.seperator(symbol, sf, sb, 3 )
     return string.format("%s%s  %s  %s", bc, c1, w_str, sep)
@@ -446,8 +446,19 @@ mybar.fan.sbg     = bar.colors.sbg1
 mybar.load.bgc    = bar.colors.bgc1
 mybar.load.sfg    = bar.colors.sfg1
 mybar.load.sbg    = "%{B#211b2c}"
--- mybar.colors.sbg1 = "%{B#251132}"
--- mybar.colors.sfg1 = "%{F#251132}"
+
+
+--[[
+for k, v in pairs(mybar) do
+  if type(v) == "table" then
+    for key, val in pairs(v) do
+      if key == "bgc" then
+        mybar[k][key] = "%{B#ffffff}"
+      end
+    end
+  end
+end
+]]
 
 mybar.init()
 
