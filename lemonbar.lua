@@ -427,25 +427,28 @@ bar.show = function ()
 end
 
 local mybar = bar
+mybar.colors.bgc5 = "%{B#222332}"
+mybar.colors.sbg5 = "%{B#222332}"
+mybar.colors.sfg5 = "%{F#222332}"
 
-mybar.date.bgc    = "%{B#211b2c}"
-mybar.date.sfg    = "%{F#211b2c}"
-mybar.date.sbg    = bar.colors.bgc1
-mybar.tmp.bgc     = bar.colors.bgc1
-mybar.tmp.sfg     = bar.colors.sfg1
-mybar.tmp.sbg     = bar.colors.sbg3
-mybar.tmp.bgc     = bar.colors.bgc1
-mybar.tmp.sfg     = bar.colors.sfg1
-mybar.weather.sbg = bar.colors.sbg3
-mybar.net.bgc     = "%{B#211b2c}"
-mybar.net.sfg     = "%{F#211b2c}"
-mybar.net.sbg     = bar.colors.sbg1
-mybar.fan.bgc     = "%{B#211b2c}"
-mybar.fan.sfg     = "%{F#211b2c}"
-mybar.fan.sbg     = bar.colors.sbg1
-mybar.load.bgc    = bar.colors.bgc1
-mybar.load.sfg    = bar.colors.sfg1
-mybar.load.sbg    = "%{B#211b2c}"
+mybar.date.bgc    = mybar.colors.bgc5
+mybar.date.sfg    = mybar.colors.sfg5
+mybar.date.sbg    = mybar.colors.bgc1
+mybar.tmp.bgc     = mybar.colors.bgc1
+mybar.tmp.sfg     = mybar.colors.sfg1
+mybar.tmp.sbg     = mybar.colors.sbg3
+mybar.tmp.bgc     = mybar.colors.bgc1
+mybar.tmp.sfg     = mybar.colors.sfg1
+mybar.weather.sbg = mybar.colors.sbg3
+mybar.net.bgc     = mybar.colors.bgc5
+mybar.net.sfg     = mybar.colors.sfg5
+mybar.net.sbg     = mybar.colors.sbg1
+mybar.fan.bgc     = mybar.colors.bgc5
+mybar.fan.sfg     = mybar.colors.sfg5
+mybar.fan.sbg     = mybar.colors.sbg1
+mybar.load.bgc    = mybar.colors.bgc1
+mybar.load.sfg    = mybar.colors.sfg1
+mybar.load.sbg    = mybar.colors.sbg5
 
 
 --[[
