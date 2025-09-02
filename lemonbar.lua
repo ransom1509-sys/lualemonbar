@@ -426,11 +426,17 @@ bar.show = function ()
 
 end
 
+-- ************* Overwriting defaults *************
+
 local mybar = bar
 mybar.colors.bgc5 = "%{B#222332}"
 mybar.colors.sbg5 = "%{B#222332}"
 mybar.colors.sfg5 = "%{F#222332}"
+mybar.colors.bgc1 = "%{B#2d3246}"
+mybar.colors.sbg1 = "%{B#2d3246}"
+mybar.colors.sfg1 = "%{F#2d3246}"
 
+-- mybar.date.fgc1   = mybar.colors.fgc1
 mybar.date.bgc    = mybar.colors.bgc5
 mybar.date.sfg    = mybar.colors.sfg5
 mybar.date.sbg    = mybar.colors.bgc1
@@ -440,6 +446,8 @@ mybar.tmp.sbg     = mybar.colors.sbg3
 mybar.tmp.bgc     = mybar.colors.bgc1
 mybar.tmp.sfg     = mybar.colors.sfg1
 mybar.weather.sbg = mybar.colors.sbg3
+mybar.weather.sfg = mybar.colors.sfg1
+mybar.weather.bgc = mybar.colors.bgc1
 mybar.net.bgc     = mybar.colors.bgc5
 mybar.net.sfg     = mybar.colors.sfg5
 mybar.net.sbg     = mybar.colors.sbg1
