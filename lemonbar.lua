@@ -311,11 +311,6 @@ bar["load"] = {
 
   end,
 
-  top_cpu = function ()
-    local tc_qstr = "ps -eo comm,%mem,%cpu --sort=%cpu | tail -n 1 | cut -d ' ' -f 1"
-    return bar.func.getprog(tc_qstr)
-  end,
-
   show = function ()
     local c1      = bar.load.fgc1
     local c2      = bar.load.fgc2
