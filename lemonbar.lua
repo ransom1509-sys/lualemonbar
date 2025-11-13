@@ -8,7 +8,7 @@ TODO: Movef format codes to bar["formats"]
 ]]
 local posix = require("posix")
 
-local n = 2
+local n = 1
 
 local bar = {}
 -- bar = {"func", "colors", "net", "tmp", "fan", "load"}
@@ -405,6 +405,17 @@ bar["weather"] = {
   end
 }
 
+bar["window"] = {
+  fgc1    = bar.colors.fgc3,
+  w_str   = "xdotool getactivewindow getwindowname",
+
+  show = function()
+    local c1 = bar.window.fgc1
+    local wname = bar.func.getprog(bar.window.w_str)
+    return string.format("%s%s", c1, wname)
+  end
+}
+
 bar.init = function ()
   bar.net.init()
   bar.weather.init()
@@ -417,7 +428,7 @@ bar.show = function ()
   local ml = "%{O20}"
   local mr = "%{O20}"
 
-  print(string.format("%s%s%s%s   %s  %s  %s  %s  %s", fl, bar.date.show(), bar.weather.show(), fr, bar.tmp.show(), bar.fan.show(), bar.load.show(), bar.net.show(), bar.colors.bgstop))
+  print(string.format("%s%s%s    %s    %s  %s  %s  %s  %s  %s", fl, bar.date.show(), bar.weather.show(), bar.window.show(), fr, bar.tmp.show(), bar.fan.show(), bar.load.show(), bar.net.show(), bar.colors.bgstop))
 
 end
 
