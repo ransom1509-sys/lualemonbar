@@ -444,7 +444,10 @@ bar["window"] = {
   show = function()
     local c1 = bar.window.fgc1
     local wname = bar.func.getprog(bar.window.w_str)
-    return string.format("%s%s", c1, wname)
+    if wname ~= nil then
+      return string.format("%s%s", c1, wname)
+    else return ''
+    end
   end
 }
 
