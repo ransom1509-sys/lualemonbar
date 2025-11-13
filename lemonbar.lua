@@ -196,17 +196,31 @@ bar["tmp"] = {
   ct_qstr = "/sys/class/hwmon/hwmon1/temp2_input",
   st_qstr = "/sys/class/hwmon/hwmon1/temp1_input",
   gt_qstr = "nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits",
+  ct_cur  = '',
+  st_cur  = '',
+  gt_cur  = '',
+  secs    = 0,
+  iv      = 5,
 
-  c_tmp = function ()
-    return string.sub(bar.func.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
+  update  = function(int)
+    local delta
+    delta = int - bar.tmp.secs
+
+    if delta <= 0 then
+      bar.tmp.ct_cur  = string.sub(bar.func.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
+      bar.tmp.st_cur  = string.sub(bar.func.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
+      bar.tmp.gt_cur  = string.sub(bar.func.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
+      bar.tmp.secs    = 0
+    end
+
+    bar.tmp.secs = bar.tmp.secs + n
+
   end,
 
-  s_tmp = function ()
-    return string.sub(bar.func.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
-  end,
-
-  g_tmp = function ()
-    return string.sub(bar.func.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
+  init = function()
+    bar.tmp.ct_cur = string.sub(bar.func.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
+    bar.tmp.st_cur = string.sub(bar.func.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
+    bar.tmp.gt_cur = string.sub(bar.func.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
   end,
 
   show = function ()
@@ -220,7 +234,9 @@ bar["tmp"] = {
     local symbol  = bar.seperators.tar
     local sep     = bar.func.seperator(symbol, sf, sb, 3 )
 
-    return string.format("%s%s%s  %s: %s%s  %s  %s", sep, bc, c2, icon, c1, bar.tmp.c_tmp(), bar.tmp.s_tmp(), bar.tmp.g_tmp(), bs)
+    bar.tmp.update(bar.tmp.iv)
+
+    return string.format("%s%s%s  %s: %s%s  %s  %s", sep, bc, c2, icon, c1, bar.tmp.ct_cur, bar.tmp.st_cur, bar.tmp.gt_cur, bs)
   end
 }
 
@@ -234,13 +250,29 @@ bar["fan"] = {
   icon    = bar.symbols.fan,
   cf_qstr = "/sys/class/hwmon/hwmon1/fan1_input",
   sf_qstr = "/sys/class/hwmon/hwmon1/fan2_input",
+  cf_cur  = '',
+  sf_cur  = '',
+  iv      = 5,
+  secs    = 0,
 
-  c_fan = function ()
-    return bar.func.getval(bar.fan.cf_qstr)
+  update = function(int)
+    local delta
+
+    delta = int - bar.fan.secs
+
+    if delta <= 0 then
+      bar.fan.cf_cur  = bar.func.getval(bar.fan.cf_qstr)
+      bar.fan.sf_cur  = bar.func.getval(bar.fan.sf_qstr)
+      bar.fan.secs    = 0
+    end
+
+    bar.fan.secs = bar.fan.secs + n
+
   end,
 
-  s_fan = function ()
-    return bar.func.getval(bar.fan.sf_qstr)
+  init = function()
+    bar.fan.cf_cur  = bar.func.getval(bar.fan.cf_qstr)
+    bar.fan.sf_cur  = bar.func.getval(bar.fan.sf_qstr)
   end,
 
   show = function ()
@@ -255,7 +287,9 @@ bar["fan"] = {
     local symbol  = bar.seperators.tar
     local sep     = bar.func.seperator(symbol, sf, sb, 3 )
 
-    return string.format("%s%s%s  %s: %s%s  %s", sep, bc, c2, icon, c1, bar.func.pad(bar.fan.c_fan(), 4, "l", cinv, cnorm), bar.fan.s_fan())
+    bar.fan.update(bar.fan.iv)
+
+    return string.format("%s%s%s  %s: %s%s  %s", sep, bc, c2, icon, c1, bar.func.pad(bar.fan.cf_cur, 4, "l", cinv, cnorm), bar.fan.sf_cur)
   end
 }
 
@@ -354,42 +388,37 @@ bar["date"] = {
 bar["weather"] = {
   -- w_qstr = "curl -H 'Cache-Control: no-cache, no-store' wttr.in/txl?format=%t",
   -- w_qstr = "curl wttr.in/-Brandenburger+Gate?format=%t",
-  fgc1   = bar.colors.fgc1,
-  fgc2   = bar.colors.fgc2,
-  bgc    = bar.colors.bgc1,
-  sfg    = bar.colors.sfg1,
-  sbg    = bar.colors.sbg3,
-  sep    = bar.seperators.tal,
-  icon  = "",
-  w_qstr = 'ansiweather | cut -d ":" -f 2',
-  prev   = "",
-  secs   = 0,
+  fgc1    = bar.colors.fgc1,
+  fgc2    = bar.colors.fgc2,
+  bgc     = bar.colors.bgc1,
+  sfg     = bar.colors.sfg1,
+  sbg     = bar.colors.sbg3,
+  sep     = bar.seperators.tal,
+  icon    = "",
+  w_qstr  = 'ansiweather | cut -d ":" -f 2',
+  cur     = "",
+  iv      = 1800,
+  secs    = 0,
 
-  getcur = function (int)
-    local cur
+  update = function (int)
     local delta
 
     delta = int - bar.weather.secs
-    cur   = bar.weather.prev
 
     if delta <= 0 then
-      cur = bar.func.getprog(bar.weather.w_qstr)
-      bar.weather.prev = cur
+      bar.weather.cur = bar.func.getprog(bar.weather.w_qstr)
       bar.weather.secs = 0
     end
 
     bar.weather.secs = bar.weather.secs + n
 
-    return cur
-
   end,
 
   init = function ()
-    bar.weather.prev = bar.func.getprog(bar.weather.w_qstr)
+    bar.weather.cur = bar.func.getprog(bar.weather.w_qstr)
   end,
 
   show = function ()
-    local int     = 1800
     -- local action  = 'notify-send Wetter "$(ansiweather -f 3)" &'
     -- local action  = 'zenity --info --text="$(ansiweather -f 3)" &'
     local action  = 'kitty --name "wetter" --title "wetter" -o font_size=10 wetter.sh &'
@@ -398,8 +427,11 @@ bar["weather"] = {
     local sf      = bar.weather.sfg
     local sb      = bar.weather.sbg
     local symbol  = bar.seperators.tal
-    local w_str   = string.format("%%{A:%s:}%s%%{A}", action, bar.weather.getcur(int))
+    local w_str   = string.format("%%{A:%s:}%s%%{A}", action, bar.weather.cur)
     local sep     = bar.func.seperator(symbol, sf, sb, 3 )
+
+    bar.weather.update(bar.weather.iv)
+
     return string.format("%s%s  %s  %s", bc, c1, w_str, sep)
 
   end
@@ -417,7 +449,9 @@ bar["window"] = {
 }
 
 bar.init = function ()
+  bar.tmp.init()
   bar.net.init()
+  bar.fan.init()
   bar.weather.init()
 end
 
@@ -481,5 +515,6 @@ mybar.init()
 
 while true do
   mybar.show()
+  -- print(string.format("DEBUG: %s", mybar.weather.secs))
   posix.sleep(n)
 end
