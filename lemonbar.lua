@@ -21,6 +21,7 @@ bar["colors"] = {
   fgc5      = "%{F#99c867}",
   fgc6      = "%{F#29bdd7}",
   fgc7      = "%{F#02002f}",
+  fgc8      = "%{F#ff9e64}",
   bgc1      = "%{B#2e3c43}",
   bgc2      = "%{B#414447}",
   bgc3      = "%{B#1a1b26}",
@@ -48,7 +49,8 @@ bar["seperators"] = {
 bar["symbols"] = {
   temp = "",
   fan  = "",
-  cpu  = "",
+  cpu  = "", --> U+EB03 => Nerd Fonts
+  -- cpu  = "",
   mail = "", -- U+E0E1 => typicons.ttf
   net  = "", -- U+E059 => typicons.ttf
   con  = "",
@@ -174,7 +176,7 @@ bar["net"] = {
       mc = bar.colors.fgc1
     end
 
-    return string.format("%s%s%s  %s: %s%s %s %s%s %s%s", sep, bc, c2, icon, c1, rxstr, txstr, mc, mail, ac, con)
+    return string.format("%s%s%s  %s  %s%s %s %s%s %s%s", sep, bc, c2, icon, c1, rxstr, txstr, mc, mail, ac, con)
 
   end,
 
@@ -236,7 +238,7 @@ bar["tmp"] = {
 
     bar.tmp.update(bar.tmp.iv)
 
-    return string.format("%s%s%s  %s: %s%s  %s  %s", sep, bc, c2, icon, c1, bar.tmp.ct_cur, bar.tmp.st_cur, bar.tmp.gt_cur, bs)
+    return string.format("%s%s%s  %s  %s%s  %s  %s", sep, bc, c2, icon, c1, bar.tmp.ct_cur, bar.tmp.st_cur, bar.tmp.gt_cur, bs)
   end
 }
 
@@ -289,7 +291,7 @@ bar["fan"] = {
 
     bar.fan.update(bar.fan.iv)
 
-    return string.format("%s%s%s  %s: %s%s  %s", sep, bc, c2, icon, c1, bar.func.pad(bar.fan.cf_cur, 4, "l", cinv, cnorm), bar.fan.sf_cur)
+    return string.format("%s%s%s  %s  %s%s  %s", sep, bc, c2, icon, c1, bar.func.pad(bar.fan.cf_cur, 4, "l", cinv, cnorm), bar.fan.sf_cur)
   end
 }
 
@@ -356,7 +358,7 @@ bar["load"] = {
     local icon    = bar.load.icon
     local symbol  = bar.seperators.tar
     local sep     = bar.func.seperator(symbol, sf, sb, 3 )
-    return string.format("%s%s%s  %s: %s%s ", sep, bc, c2, icon, c1, bar.func.pad(bar.load.cp_load() .. "%", 3, "l", cinv, c1), bs)
+    return string.format("%s%s%s  %s  %s%s ", sep, bc, c2, icon, c1, bar.func.pad(bar.load.cp_load() .. "%", 3, "l", cinv, c1), bs)
   end
 }
 
@@ -438,7 +440,7 @@ bar["weather"] = {
 }
 
 bar["window"] = {
-  fgc1    = bar.colors.fgc3,
+  fgc1    = bar.colors.fgc8,
   w_str   = "xdotool getactivewindow getwindowname",
 
   show = function()
