@@ -306,8 +306,11 @@ bar["load"] = {
   st_qstr       = "/proc/stat",
   cpu_last      = 0,
   cpu_last_sum  = 0,
+  cpu_load      = 0,
+  iv            = 2,
+  secs          = 0,
 
-  cp_load = function ()
+  update = function (int)
     local cpu_now   = {}
     local cpu_sum   = 0
     local cpu_delta = 0
@@ -315,35 +318,44 @@ bar["load"] = {
     local cpu_used  = 0
     local cpu
     local cpu_usage = 0
+    local delta
 
+    delta = int - bar.load.secs
+
+    if delta <= 0 then
     -- get cpu stats
-    cpu = bar.func.getval(bar.load.st_qstr)
+      cpu = bar.func.getval(bar.load.st_qstr)
 
-    -- Convert string to table
-    for w in string.gmatch(cpu, "[^%s]+") do
-      table.insert(cpu_now, w)
-    end
-
-    -- Sum up all fields, skip first with "cpu" in it
-    for key, val in pairs(cpu_now) do
-      if key > 1 then
-        cpu_sum = cpu_sum + val
+      -- Convert string to table
+      for w in string.gmatch(cpu, "[^%s]+") do
+        table.insert(cpu_now, w)
       end
+
+      -- Sum up all fields, skip first with "cpu" in it
+      for key, val in pairs(cpu_now) do
+        if key > 1 then
+          cpu_sum = cpu_sum + val
+        end
+      end
+
+      -- Calculate cpu usage
+      cpu_delta   = cpu_sum - bar.load.cpu_last_sum
+      cpu_idle    = cpu_now[5] - bar.load.cpu_last
+      cpu_used    = cpu_delta - cpu_idle
+      cpu_usage   = 100 * cpu_used // cpu_delta
+
+      -- Store values for compare, re-initialize vars for next run
+      bar.load.cpu_last     = cpu_now[5]
+      bar.load.cpu_last_sum = cpu_sum
+      -- cpu_now               = {}
+      -- cpu_sum               = 0
+
+      bar.load.cpu_load = cpu_usage
+      bar.load.secs = 0
+
     end
 
-    -- Calculate cpu usage
-    cpu_delta   = cpu_sum - bar.load.cpu_last_sum
-    cpu_idle    = cpu_now[5] - bar.load.cpu_last
-    cpu_used    = cpu_delta - cpu_idle
-    cpu_usage   = 100 * cpu_used // cpu_delta
-
-    -- Store values for compare, re-initialize vars for next run
-    bar.load.cpu_last     = cpu_now[5]
-    bar.load.cpu_last_sum = cpu_sum
-    cpu_now               = {}
-    cpu_sum               = 0
-
-    return cpu_usage
+    bar.load.secs = bar.load.secs + n
 
   end,
 
@@ -358,7 +370,11 @@ bar["load"] = {
     local icon    = bar.load.icon
     local symbol  = bar.seperators.tar
     local sep     = bar.func.seperator(symbol, sf, sb, 3 )
-    return string.format("%s%s%s  %s  %s%s ", sep, bc, c2, icon, c1, bar.func.pad(bar.load.cp_load() .. "%", 3, "l", cinv, c1), bs)
+
+    bar.load.update(bar.load.iv)
+
+    return string.format("%s%s%s  %s  %s%s ", sep, bc, c2, icon, c1, bar.func.pad(bar.load.cpu_load .. "%", 3, "l", cinv, c1), bs)
+
   end
 }
 
@@ -520,6 +536,6 @@ mybar.init()
 
 while true do
   mybar.show()
-  -- print(string.format("DEBUG: %s", mybar.weather.secs))
+  -- print(string.format("DEBUG: %s", mybar.load.secs))
   posix.sleep(n)
 end
