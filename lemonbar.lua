@@ -156,10 +156,7 @@ bar["net"] = {
     local con     = bar.symbols.con
     local mail    = bar.symbols.mail
     local bc      = bar.net.bgc
-    local sf      = bar.net.sfg
-    local sb      = bar.net.sbg
-    local symbol  = bar.seperators.tar
-    local sep     = bar.func.seperator(symbol, sf, sb, 3 )
+    local sep     = bar.net.sep
 
     rxstr = bar.func.pad(bar.net.rx_per_s(), 7, "l", cinv, cnorm)
     txstr = bar.func.pad(bar.net.tx_per_s(), 7, "l", cinv, cnorm)
@@ -182,6 +179,11 @@ bar["net"] = {
 
   init = function ()
     -- Make sure we start with rx = 0 KiB/s
+    local sf        = bar.net.sfg
+    local sb        = bar.net.sbg
+    local symbol    = bar.seperators.tar
+    local sep       = bar.func.seperator(symbol, sf, sb, 3 )
+    bar.net.sep     = sep
     bar.net.rx_last = bar.func.getval(bar.net.rx_qstr)
     bar.net.tx_last = bar.func.getval(bar.net.tx_qstr)
     end
@@ -220,6 +222,11 @@ bar["tmp"] = {
   end,
 
   init = function()
+    local sf       = bar.tmp.sfg
+    local sb       = bar.tmp.sbg
+    local symbol   = bar.seperators.tar
+    local sep      = bar.func.seperator(symbol, sf, sb, 3 )
+    bar.tmp.sep    = sep
     bar.tmp.ct_cur = string.sub(bar.func.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
     bar.tmp.st_cur = string.sub(bar.func.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
     bar.tmp.gt_cur = string.sub(bar.func.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
@@ -229,12 +236,9 @@ bar["tmp"] = {
     local c1      = bar.tmp.fgc1
     local c2      = bar.tmp.fgc2
     local bc      = bar.tmp.bgc
-    local sf      = bar.tmp.sfg
-    local sb      = bar.tmp.sbg
     local bs      = bar.colors.bgstop
     local icon    = bar.symbols.temp
-    local symbol  = bar.seperators.tar
-    local sep     = bar.func.seperator(symbol, sf, sb, 3 )
+    local sep     = bar.tmp.sep
 
     bar.tmp.update(bar.tmp.iv)
 
@@ -273,6 +277,11 @@ bar["fan"] = {
   end,
 
   init = function()
+    local sf      = bar.fan.sfg
+    local sb      = bar.fan.sbg
+    local symbol  = bar.seperators.tar
+    local sep     = bar.func.seperator(symbol, sf, sb, 3 )
+    bar.fan.sep   = sep
     bar.fan.cf_cur  = bar.func.getval(bar.fan.cf_qstr)
     bar.fan.sf_cur  = bar.func.getval(bar.fan.sf_qstr)
   end,
@@ -282,12 +291,9 @@ bar["fan"] = {
     local c2      = bar.fan.fgc2
     local cnorm   = bar.fan.fgc1
     local bc      = bar.fan.bgc
-    local sf      = bar.fan.sfg
-    local sb      = bar.fan.sbg
     local cinv    = bar.colors.inv
     local icon    = bar.symbols.fan
-    local symbol  = bar.seperators.tar
-    local sep     = bar.func.seperator(symbol, sf, sb, 3 )
+    local sep     = bar.fan.sep
 
     bar.fan.update(bar.fan.iv)
 
@@ -363,18 +369,23 @@ bar["load"] = {
     local c1      = bar.load.fgc1
     local c2      = bar.load.fgc2
     local bc      = bar.load.bgc
-    local sf      = bar.load.sfg
-    local sb      = bar.load.sbg
     local bs      = bar.colors.bgstop
     local cinv    = bar.colors.inv
     local icon    = bar.load.icon
-    local symbol  = bar.seperators.tar
-    local sep     = bar.func.seperator(symbol, sf, sb, 3 )
+    local sep     = bar.load.sep
 
     bar.load.update(bar.load.iv)
 
     return string.format("%s%s%s  %s  %s%s ", sep, bc, c2, icon, c1, bar.func.pad(bar.load.cpu_load .. "%", 3, "l", cinv, c1), bs)
 
+  end,
+
+  init = function ()
+    local sf      = bar.load.sfg
+    local sb      = bar.load.sbg
+    local symbol  = bar.seperators.tar
+    local sep     = bar.func.seperator(symbol, sf, sb, 3 )
+    bar.load.sep  = sep
   end
 }
 
@@ -390,14 +401,19 @@ bar["date"] = {
     return d
   end,
 
+  init = function ()
+    local sb      = bar.date.sbg
+    local sf      = bar.date.sfg
+    local symbol  = bar.seperators.tal
+    local sep     = bar.func.seperator(symbol, sf, sb, 3 )
+    bar.date.sep  = sep
+  end,
+
   show = function ()
     local action  = "toggle.sh rainlendar2 &"
     local bc      = bar.date.bgc
-    local sb      = bar.date.sbg
-    local sf      = bar.date.sfg
     local c1      = bar.date.fgc1
-    local symbol  = bar.seperators.tal
-    local sep     = bar.func.seperator(symbol, sf, sb, 3 )
+    local sep     = bar.date.sep
     return string.format("%s%s  %%{A:%s:}%s%%{A}  %s", bc, c1, action, bar.date.getdate(), sep)
   end
 
@@ -433,6 +449,11 @@ bar["weather"] = {
   end,
 
   init = function ()
+    local sf        = bar.weather.sfg
+    local sb        = bar.weather.sbg
+    local symbol    = bar.seperators.tal
+    local sep       = bar.func.seperator(symbol, sf, sb, 3 )
+    bar.weather.sep = sep
     bar.weather.cur = bar.func.getprog(bar.weather.w_qstr)
   end,
 
@@ -442,12 +463,8 @@ bar["weather"] = {
     local action  = 'kitty --name "wetter" --title "wetter" -o font_size=10 wetter.sh &'
     local c1      = bar.weather.fgc1
     local bc      = bar.weather.bgc
-    local sf      = bar.weather.sfg
-    local sb      = bar.weather.sbg
-    local symbol  = bar.seperators.tal
     local w_str   = string.format("%%{A:%s:}%s%%{A}", action, bar.weather.cur)
-    local sep     = bar.func.seperator(symbol, sf, sb, 3 )
-
+    local sep     = bar.weather.sep
     bar.weather.update(bar.weather.iv)
 
     return string.format("%s%s  %s  %s", bc, c1, w_str, sep)
@@ -473,7 +490,9 @@ bar.init = function ()
   bar.tmp.init()
   bar.net.init()
   bar.fan.init()
+  bar.load.init()
   bar.weather.init()
+  bar.date.init()
 end
 
 bar.show = function ()
