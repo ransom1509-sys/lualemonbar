@@ -158,8 +158,8 @@ bar["net"] = {
     local bc      = bar.net.bgc
     local sep     = bar.net.sep
 
-    rxstr = bar.func.pad(bar.net.rx_per_s(), 7, "l", cinv, cnorm)
-    txstr = bar.func.pad(bar.net.tx_per_s(), 7, "l", cinv, cnorm)
+    rxstr = bar.net.rx_per_s()
+    txstr = bar.net.tx_per_s()
 
     if bar.net.status() == "connected" then
       ac = bar.colors.connected
@@ -173,7 +173,7 @@ bar["net"] = {
       mc = bar.colors.fgc1
     end
 
-    return string.format("%s%s%s  %s  %s%s %s %s%s %s%s", sep, bc, c2, icon, c1, rxstr, txstr, mc, mail, ac, con)
+    return string.format("%s%s%s  %s  %s%-7.1f %-7.1f %s%s %s%s", sep, bc, c2, icon, c1, rxstr, txstr, mc, mail, ac, con)
 
   end,
 
@@ -277,11 +277,11 @@ bar["fan"] = {
   end,
 
   init = function()
-    local sf      = bar.fan.sfg
-    local sb      = bar.fan.sbg
-    local symbol  = bar.seperators.tar
-    local sep     = bar.func.seperator(symbol, sf, sb, 3 )
-    bar.fan.sep   = sep
+    local sf        = bar.fan.sfg
+    local sb        = bar.fan.sbg
+    local symbol    = bar.seperators.tar
+    local sep       = bar.func.seperator(symbol, sf, sb, 3 )
+    bar.fan.sep     = sep
     bar.fan.cf_cur  = bar.func.getval(bar.fan.cf_qstr)
     bar.fan.sf_cur  = bar.func.getval(bar.fan.sf_qstr)
   end,
@@ -297,7 +297,7 @@ bar["fan"] = {
 
     bar.fan.update(bar.fan.iv)
 
-    return string.format("%s%s%s  %s  %s%s  %s", sep, bc, c2, icon, c1, bar.func.pad(bar.fan.cf_cur, 4, "l", cinv, cnorm), bar.fan.sf_cur)
+    return string.format("%s%s%s  %s  %s%4d  %4d", sep, bc, c2, icon, c1, bar.fan.cf_cur, bar.fan.sf_cur)
   end
 }
 
@@ -313,7 +313,7 @@ bar["load"] = {
   cpu_last      = 0,
   cpu_last_sum  = 0,
   cpu_load      = 0,
-  iv            = 2,
+  iv            = 5,
   secs          = 0,
 
   update = function (int)
@@ -369,14 +369,12 @@ bar["load"] = {
     local c1      = bar.load.fgc1
     local c2      = bar.load.fgc2
     local bc      = bar.load.bgc
-    local bs      = bar.colors.bgstop
-    local cinv    = bar.colors.inv
     local icon    = bar.load.icon
     local sep     = bar.load.sep
 
     bar.load.update(bar.load.iv)
 
-    return string.format("%s%s%s  %s  %s%s ", sep, bc, c2, icon, c1, bar.func.pad(bar.load.cpu_load .. "%", 3, "l", cinv, c1), bs)
+    return string.format("%s%s%s  %s  %s%3d%% ", sep, bc, c2, icon, c1, bar.load.cpu_load)
 
   end,
 
@@ -537,7 +535,7 @@ mybar.fan.sbg     = mybar.colors.sbg1
 mybar.load.bgc    = mybar.colors.bgc1
 mybar.load.sfg    = mybar.colors.sfg1
 mybar.load.sbg    = mybar.colors.sbg5
-
+mybar.load.iv     = 2
 
 --[[
 for k, v in pairs(mybar) do
