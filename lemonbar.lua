@@ -72,6 +72,7 @@ bar["func"] = {
     return line
   end,
 
+  --[[
   -- Padding with invisible "0"s
   -- Dirty hack for propotional font to avoid jumpy columns
   -- Works only for numbers
@@ -95,6 +96,7 @@ bar["func"] = {
     return padstr
 
   end,
+  --]]
 
   seperator = function (sep, fg, bg, index)
     local stop = bar.colors.bgstop .. bar.colors.fgstop
@@ -147,11 +149,9 @@ bar["net"] = {
   end,
 
   show = function ()
-    local mc, ac, cinv, cnorm, c1, c2, rxstr, txstr
+    local mc, ac, c1, c2, rxstr, txstr
     c1            = bar.net.fgc1
     c2            = bar.net.fgc2
-    cinv          = bar.colors.inv
-    cnorm         = bar.net.fgc1
     local icon    = bar.net.icon
     local con     = bar.symbols.con
     local mail    = bar.symbols.mail
@@ -289,9 +289,7 @@ bar["fan"] = {
   show = function ()
     local c1      = bar.fan.fgc1
     local c2      = bar.fan.fgc2
-    local cnorm   = bar.fan.fgc1
     local bc      = bar.fan.bgc
-    local cinv    = bar.colors.inv
     local icon    = bar.symbols.fan
     local sep     = bar.fan.sep
 
