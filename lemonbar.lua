@@ -7,8 +7,8 @@ Date - Weater - Temp (CPU. system, GPU) - Fan speed - Load - Net KiB/s - New mai
 TODO: Movef format codes to bar["formats"]
 ]]
 local posix = require("posix")
-
-local n = 1
+local sleep = posix.sleep
+local n     = 1
 
 local bar = {}
 -- bar = {"func", "colors", "net", "tmp", "fan", "load"}
@@ -552,5 +552,5 @@ mybar.init()
 while true do
   mybar.show()
   -- print(string.format("DEBUG: %s", mybar.load.secs))
-  posix.sleep(n)
+  sleep(n)
 end
