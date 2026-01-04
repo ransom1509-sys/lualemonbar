@@ -3,7 +3,7 @@
 --[[
 Script for lemonbar-xft
 From left to right:
-Date - Weater - Temp (CPU. system, GPU) - Fan speed - Load - Net KiB/s - New mail - Vonnect status
+Date (left click opens calendar)- Weater (left click showa forecast) - Active window - Temp (CPU. system, GPU) - Fan speed - Load - Net KiB/s - New mail - Connect status
 TODO: Movef format codes to bar["formats"]
 ]]
 local posix = require("posix")
@@ -427,7 +427,7 @@ bar["weather"] = {
   icon    = "",
   w_qstr  = 'ansiweather | cut -d ":" -f 2',
   cur     = "",
-  iv      = 1800,
+  iv      = 3600,
   secs    = 0,
 
   update = function (int)
@@ -456,7 +456,8 @@ bar["weather"] = {
   show = function ()
     -- local action  = 'notify-send Wetter "$(ansiweather -f 3)" &'
     -- local action  = 'zenity --info --text="$(ansiweather -f 3)" &'
-    local action  = 'kitty --name "wetter" --title "wetter" -o font_size=10 wetter.sh &'
+    -- local action  = 'kitty --name "wetter" --title "wetter" -o font_size=10 wetter.sh &'
+    local action  = "curl wttr.in/Berlin_lang=de.png | display"
     local c1      = bar.weather.fgc1
     local bc      = bar.weather.bgc
     local w_str   = string.format("%%{A:%s:}%s%%{A}", action, bar.weather.cur)
