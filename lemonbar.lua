@@ -456,8 +456,8 @@ bar["weather"] = {
   show = function ()
     -- local action  = 'notify-send Wetter "$(ansiweather -f 3)" &'
     -- local action  = 'zenity --info --text="$(ansiweather -f 3)" &'
-    -- local action  = 'kitty --name "wetter" --title "wetter" -o font_size=10 wetter.sh &'
-    local action  = "curl wttr.in/Berlin_lang=de.png | display"
+    local action  = 'kitty --name "wetter" --title "wetter" -o font_size=10 wetter.sh &'
+    -- local action  = "curl wttr.in/Berlin_lang=de.png | display"
     local c1      = bar.weather.fgc1
     local bc      = bar.weather.bgc
     local w_str   = string.format("%%{A:%s:}%s%%{A}", action, bar.weather.cur)
