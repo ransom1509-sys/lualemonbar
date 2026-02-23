@@ -1,4 +1,4 @@
-#!/usr/bin/lua
+-- #!/usr/bin/lua
 -- 
 --[[
 Script for lemonbar-xft
@@ -6,8 +6,8 @@ From left to right:
 Date (left click opens calendar)- Weater (left click showa forecast) - Active window - Temp (CPU. system, GPU) - Fan speed - Load - Net KiB/s - New mail - Connect status
 TODO: Movef format codes to bar["formats"]
 ]]
-local posix = require("posix")
-local sleep = posix.sleep
+-- local posix = require("posix")
+-- local sleep = posix.sleep
 local n     = 1
 
 local bar = {}
@@ -72,32 +72,6 @@ bar["func"] = {
     return line
   end,
 
-  --[[
-  -- Padding with invisible "0"s
-  -- Dirty hack for propotional font to avoid jumpy columns
-  -- Works only for numbers
-  pad = function (padstr, len, side, cinv, cnorm)
-    if string.len(padstr) > len then
-      padstr = string.sub(padstr, 1, len)
-    end
-
-    local chrlen = len - string.len(padstr)
-
-    if chrlen > 0 then
-      if side == "l" then
-        padstr = padstr .. cinv .. string.rep(" ", chrlen) .. cnorm
-      end
-      if side == "r" then
-        padstr = cinv .. string.rep("0", chrlen) .. cnorm .. padstr
-      end
-
-    end
-
-    return padstr
-
-  end,
-  --]]
-
   seperator = function (sep, fg, bg, index)
     local stop = bar.colors.bgstop .. bar.colors.fgstop
     local sepstr = stop .. fg .. bg .. "%{" .. "T" .. index .. "}" .. sep .. stop
@@ -121,31 +95,40 @@ bar["net"] = {
   tx_qstr = "/sys/class/net/eth1/statistics/tx_bytes",
   nm_qstr = "claws-mail --status | cut -d ' ' -f 2",
   st_qstr = "nmcli -f STATE -t device status",
+  rx_rate = 0,
+  tx_rate = 0,
+  status  = "",
+  mails   = 0,
+  secs    = 0,
+  iv      = 2,
 
-  -- Calculate rx in KiB/s
-  rx_per_s = function()
-    bar.net.rx_cur  = bar.func.getval(bar.net.rx_qstr)
-    local rx_rate   = string.format("%.1f", ((bar.net.rx_cur - bar.net.rx_last) / 1024) / n)
-    bar.net.rx_last = bar.net.rx_cur
-    return rx_rate
-  end,
+  update = function(int)
+    local delta
+    delta = int - bar.net.secs
 
-  -- Calculate tx in KiB/s
-  tx_per_s = function()
-    bar.net.tx_cur  = bar.func.getval(bar.net.tx_qstr)
-    local tx_rate   = string.format("%.1f", ((bar.net.tx_cur - bar.net.tx_last) / 1024) / n)
-    bar.net.tx_last = bar.net.tx_cur
-    return tx_rate
-  end,
+    if delta <= 0 then
 
-  --Get connection status
-  status = function()
-    return bar.func.getprog(bar.net.st_qstr)
-  end,
+      --   Calculate tx in KiB/s
+      bar.net.rx_cur  = bar.func.getval(bar.net.rx_qstr)
+      bar.net.rx_rate = string.format("%.1f", ((bar.net.rx_cur - bar.net.rx_last) / 1024) / n)
+      bar.net.rx_last = bar.net.rx_cur
 
-  -- New mails?
-  mails = function ()
-    return tonumber(bar.func.getprog(bar.net.nm_qstr))
+      --   Calculate tx in KiB/s
+      bar.net.tx_cur  = bar.func.getval(bar.net.tx_qstr)
+      bar.net.tx_rate = string.format("%.1f", ((bar.net.tx_cur - bar.net.tx_last) / 1024) / n)
+      bar.net.tx_last = bar.net.tx_cur
+
+      --  Get connection status
+      bar.net.status = bar.func.getprog(bar.net.st_qstr)
+
+      --   New mails?
+      bar.net.mails = tonumber(bar.func.getprog(bar.net.nm_qstr))
+
+      bar.net.secs = 0
+    end
+
+    bar.net.secs = bar.net.secs + n
+
   end,
 
   show = function ()
@@ -158,16 +141,17 @@ bar["net"] = {
     local bc      = bar.net.bgc
     local sep     = bar.net.sep
 
-    rxstr = bar.net.rx_per_s()
-    txstr = bar.net.tx_per_s()
+    bar.net.update(bar.net.iv)
+    rxstr = bar.net.rx_rate
+    txstr = bar.net.tx_rate
 
-    if bar.net.status() == "connected" then
+    if bar.net.status == "connected" then
       ac = bar.colors.connected
     else
       ac = bar.colors.fgc1
     end
 
-    if bar.net.mails() ~= nil and bar.net.mails() > 0 then
+    if bar.net.mails ~= nil and bar.net.mails > 0 then
       mc = bar.colors.unread
     else
       mc = bar.colors.fgc1
@@ -186,7 +170,10 @@ bar["net"] = {
     bar.net.sep     = sep
     bar.net.rx_last = bar.func.getval(bar.net.rx_qstr)
     bar.net.tx_last = bar.func.getval(bar.net.tx_qstr)
-    end
+    bar.net.status = bar.func.getprog(bar.net.st_qstr)
+    bar.net.mails = tonumber(bar.func.getprog(bar.net.nm_qstr))
+
+  end
 }
 
 bar["tmp"] = {
@@ -534,22 +521,12 @@ mybar.load.sfg    = mybar.colors.sfg1
 mybar.load.sbg    = mybar.colors.sbg1
 mybar.load.iv     = 2
 
---[[
-for k, v in pairs(mybar) do
-  if type(v) == "table" then
-    for key, val in pairs(v) do
-      if key == "bgc" then
-        mybar[k][key] = "%{B#ffffff}"
-      end
-    end
-  end
+-- ************* Conky hooks **************
+
+function conky_init()
+  mybar.init()
 end
-]]
 
-mybar.init()
-
-while true do
+function conky_main()
   mybar.show()
-  -- print(string.format("DEBUG: %s", mybar.load.secs))
-  sleep(n)
 end
