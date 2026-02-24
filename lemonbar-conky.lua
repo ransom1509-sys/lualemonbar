@@ -55,6 +55,7 @@ bar["symbols"] = {
   net  = "", -- U+E059 => typicons.ttf
   con  = "",
   wthr = "", -- U+E13B => typicons.ttf
+  vol  = "",
 }
 
 bar["func"] = {
@@ -470,6 +471,55 @@ bar["window"] = {
   end
 }
 
+bar["volume"] = {
+  fgc1      = bar.colors.fgc1,
+  v_get_str = "pactl get-sink-volume @DEFAULT_SINK@ | cut -d ' ' -f 3",
+  v_set_str = "pactl set-sink-volume @DEFAULT_SINK@ ",
+  cur_vol   = 0,
+  prev_vol  = 0,
+  vol_up    = 0,
+  vol_down  = 0,
+  max_vol   = 65536,
+  vol_perc  = 0,
+  step      = 655,
+  icon      = bar.symbols.vol,
+
+  update = function ()
+    bar.volume.cur_vol  = bar.func.getprog(bar.volume.v_get_str)
+
+    if bar.volume.cur_vol ~= bar.volume.prev_vol then
+      bar.volume.vol_perc = 100 * bar.volume.cur_vol // bar.volume.max_vol
+      bar.volume.prev_vol = bar.volume.cur_vol
+      bar.volume.vol_up   = bar.volume.cur_vol + bar.volume.step
+      bar.volume.vol_down = bar.volume.cur_vol - bar.volume.step
+    end
+
+  end,
+
+  init = function()
+    bar.volume.cur_vol  = bar.func.getprog(bar.volume.v_get_str)
+    bar.volume.prev_vol = bar.volume.cur_vol
+    bar.volume.vol_perc = 100 * bar.volume.cur_vol // bar.volume.max_vol
+    bar.volume.vol_up   = bar.volume.cur_vol + bar.volume.step
+    bar.volume.vol_down = bar.volume.cur_vol - bar.volume.step
+  end,
+
+  show = function()
+    local symbol  = bar.volume.icon
+    local c1      = bar.volume.fgc1
+    local percent = bar.volume.vol_perc
+    local action  = "pavucontrol"
+    local up      = tostring(bar.volume.vol_up)
+    local down    = tostring(bar.volume.vol_down)
+    local inc     = bar.volume.v_set_str .. up
+    local dec     = bar.volume.v_set_str .. down
+
+    bar.volume.update()
+
+    return string.format("%s%s %%{A1:%s:}%%{A4:%s:}%%{A5:%s:}%s%%%%{A}%%{A}%%{A}", c1, symbol, action, inc, dec, percent)
+  end,
+}
+
 bar.init = function ()
   bar.tmp.init()
   bar.net.init()
@@ -477,6 +527,7 @@ bar.init = function ()
   bar.load.init()
   bar.weather.init()
   bar.date.init()
+  bar.volume.init()
 end
 
 bar.show = function ()
@@ -486,7 +537,7 @@ bar.show = function ()
   local ml = "%{O20}"
   local mr = "%{O20}"
 
-  print(string.format("%s%s%s%s%s%s%s%s%s", fl, bar.date.show(), bar.weather.show(), fr, bar.tmp.show(), bar.fan.show(), bar.load.show(), bar.net.show(), bar.colors.bgstop))
+  print(string.format("%s%s%s%s%s%s%s%s%s%s", fl, bar.date.show(), bar.weather.show(), bar.volume.show(), fr, bar.tmp.show(), bar.fan.show(), bar.load.show(), bar.net.show(), bar.colors.bgstop))
 
 end
 
