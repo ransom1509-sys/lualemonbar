@@ -103,32 +103,24 @@ bar["net"] = {
   secs    = 0,
   iv      = 2,
 
-  update = function(int)
-    local delta
-    delta = int - bar.net.secs
-
-    if delta <= 0 then
-
+  update = function()
       --   Calculate tx in KiB/s
-      bar.net.rx_cur  = bar.func.getval(bar.net.rx_qstr)
-      bar.net.rx_rate = string.format("%.1f", ((bar.net.rx_cur - bar.net.rx_last) / 1024) / n)
-      bar.net.rx_last = bar.net.rx_cur
+    bar.net.rx_cur  = bar.func.getval(bar.net.rx_qstr)
+    bar.net.rx_rate = string.format("%.1f", ((bar.net.rx_cur - bar.net.rx_last) / 1024) / n)
+    bar.net.rx_last = bar.net.rx_cur
 
-      --   Calculate tx in KiB/s
-      bar.net.tx_cur  = bar.func.getval(bar.net.tx_qstr)
-      bar.net.tx_rate = string.format("%.1f", ((bar.net.tx_cur - bar.net.tx_last) / 1024) / n)
-      bar.net.tx_last = bar.net.tx_cur
+    --   Calculate tx in KiB/s
+    bar.net.tx_cur  = bar.func.getval(bar.net.tx_qstr)
+    bar.net.tx_rate = string.format("%.1f", ((bar.net.tx_cur - bar.net.tx_last) / 1024) / n)
+    bar.net.tx_last = bar.net.tx_cur
 
-      --  Get connection status
-      bar.net.status = bar.func.getprog(bar.net.st_qstr)
+    --  Get connection status
+    bar.net.status = bar.func.getprog(bar.net.st_qstr)
 
-      --   New mails?
-      bar.net.mails = tonumber(bar.func.getprog(bar.net.nm_qstr))
+    --   New mails?
+    bar.net.mails = tonumber(bar.func.getprog(bar.net.nm_qstr))
 
-      bar.net.secs = 0
-    end
-
-    bar.net.secs = bar.net.secs + n
+    bar.net.secs = 0
 
   end,
 
@@ -141,8 +133,12 @@ bar["net"] = {
     local mail    = bar.symbols.mail
     local bc      = bar.net.bgc
     local sep     = bar.net.sep
+    local delta   = bar.net.iv - bar.net.secs
 
-    bar.net.update(bar.net.iv)
+    if delta <= 0 then
+      bar.net.update()
+    end
+
     rxstr = bar.net.rx_rate
     txstr = bar.net.tx_rate
 
@@ -157,6 +153,8 @@ bar["net"] = {
     else
       mc = bar.colors.fgc1
     end
+
+    bar.net.secs = bar.net.secs +n 
 
     return string.format("%s%s%s %s  %s%-7.1f %-7.1f %s%s %s%s ", sep, bc, c2, icon, c1, rxstr, txstr, mc, mail, ac, con)
 
@@ -194,19 +192,11 @@ bar["tmp"] = {
   secs    = 0,
   iv      = 5,
 
-  update  = function(int)
-    local delta
-    delta = int - bar.tmp.secs
-
-    if delta <= 0 then
-      bar.tmp.ct_cur  = string.sub(bar.func.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
-      bar.tmp.st_cur  = string.sub(bar.func.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
-      bar.tmp.gt_cur  = string.sub(bar.func.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
-      bar.tmp.secs    = 0
-    end
-
-    bar.tmp.secs = bar.tmp.secs + n
-
+  update  = function()
+    bar.tmp.ct_cur  = string.sub(bar.func.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
+    bar.tmp.st_cur  = string.sub(bar.func.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
+    bar.tmp.gt_cur  = string.sub(bar.func.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
+    bar.tmp.secs    = 0
   end,
 
   init = function()
@@ -227,8 +217,13 @@ bar["tmp"] = {
     local bs      = bar.colors.bgstop
     local icon    = bar.symbols.temp
     local sep     = bar.tmp.sep
+    local delta   = bar.tmp.iv - bar.tmp.secs
 
-    bar.tmp.update(bar.tmp.iv)
+    if delta <= 0 then
+      bar.tmp.update()
+    end
+
+    bar.tmp.secs = bar.tmp.secs + n
 
     return string.format("%s%s%s%s  %s%s  %s  %s", sep, bc, c2, icon, c1, bar.tmp.ct_cur, bar.tmp.st_cur, bar.tmp.gt_cur, bs)
   end
@@ -244,24 +239,15 @@ bar["fan"] = {
   icon    = bar.symbols.fan,
   cf_qstr = "/sys/class/hwmon/hwmon1/fan1_input",
   sf_qstr = "/sys/class/hwmon/hwmon1/fan2_input",
-  cf_cur  = '',
-  sf_cur  = '',
+  cf_cur  = 0,
+  sf_cur  = 0,
   iv      = 5,
   secs    = 0,
 
-  update = function(int)
-    local delta
-
-    delta = int - bar.fan.secs
-
-    if delta <= 0 then
-      bar.fan.cf_cur  = bar.func.getval(bar.fan.cf_qstr)
-      bar.fan.sf_cur  = bar.func.getval(bar.fan.sf_qstr)
-      bar.fan.secs    = 0
-    end
-
-    bar.fan.secs = bar.fan.secs + n
-
+  update = function()
+    bar.fan.cf_cur  = bar.func.getval(bar.fan.cf_qstr)
+    bar.fan.sf_cur  = bar.func.getval(bar.fan.sf_qstr)
+    bar.fan.secs    = 0
   end,
 
   init = function()
@@ -280,8 +266,13 @@ bar["fan"] = {
     local bc      = bar.fan.bgc
     local icon    = bar.symbols.fan
     local sep     = bar.fan.sep
+    local delta   = bar.fan.iv - bar.fan.secs
 
-    bar.fan.update(bar.fan.iv)
+    if delta <= 0 then
+      bar.fan.update()
+    end
+
+    bar.fan.secs = bar.fan.secs + n
 
     return string.format("%s%s%s  %s  %s%4d  %4d ", sep, bc, c2, icon, c1, bar.fan.cf_cur, bar.fan.sf_cur)
   end
@@ -302,7 +293,7 @@ bar["load"] = {
   iv            = 5,
   secs          = 0,
 
-  update = function (int)
+  update = function ()
     local cpu_now   = {}
     local cpu_sum   = 0
     local cpu_delta = 0
@@ -310,44 +301,36 @@ bar["load"] = {
     local cpu_used  = 0
     local cpu
     local cpu_usage = 0
-    local delta
 
-    delta = int - bar.load.secs
+   -- get cpu stats
+    cpu = bar.func.getval(bar.load.st_qstr)
 
-    if delta <= 0 then
-    -- get cpu stats
-      cpu = bar.func.getval(bar.load.st_qstr)
-
-      -- Convert string to table
-      for w in string.gmatch(cpu, "[^%s]+") do
-        table.insert(cpu_now, w)
-      end
-
-      -- Sum up all fields, skip first with "cpu" in it
-      for key, val in pairs(cpu_now) do
-        if key > 1 then
-          cpu_sum = cpu_sum + val
-        end
-      end
-
-      -- Calculate cpu usage
-      cpu_delta   = cpu_sum - bar.load.cpu_last_sum
-      cpu_idle    = cpu_now[5] - bar.load.cpu_last
-      cpu_used    = cpu_delta - cpu_idle
-      cpu_usage   = 100 * cpu_used // cpu_delta
-
-      -- Store values for compare, re-initialize vars for next run
-      bar.load.cpu_last     = cpu_now[5]
-      bar.load.cpu_last_sum = cpu_sum
-      -- cpu_now               = {}
-      -- cpu_sum               = 0
-
-      bar.load.cpu_load = cpu_usage
-      bar.load.secs = 0
-
+    -- Convert string to table
+    for w in string.gmatch(cpu, "[^%s]+") do
+      table.insert(cpu_now, w)
     end
 
-    bar.load.secs = bar.load.secs + n
+    -- Sum up all fields, skip first with "cpu" in it
+    for key, val in pairs(cpu_now) do
+      if key > 1 then
+        cpu_sum = cpu_sum + val
+      end
+    end
+
+    -- Calculate cpu usage
+    cpu_delta   = cpu_sum - bar.load.cpu_last_sum
+    cpu_idle    = cpu_now[5] - bar.load.cpu_last
+    cpu_used    = cpu_delta - cpu_idle
+    cpu_usage   = 100 * cpu_used // cpu_delta
+
+    -- Store values for compare, re-initialize vars for next run
+    bar.load.cpu_last     = cpu_now[5]
+    bar.load.cpu_last_sum = cpu_sum
+    -- cpu_now               = {}
+    -- cpu_sum               = 0
+
+    bar.load.cpu_load = cpu_usage
+    bar.load.secs = 0
 
   end,
 
@@ -357,8 +340,13 @@ bar["load"] = {
     local bc      = bar.load.bgc
     local icon    = bar.load.icon
     local sep     = bar.load.sep
+    local delta   = bar.load.iv - bar.load.secs
 
-    bar.load.update(bar.load.iv)
+    if delta <= 0 then
+      bar.load.update()
+    end
+
+    bar.load.secs = bar.load.secs + n
 
     return string.format("%s%s%s %s %s%3d%% ", sep, bc, c2, icon, c1, bar.load.cpu_load)
 
@@ -418,18 +406,9 @@ bar["weather"] = {
   iv      = 3600,
   secs    = 0,
 
-  update = function (int)
-    local delta
-
-    delta = int - bar.weather.secs
-
-    if delta <= 0 then
-      bar.weather.cur = bar.func.getprog(bar.weather.w_qstr)
-      bar.weather.secs = 0
-    end
-
-    bar.weather.secs = bar.weather.secs + n
-
+  update = function ()
+    bar.weather.cur = bar.func.getprog(bar.weather.w_qstr)
+    bar.weather.secs = 0
   end,
 
   init = function ()
@@ -450,7 +429,13 @@ bar["weather"] = {
     local bc      = bar.weather.bgc
     local w_str   = string.format("%%{A:%s:}%s%%{A}", action, bar.weather.cur)
     local sep     = bar.weather.sep
-    bar.weather.update(bar.weather.iv)
+    local delta   = bar.weather.iv - bar.weather.secs
+
+    if delta <= 0 then
+      bar.weather.update()
+    end
+
+    bar.weather.secs = bar.weather.secs + n
 
     return string.format("%s%s %s %s", bc, c1, w_str, sep)
 
