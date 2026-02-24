@@ -154,7 +154,7 @@ bar["net"] = {
       mc = bar.colors.fgc1
     end
 
-    bar.net.secs = bar.net.secs +n 
+    bar.net.secs = bar.net.secs +n
 
     return string.format("%s%s%s %s  %s%-7.1f %-7.1f %s%s %s%s ", sep, bc, c2, icon, c1, rxstr, txstr, mc, mail, ac, con)
 
@@ -183,7 +183,7 @@ bar["tmp"] = {
   sbg     = bar.colors.sbg3,
   sep     = bar.seperators.tar,
   icon    = bar.symbols.temp,
-  ct_qstr = "/sys/class/hwmon/hwmon1/temp2_input",
+  ct_qstr = "/sys/bus/pci/drivers/k10temp/0000:00:18.3/hwmon/hwmon0/temp1_input",
   st_qstr = "/sys/class/hwmon/hwmon1/temp1_input",
   gt_qstr = "nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits",
   ct_cur  = '',
