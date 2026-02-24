@@ -481,7 +481,7 @@ bar["volume"] = {
   vol_down  = 0,
   max_vol   = 65536,
   vol_perc  = 0,
-  step      = 655,
+  step      = 1310,
   icon      = bar.symbols.vol,
 
   update = function ()
@@ -490,8 +490,14 @@ bar["volume"] = {
     if bar.volume.cur_vol ~= bar.volume.prev_vol then
       bar.volume.vol_perc = 100 * bar.volume.cur_vol // bar.volume.max_vol
       bar.volume.prev_vol = bar.volume.cur_vol
-      bar.volume.vol_up   = bar.volume.cur_vol + bar.volume.step
-      bar.volume.vol_down = bar.volume.cur_vol - bar.volume.step
+
+      if bar.volume.cur_vol + bar.volume.step <= bar.volume.max_vol then
+        bar.volume.vol_up   = bar.volume.cur_vol + bar.volume.step
+      end
+
+      if bar.volume.cur_vol - bar.volume.step >= 0 then
+        bar.volume.vol_down = bar.volume.cur_vol - bar.volume.step
+      end
     end
 
   end,
@@ -500,8 +506,15 @@ bar["volume"] = {
     bar.volume.cur_vol  = bar.func.getprog(bar.volume.v_get_str)
     bar.volume.prev_vol = bar.volume.cur_vol
     bar.volume.vol_perc = 100 * bar.volume.cur_vol // bar.volume.max_vol
-    bar.volume.vol_up   = bar.volume.cur_vol + bar.volume.step
-    bar.volume.vol_down = bar.volume.cur_vol - bar.volume.step
+
+    if bar.volume.cur_vol + bar.volume.step <= bar.volume.max_vol then
+      bar.volume.vol_up   = bar.volume.cur_vol + bar.volume.step
+    end
+
+    if bar.volume.cur_vol - bar.volume.step >= 0 then
+      bar.volume.vol_down = bar.volume.cur_vol - bar.volume.step
+    end
+
   end,
 
   show = function()
