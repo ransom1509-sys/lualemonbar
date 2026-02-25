@@ -120,8 +120,6 @@ bar["net"] = {
     --   New mails?
     bar.net.mails = tonumber(bar.func.getprog(bar.net.nm_qstr))
 
-    bar.net.secs = 0
-
   end,
 
   show = function ()
@@ -137,6 +135,7 @@ bar["net"] = {
 
     if delta <= 0 then
       bar.net.update()
+      bar.net.secs = 0
     end
 
     rxstr = bar.net.rx_rate
@@ -196,7 +195,6 @@ bar["tmp"] = {
     bar.tmp.ct_cur  = string.sub(bar.func.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
     bar.tmp.st_cur  = string.sub(bar.func.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
     bar.tmp.gt_cur  = string.sub(bar.func.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
-    bar.tmp.secs    = 0
   end,
 
   init = function()
@@ -221,6 +219,7 @@ bar["tmp"] = {
 
     if delta <= 0 then
       bar.tmp.update()
+      bar.tmp.secs    = 0
     end
 
     bar.tmp.secs = bar.tmp.secs + n
@@ -247,7 +246,6 @@ bar["fan"] = {
   update = function()
     bar.fan.cf_cur  = bar.func.getval(bar.fan.cf_qstr)
     bar.fan.sf_cur  = bar.func.getval(bar.fan.sf_qstr)
-    bar.fan.secs    = 0
   end,
 
   init = function()
@@ -270,6 +268,7 @@ bar["fan"] = {
 
     if delta <= 0 then
       bar.fan.update()
+      bar.fan.secs    = 0
     end
 
     bar.fan.secs = bar.fan.secs + n
@@ -330,7 +329,6 @@ bar["load"] = {
     -- cpu_sum               = 0
 
     bar.load.cpu_load = cpu_usage
-    bar.load.secs = 0
 
   end,
 
@@ -344,6 +342,7 @@ bar["load"] = {
 
     if delta <= 0 then
       bar.load.update()
+      bar.load.secs = 0
     end
 
     bar.load.secs = bar.load.secs + n
@@ -408,7 +407,6 @@ bar["weather"] = {
 
   update = function ()
     bar.weather.cur = bar.func.getprog(bar.weather.w_qstr)
-    bar.weather.secs = 0
   end,
 
   init = function ()
@@ -433,6 +431,7 @@ bar["weather"] = {
 
     if delta <= 0 then
       bar.weather.update()
+      bar.weather.secs = 0
     end
 
     bar.weather.secs = bar.weather.secs + n
