@@ -8,8 +8,6 @@ TODO: Movef format codes to bar["formats"]
 ]]
 -- local posix = require("posix")
 -- local sleep = posix.sleep
-local n     = 1
-
 local bar = {}
 -- bar = {"func", "colors", "net", "tmp", "fan", "load"}
 bar.timer = 1
@@ -24,17 +22,17 @@ bar["colors"] = {
   fgc6      = "%{F#29bdd7}",
   fgc7      = "%{F#02002f}",
   fgc8      = "%{F#ff9e64}",
-  bgc1      = "%{B#2e3c43}",
+  bgc1      = "%{B#1a1b26}",
   bgc2      = "%{B#414447}",
-  bgc3      = "%{B#1a1b26}",
+  bgc3      = "%{B#2e3c43}",
   bgc4      = "%{B#6a6f74}",
-  sbg1      = "%{B#2e3c43}",
+  sbg1      = "%{B#1a1b26}",
   sbg2      = "%{B#414447}",
-  sbg3      = "%{B#1a1b26}",
+  sbg3      = "%{B#2e3c43}",
   sbg4      = "%{B#6a6f74}",
-  sfg1      = "%{F#2e3c43}",
+  sfg1      = "%{F#1a1b26}",
   sfg2      = "%{F#414447}",
-  sfg3      = "%{F#1a1b26}",
+  sfg3      = "%{F#2e3c43}",
   sfg4      = "%{F#6a6f74}",
   unread    = "%{F#da5f8b}",
   connected = "%{F#99c867}",
@@ -138,6 +136,8 @@ bar["net"] = {
     if delta <= 0 then
       bar.net.update()
       bar.net.secs = 0
+    else
+      bar.net.secs = bar.net.secs + bar.timer
     end
 
     rxstr = bar.net.rx_rate
@@ -154,8 +154,6 @@ bar["net"] = {
     else
       mc = bar.colors.fgc1
     end
-
-    bar.net.secs = bar.net.secs + bar.timer
 
     return string.format("%s%s%s %s  %s%-7.1f %-7.1f %s%s %s%s ", sep, bc, c2, icon, c1, rxstr, txstr, mc, mail, ac, con)
 
@@ -222,9 +220,9 @@ bar["tmp"] = {
     if delta <= 0 then
       bar.tmp.update()
       bar.tmp.secs    = 0
+    else
+      bar.tmp.secs = bar.tmp.secs + bar.timer
     end
-
-    bar.tmp.secs = bar.tmp.secs + bar.timer
 
     return string.format("%s%s%s%s  %s%s  %s  %s", sep, bc, c2, icon, c1, bar.tmp.ct_cur, bar.tmp.st_cur, bar.tmp.gt_cur, bs)
   end
@@ -271,9 +269,9 @@ bar["fan"] = {
     if delta <= 0 then
       bar.fan.update()
       bar.fan.secs    = 0
+    else
+      bar.fan.secs = bar.fan.secs + bar.timer
     end
-
-    bar.fan.secs = bar.fan.secs + bar.timer
 
     return string.format("%s%s%s  %s  %s%4d  %4d ", sep, bc, c2, icon, c1, bar.fan.cf_cur, bar.fan.sf_cur)
   end
@@ -345,9 +343,9 @@ bar["load"] = {
     if delta <= 0 then
       bar.load.update()
       bar.load.secs = 0
+    else
+      bar.load.secs = bar.load.secs + bar.timer
     end
-
-    bar.load.secs = bar.load.secs + bar.timer
 
     return string.format("%s%s%s %s %s%3d%% ", sep, bc, c2, icon, c1, bar.load.cpu_load)
 
@@ -434,9 +432,9 @@ bar["weather"] = {
     if delta <= 0 then
       bar.weather.update()
       bar.weather.secs = 0
+    else
+      bar.weather.secs = bar.weather.secs + bar.timer
     end
-
-    bar.weather.secs = bar.weather.secs + bar.timer
 
     return string.format("%s%s %s %s", bc, c1, w_str, sep)
 
