@@ -1,4 +1,4 @@
-#!/usr/bin/lua
+-- #!/usr/bin/lua
 -- 
 --[[
 Script for lemonbar-xft
@@ -6,12 +6,14 @@ From left to right:
 Date (left click opens calendar)- Weater (left click showa forecast) - Active window - Temp (CPU. system, GPU) - Fan speed - Load - Net KiB/s - New mail - Connect status
 TODO: Movef format codes to bar["formats"]
 ]]
-local posix = require("posix")
-local sleep = posix.sleep
+-- local posix = require("posix")
+-- local sleep = posix.sleep
 local n     = 1
 
 local bar = {}
 -- bar = {"func", "colors", "net", "tmp", "fan", "load"}
+bar.timer = 1
+
 bar["colors"] = {
   panelbg   = "%{B#ffffff}",
   fgc1      = "%{F#b6c0e9}",
@@ -55,6 +57,7 @@ bar["symbols"] = {
   net  = "", -- U+E059 => typicons.ttf
   con  = "",
   wthr = "", -- U+E13B => typicons.ttf
+  vol  = "",
 }
 
 bar["func"] = {
@@ -72,32 +75,6 @@ bar["func"] = {
     return line
   end,
 
-  --[[
-  -- Padding with invisible "0"s
-  -- Dirty hack for propotional font to avoid jumpy columns
-  -- Works only for numbers
-  pad = function (padstr, len, side, cinv, cnorm)
-    if string.len(padstr) > len then
-      padstr = string.sub(padstr, 1, len)
-    end
-
-    local chrlen = len - string.len(padstr)
-
-    if chrlen > 0 then
-      if side == "l" then
-        padstr = padstr .. cinv .. string.rep(" ", chrlen) .. cnorm
-      end
-      if side == "r" then
-        padstr = cinv .. string.rep("0", chrlen) .. cnorm .. padstr
-      end
-
-    end
-
-    return padstr
-
-  end,
-  --]]
-
   seperator = function (sep, fg, bg, index)
     local stop = bar.colors.bgstop .. bar.colors.fgstop
     local sepstr = stop .. fg .. bg .. "%{" .. "T" .. index .. "}" .. sep .. stop
@@ -111,7 +88,7 @@ bar["net"] = {
   bgc     = bar.colors.bgc1,
   sfg     = bar.colors.sfg1,
   sbg     = bar.colors.sbg2,
-  sep     = bar.seperators.tar,
+  sep     = bar.seperators.tal,
   icon    = bar.symbols.net,
   rx_cur  = 0,
   rx_last = 0,
@@ -121,31 +98,30 @@ bar["net"] = {
   tx_qstr = "/sys/class/net/eth1/statistics/tx_bytes",
   nm_qstr = "claws-mail --status | cut -d ' ' -f 2",
   st_qstr = "nmcli -f STATE -t device status",
+  rx_rate = 0,
+  tx_rate = 0,
+  status  = "",
+  mails   = 0,
+  secs    = 0,
+  iv      = 2,
 
-  -- Calculate rx in KiB/s
-  rx_per_s = function()
+  update = function()
+      --   Calculate tx in KiB/s
     bar.net.rx_cur  = bar.func.getval(bar.net.rx_qstr)
-    local rx_rate   = string.format("%.1f", ((bar.net.rx_cur - bar.net.rx_last) / 1024) / n)
+    bar.net.rx_rate = string.format("%.1f", ((bar.net.rx_cur - bar.net.rx_last) / 1024) / bar.timer)
     bar.net.rx_last = bar.net.rx_cur
-    return rx_rate
-  end,
 
-  -- Calculate tx in KiB/s
-  tx_per_s = function()
+    --   Calculate tx in KiB/s
     bar.net.tx_cur  = bar.func.getval(bar.net.tx_qstr)
-    local tx_rate   = string.format("%.1f", ((bar.net.tx_cur - bar.net.tx_last) / 1024) / n)
+    bar.net.tx_rate = string.format("%.1f", ((bar.net.tx_cur - bar.net.tx_last) / 1024) / bar.timer)
     bar.net.tx_last = bar.net.tx_cur
-    return tx_rate
-  end,
 
-  --Get connection status
-  status = function()
-    return bar.func.getprog(bar.net.st_qstr)
-  end,
+    --  Get connection status
+    bar.net.status = bar.func.getprog(bar.net.st_qstr)
 
-  -- New mails?
-  mails = function ()
-    return tonumber(bar.func.getprog(bar.net.nm_qstr))
+    --   New mails?
+    bar.net.mails = tonumber(bar.func.getprog(bar.net.nm_qstr))
+
   end,
 
   show = function ()
@@ -157,23 +133,31 @@ bar["net"] = {
     local mail    = bar.symbols.mail
     local bc      = bar.net.bgc
     local sep     = bar.net.sep
+    local delta   = bar.net.iv - bar.net.secs
 
-    rxstr = bar.net.rx_per_s()
-    txstr = bar.net.tx_per_s()
+    if delta <= 0 then
+      bar.net.update()
+      bar.net.secs = 0
+    end
 
-    if bar.net.status() == "connected" then
+    rxstr = bar.net.rx_rate
+    txstr = bar.net.tx_rate
+
+    if bar.net.status == "connected" then
       ac = bar.colors.connected
     else
       ac = bar.colors.fgc1
     end
 
-    if bar.net.mails() ~= nil and bar.net.mails() > 0 then
+    if bar.net.mails ~= nil and bar.net.mails > 0 then
       mc = bar.colors.unread
     else
       mc = bar.colors.fgc1
     end
 
-    return string.format("%s%s%s  %s  %s%-7.1f %-7.1f %s%s %s%s", sep, bc, c2, icon, c1, rxstr, txstr, mc, mail, ac, con)
+    bar.net.secs = bar.net.secs + bar.timer
+
+    return string.format("%s%s%s %s  %s%-7.1f %-7.1f %s%s %s%s ", sep, bc, c2, icon, c1, rxstr, txstr, mc, mail, ac, con)
 
   end,
 
@@ -186,7 +170,10 @@ bar["net"] = {
     bar.net.sep     = sep
     bar.net.rx_last = bar.func.getval(bar.net.rx_qstr)
     bar.net.tx_last = bar.func.getval(bar.net.tx_qstr)
-    end
+    bar.net.status = bar.func.getprog(bar.net.st_qstr)
+    bar.net.mails = tonumber(bar.func.getprog(bar.net.nm_qstr))
+
+  end
 }
 
 bar["tmp"] = {
@@ -197,7 +184,7 @@ bar["tmp"] = {
   sbg     = bar.colors.sbg3,
   sep     = bar.seperators.tar,
   icon    = bar.symbols.temp,
-  ct_qstr = "/sys/class/hwmon/hwmon1/temp2_input",
+  ct_qstr = "/sys/bus/pci/drivers/k10temp/0000:00:18.3/hwmon/hwmon0/temp1_input",
   st_qstr = "/sys/class/hwmon/hwmon1/temp1_input",
   gt_qstr = "nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits",
   ct_cur  = '',
@@ -206,19 +193,10 @@ bar["tmp"] = {
   secs    = 0,
   iv      = 5,
 
-  update  = function(int)
-    local delta
-    delta = int - bar.tmp.secs
-
-    if delta <= 0 then
-      bar.tmp.ct_cur  = string.sub(bar.func.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
-      bar.tmp.st_cur  = string.sub(bar.func.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
-      bar.tmp.gt_cur  = string.sub(bar.func.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
-      bar.tmp.secs    = 0
-    end
-
-    bar.tmp.secs = bar.tmp.secs + n
-
+  update  = function()
+    bar.tmp.ct_cur  = string.sub(bar.func.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
+    bar.tmp.st_cur  = string.sub(bar.func.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
+    bar.tmp.gt_cur  = string.sub(bar.func.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
   end,
 
   init = function()
@@ -239,10 +217,16 @@ bar["tmp"] = {
     local bs      = bar.colors.bgstop
     local icon    = bar.symbols.temp
     local sep     = bar.tmp.sep
+    local delta   = bar.tmp.iv - bar.tmp.secs
 
-    bar.tmp.update(bar.tmp.iv)
+    if delta <= 0 then
+      bar.tmp.update()
+      bar.tmp.secs    = 0
+    end
 
-    return string.format("%s%s%s  %s  %s%s  %s  %s", sep, bc, c2, icon, c1, bar.tmp.ct_cur, bar.tmp.st_cur, bar.tmp.gt_cur, bs)
+    bar.tmp.secs = bar.tmp.secs + bar.timer
+
+    return string.format("%s%s%s%s  %s%s  %s  %s", sep, bc, c2, icon, c1, bar.tmp.ct_cur, bar.tmp.st_cur, bar.tmp.gt_cur, bs)
   end
 }
 
@@ -256,24 +240,14 @@ bar["fan"] = {
   icon    = bar.symbols.fan,
   cf_qstr = "/sys/class/hwmon/hwmon1/fan1_input",
   sf_qstr = "/sys/class/hwmon/hwmon1/fan2_input",
-  cf_cur  = '',
-  sf_cur  = '',
+  cf_cur  = 0,
+  sf_cur  = 0,
   iv      = 5,
   secs    = 0,
 
-  update = function(int)
-    local delta
-
-    delta = int - bar.fan.secs
-
-    if delta <= 0 then
-      bar.fan.cf_cur  = bar.func.getval(bar.fan.cf_qstr)
-      bar.fan.sf_cur  = bar.func.getval(bar.fan.sf_qstr)
-      bar.fan.secs    = 0
-    end
-
-    bar.fan.secs = bar.fan.secs + n
-
+  update = function()
+    bar.fan.cf_cur  = bar.func.getval(bar.fan.cf_qstr)
+    bar.fan.sf_cur  = bar.func.getval(bar.fan.sf_qstr)
   end,
 
   init = function()
@@ -292,10 +266,16 @@ bar["fan"] = {
     local bc      = bar.fan.bgc
     local icon    = bar.symbols.fan
     local sep     = bar.fan.sep
+    local delta   = bar.fan.iv - bar.fan.secs
 
-    bar.fan.update(bar.fan.iv)
+    if delta <= 0 then
+      bar.fan.update()
+      bar.fan.secs    = 0
+    end
 
-    return string.format("%s%s%s  %s  %s%4d  %4d", sep, bc, c2, icon, c1, bar.fan.cf_cur, bar.fan.sf_cur)
+    bar.fan.secs = bar.fan.secs + bar.timer
+
+    return string.format("%s%s%s  %s  %s%4d  %4d ", sep, bc, c2, icon, c1, bar.fan.cf_cur, bar.fan.sf_cur)
   end
 }
 
@@ -314,7 +294,7 @@ bar["load"] = {
   iv            = 5,
   secs          = 0,
 
-  update = function (int)
+  update = function ()
     local cpu_now   = {}
     local cpu_sum   = 0
     local cpu_delta = 0
@@ -322,44 +302,35 @@ bar["load"] = {
     local cpu_used  = 0
     local cpu
     local cpu_usage = 0
-    local delta
 
-    delta = int - bar.load.secs
+   -- get cpu stats
+    cpu = bar.func.getval(bar.load.st_qstr)
 
-    if delta <= 0 then
-    -- get cpu stats
-      cpu = bar.func.getval(bar.load.st_qstr)
-
-      -- Convert string to table
-      for w in string.gmatch(cpu, "[^%s]+") do
-        table.insert(cpu_now, w)
-      end
-
-      -- Sum up all fields, skip first with "cpu" in it
-      for key, val in pairs(cpu_now) do
-        if key > 1 then
-          cpu_sum = cpu_sum + val
-        end
-      end
-
-      -- Calculate cpu usage
-      cpu_delta   = cpu_sum - bar.load.cpu_last_sum
-      cpu_idle    = cpu_now[5] - bar.load.cpu_last
-      cpu_used    = cpu_delta - cpu_idle
-      cpu_usage   = 100 * cpu_used // cpu_delta
-
-      -- Store values for compare, re-initialize vars for next run
-      bar.load.cpu_last     = cpu_now[5]
-      bar.load.cpu_last_sum = cpu_sum
-      -- cpu_now               = {}
-      -- cpu_sum               = 0
-
-      bar.load.cpu_load = cpu_usage
-      bar.load.secs = 0
-
+    -- Convert string to table
+    for w in string.gmatch(cpu, "[^%s]+") do
+      table.insert(cpu_now, w)
     end
 
-    bar.load.secs = bar.load.secs + n
+    -- Sum up all fields, skip first with "cpu" in it
+    for key, val in pairs(cpu_now) do
+      if key > 1 then
+        cpu_sum = cpu_sum + val
+      end
+    end
+
+    -- Calculate cpu usage
+    cpu_delta   = cpu_sum - bar.load.cpu_last_sum
+    cpu_idle    = cpu_now[5] - bar.load.cpu_last
+    cpu_used    = cpu_delta - cpu_idle
+    cpu_usage   = 100 * cpu_used // cpu_delta
+
+    -- Store values for compare, re-initialize vars for next run
+    bar.load.cpu_last     = cpu_now[5]
+    bar.load.cpu_last_sum = cpu_sum
+    -- cpu_now               = {}
+    -- cpu_sum               = 0
+
+    bar.load.cpu_load = cpu_usage
 
   end,
 
@@ -369,10 +340,16 @@ bar["load"] = {
     local bc      = bar.load.bgc
     local icon    = bar.load.icon
     local sep     = bar.load.sep
+    local delta   = bar.load.iv - bar.load.secs
 
-    bar.load.update(bar.load.iv)
+    if delta <= 0 then
+      bar.load.update()
+      bar.load.secs = 0
+    end
 
-    return string.format("%s%s%s  %s  %s%3d%% ", sep, bc, c2, icon, c1, bar.load.cpu_load)
+    bar.load.secs = bar.load.secs + bar.timer
+
+    return string.format("%s%s%s %s %s%3d%% ", sep, bc, c2, icon, c1, bar.load.cpu_load)
 
   end,
 
@@ -410,7 +387,7 @@ bar["date"] = {
     local bc      = bar.date.bgc
     local c1      = bar.date.fgc1
     local sep     = bar.date.sep
-    return string.format("%s%s  %%{A:%s:}%s%%{A}  %s", bc, c1, action, bar.date.getdate(), sep)
+    return string.format("%%{T4}%s%s %%{A:%s:}%s%%{A} %%{T-}%s", bc, c1, action, bar.date.getdate(), sep)
   end
 
 }
@@ -430,18 +407,8 @@ bar["weather"] = {
   iv      = 3600,
   secs    = 0,
 
-  update = function (int)
-    local delta
-
-    delta = int - bar.weather.secs
-
-    if delta <= 0 then
-      bar.weather.cur = bar.func.getprog(bar.weather.w_qstr)
-      bar.weather.secs = 0
-    end
-
-    bar.weather.secs = bar.weather.secs + n
-
+  update = function ()
+    bar.weather.cur = bar.func.getprog(bar.weather.w_qstr)
   end,
 
   init = function ()
@@ -462,9 +429,16 @@ bar["weather"] = {
     local bc      = bar.weather.bgc
     local w_str   = string.format("%%{A:%s:}%s%%{A}", action, bar.weather.cur)
     local sep     = bar.weather.sep
-    bar.weather.update(bar.weather.iv)
+    local delta   = bar.weather.iv - bar.weather.secs
 
-    return string.format("%s%s  %s  %s", bc, c1, w_str, sep)
+    if delta <= 0 then
+      bar.weather.update()
+      bar.weather.secs = 0
+    end
+
+    bar.weather.secs = bar.weather.secs + bar.timer
+
+    return string.format("%s%s %s %s", bc, c1, w_str, sep)
 
   end
 }
@@ -483,6 +457,68 @@ bar["window"] = {
   end
 }
 
+bar["volume"] = {
+  fgc1      = bar.colors.fgc1,
+  v_get_str = "pactl get-sink-volume @DEFAULT_SINK@ | cut -d ' ' -f 3",
+  v_set_str = "pactl set-sink-volume @DEFAULT_SINK@ ",
+  cur_vol   = 0,
+  prev_vol  = 0,
+  vol_up    = 0,
+  vol_down  = 0,
+  max_vol   = 65536,
+  vol_perc  = 0,
+  step      = 1310,
+  icon      = bar.symbols.vol,
+
+  update = function ()
+    bar.volume.cur_vol  = bar.func.getprog(bar.volume.v_get_str)
+
+    if bar.volume.cur_vol ~= bar.volume.prev_vol then
+      bar.volume.vol_perc = 100 * bar.volume.cur_vol // bar.volume.max_vol
+      bar.volume.prev_vol = bar.volume.cur_vol
+
+      if bar.volume.cur_vol + bar.volume.step <= bar.volume.max_vol then
+        bar.volume.vol_up   = bar.volume.cur_vol + bar.volume.step
+      end
+
+      if bar.volume.cur_vol - bar.volume.step >= 0 then
+        bar.volume.vol_down = bar.volume.cur_vol - bar.volume.step
+      end
+    end
+
+  end,
+
+  init = function()
+    bar.volume.cur_vol  = bar.func.getprog(bar.volume.v_get_str)
+    bar.volume.prev_vol = bar.volume.cur_vol
+    bar.volume.vol_perc = 100 * bar.volume.cur_vol // bar.volume.max_vol
+
+    if bar.volume.cur_vol + bar.volume.step <= bar.volume.max_vol then
+      bar.volume.vol_up   = bar.volume.cur_vol + bar.volume.step
+    end
+
+    if bar.volume.cur_vol - bar.volume.step >= 0 then
+      bar.volume.vol_down = bar.volume.cur_vol - bar.volume.step
+    end
+
+  end,
+
+  show = function()
+    local symbol  = bar.volume.icon
+    local c1      = bar.volume.fgc1
+    local percent = bar.volume.vol_perc
+    local action  = "pavucontrol"
+    local up      = tostring(bar.volume.vol_up)
+    local down    = tostring(bar.volume.vol_down)
+    local inc     = bar.volume.v_set_str .. up
+    local dec     = bar.volume.v_set_str .. down
+
+    bar.volume.update()
+
+    return string.format("%s%s %%{A1:%s:}%%{A4:%s:}%%{A5:%s:}%s%%%%{A}%%{A}%%{A}", c1, symbol, action, inc, dec, percent)
+  end,
+}
+
 bar.init = function ()
   bar.tmp.init()
   bar.net.init()
@@ -490,6 +526,7 @@ bar.init = function ()
   bar.load.init()
   bar.weather.init()
   bar.date.init()
+  bar.volume.init()
 end
 
 bar.show = function ()
@@ -499,59 +536,8 @@ bar.show = function ()
   local ml = "%{O20}"
   local mr = "%{O20}"
 
-  print(string.format("%s%s%s    %s    %s  %s  %s  %s  %s  %s", fl, bar.date.show(), bar.weather.show(), bar.window.show(), fr, bar.tmp.show(), bar.fan.show(), bar.load.show(), bar.net.show(), bar.colors.bgstop))
+  return string.format("%s%s%s%s%s%s%s%s%s%s", fl, bar.date.show(), bar.weather.show(), bar.volume.show(), fr, bar.tmp.show(), bar.fan.show(), bar.load.show(), bar.net.show(), bar.colors.bgstop)
 
 end
 
--- ************* Overwriting defaults *************
-
-local mybar = bar
-mybar.colors.bgc5 = "%{B#222332}"
-mybar.colors.sbg5 = "%{B#222332}"
-mybar.colors.sfg5 = "%{F#222332}"
-mybar.colors.bgc1 = "%{B#2d3246}"
-mybar.colors.sbg1 = "%{B#2d3246}"
-mybar.colors.sfg1 = "%{F#2d3246}"
-
--- mybar.date.fgc1   = mybar.colors.fgc1
-mybar.date.bgc    = mybar.colors.bgc5
-mybar.date.sfg    = mybar.colors.sfg5
-mybar.date.sbg    = mybar.colors.bgc1
-mybar.tmp.bgc     = mybar.colors.bgc1
-mybar.tmp.sfg     = mybar.colors.sfg1
-mybar.tmp.sbg     = mybar.colors.sbg3
-mybar.tmp.bgc     = mybar.colors.bgc1
-mybar.tmp.sfg     = mybar.colors.sfg1
-mybar.weather.sbg = mybar.colors.sbg3
-mybar.weather.sfg = mybar.colors.sfg1
-mybar.weather.bgc = mybar.colors.bgc1
-mybar.net.bgc     = mybar.colors.bgc5
-mybar.net.sfg     = mybar.colors.sfg5
-mybar.net.sbg     = mybar.colors.sbg1
-mybar.fan.bgc     = mybar.colors.bgc5
-mybar.fan.sfg     = mybar.colors.sfg5
-mybar.fan.sbg     = mybar.colors.sbg1
-mybar.load.bgc    = mybar.colors.bgc1
-mybar.load.sfg    = mybar.colors.sfg1
-mybar.load.sbg    = mybar.colors.sbg5
-mybar.load.iv     = 2
-
---[[
-for k, v in pairs(mybar) do
-  if type(v) == "table" then
-    for key, val in pairs(v) do
-      if key == "bgc" then
-        mybar[k][key] = "%{B#ffffff}"
-      end
-    end
-  end
-end
-]]
-
-mybar.init()
-
-while true do
-  mybar.show()
-  -- print(string.format("DEBUG: %s", mybar.load.secs))
-  sleep(n)
-end
+return bar
