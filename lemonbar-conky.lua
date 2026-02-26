@@ -385,7 +385,7 @@ bar["date"] = {
     local bc      = bar.date.bgc
     local c1      = bar.date.fgc1
     local sep     = bar.date.sep
-    return string.format("%s%s %%{A:%s:}%s%%{A} %s", bc, c1, action, bar.date.getdate(), sep)
+    return string.format("%%{T4}%s%s %%{A:%s:}%s%%{A} %%{T-}%s", bc, c1, action, bar.date.getdate(), sep)
   end
 
 }
@@ -549,8 +549,9 @@ mybar.colors.sbg1 = "%{B#1a1b26}"
 mybar.colors.sfg1 = "%{F#1a1b26}"
 
 -- mybar.date.fgc1   = mybar.colors.fgc1
-mybar.date.bgc    = mybar.colors.bgc5
-mybar.date.sfg    = mybar.colors.sfg5
+mybar.date.bgc    = "%{B#1a1b26}"
+mybar.date.fgc1   = "%{F#7aa5f5}"
+mybar.date.sfg    = "%{F#1a1b26}"
 mybar.date.sbg    = mybar.colors.sbg5
 mybar.tmp.bgc     = mybar.colors.bgc5
 mybar.tmp.sfg     = mybar.colors.sfg5
@@ -568,6 +569,8 @@ mybar.load.bgc    = mybar.colors.bgc1
 mybar.load.sfg    = mybar.colors.sfg1
 mybar.load.sbg    = mybar.colors.sbg1
 mybar.load.iv     = 2
+mybar.seperators.tal = ""
+mybar.seperators.tar = ""
 
 -- ************* Conky hooks **************
 
