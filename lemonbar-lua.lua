@@ -3,6 +3,7 @@ package.path = package.path .. ";/home/js/.local/share/modules/lua/?.lua"
 
 local mybar = require("lemonbar")
 local posix = require("posix")
+-- local socket = require("socket")
 local sleep = posix.sleep
 local n     = 1
 
