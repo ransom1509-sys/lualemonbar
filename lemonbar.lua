@@ -10,10 +10,11 @@ TODO: Movef format codes to bar["formats"]
 -- local sleep = posix.sleep
 local bar = {}
 -- bar = {"func", "colors", "net", "tmp", "fan", "load"}
-bar.timer = 1
+bar["settings"] = {
+  timer = 1
+}
 
 bar["colors"] = {
-  panelbg   = "%{B#ffffff}",
   fgc1      = "%{F#b6c0e9}",
   fgc2      = "%{F#826bad}",
   fgc3      = "%{F#7aa2f7}",
@@ -42,8 +43,8 @@ bar["colors"] = {
 }
 
 bar["seperators"] = {
-  tal = "",
-  tar = "",
+  tal = "",
+  tar = "",
 }
 
 bar["symbols"] = {
@@ -106,12 +107,12 @@ bar["net"] = {
   update = function()
       --   Calculate tx in KiB/s
     bar.net.rx_cur  = bar.func.getval(bar.net.rx_qstr)
-    bar.net.rx_rate = string.format("%.1f", ((bar.net.rx_cur - bar.net.rx_last) / 1024) / bar.timer)
+    bar.net.rx_rate = string.format("%.1f", ((bar.net.rx_cur - bar.net.rx_last) / 1024) / bar.settings.timer)
     bar.net.rx_last = bar.net.rx_cur
 
     --   Calculate tx in KiB/s
     bar.net.tx_cur  = bar.func.getval(bar.net.tx_qstr)
-    bar.net.tx_rate = string.format("%.1f", ((bar.net.tx_cur - bar.net.tx_last) / 1024) / bar.timer)
+    bar.net.tx_rate = string.format("%.1f", ((bar.net.tx_cur - bar.net.tx_last) / 1024) / bar.settings.timer)
     bar.net.tx_last = bar.net.tx_cur
 
     --  Get connection status
@@ -137,7 +138,7 @@ bar["net"] = {
       bar.net.update()
       bar.net.secs = 0
     else
-      bar.net.secs = bar.net.secs + bar.timer
+      bar.net.secs = bar.net.secs + bar.settings.timer
     end
 
     rxstr = bar.net.rx_rate
@@ -209,19 +210,22 @@ bar["tmp"] = {
   end,
 
   show = function ()
+    local sf        = bar.fan.sfg
+    local sb        = bar.fan.sbg
     local c1      = bar.tmp.fgc1
     local c2      = bar.tmp.fgc2
     local bc      = bar.tmp.bgc
     local bs      = bar.colors.bgstop
     local icon    = bar.symbols.temp
-    local sep     = bar.tmp.sep
+    local symbol  = bar.seperators.tar
+    local sep     = bar.func.seperator(symbol, sf, sb, 3 )
     local delta   = bar.tmp.iv - bar.tmp.secs
 
     if delta <= 0 then
       bar.tmp.update()
       bar.tmp.secs    = 0
     else
-      bar.tmp.secs = bar.tmp.secs + bar.timer
+      bar.tmp.secs = bar.tmp.secs + bar.settings.timer
     end
 
     return string.format("%s%s%s%s  %s%s  %s  %s", sep, bc, c2, icon, c1, bar.tmp.ct_cur, bar.tmp.st_cur, bar.tmp.gt_cur, bs)
@@ -270,7 +274,7 @@ bar["fan"] = {
       bar.fan.update()
       bar.fan.secs    = 0
     else
-      bar.fan.secs = bar.fan.secs + bar.timer
+      bar.fan.secs = bar.fan.secs + bar.settings.timer
     end
 
     return string.format("%s%s%s  %s  %s%4d  %4d ", sep, bc, c2, icon, c1, bar.fan.cf_cur, bar.fan.sf_cur)
@@ -344,7 +348,7 @@ bar["load"] = {
       bar.load.update()
       bar.load.secs = 0
     else
-      bar.load.secs = bar.load.secs + bar.timer
+      bar.load.secs = bar.load.secs + bar.settings.timer
     end
 
     return string.format("%s%s%s %s %s%3d%% ", sep, bc, c2, icon, c1, bar.load.cpu_load)
@@ -367,9 +371,9 @@ bar["date"] = {
   sfg     = bar.colors.sfg1,
   sbg     = bar.colors.sbg1,
   sep     = bar.seperators.tal,
+  d_fmt   = 'date +"%a %d:%m:Y %H.%M"',
   getdate = function ()
-    local d = bar.func.getprog('date +"%a %d.%m.%Y %H:%M"')
-    return d
+    return bar.func.getprog(bar.date.d_fmt)
   end,
 
   init = function ()
@@ -400,7 +404,7 @@ bar["weather"] = {
   sbg     = bar.colors.sbg3,
   sep     = bar.seperators.tal,
   icon    = "",
-  w_qstr  = 'ansiweather | cut -d ":" -f 2',
+  w_qstr  = "ansiweather | cut -d ':' -f 2",
   cur     = "",
   iv      = 3600,
   secs    = 0,
@@ -421,7 +425,7 @@ bar["weather"] = {
   show = function ()
     -- local action  = 'notify-send Wetter "$(ansiweather -f 3)" &'
     -- local action  = 'zenity --info --text="$(ansiweather -f 3)" &'
-    local action  = 'kitty --name "wetter" --title "wetter" -o font_size=10 wetter.sh &'
+    local action  = "kitty --name 'wetter' --title 'wetter' -o font_size=10 wetter.sh &"
     -- local action  = "curl wttr.in/Berlin_lang=de.png | display"
     local c1      = bar.weather.fgc1
     local bc      = bar.weather.bgc
@@ -433,7 +437,7 @@ bar["weather"] = {
       bar.weather.update()
       bar.weather.secs = 0
     else
-      bar.weather.secs = bar.weather.secs + bar.timer
+      bar.weather.secs = bar.weather.secs + bar.settings.timer
     end
 
     return string.format("%s%s %s %s", bc, c1, w_str, sep)
