@@ -14,7 +14,8 @@ local lemonbar = {}
     local bar = {}
     -- bar = {"func", "colors", "net", "tmp", "fan", "load"}
     bar["settings"] = {
-      timer = 1
+      timer = 1,
+      init  = "/home/js/.config/lualemonbar/",
     }
 
     bar["colors"] = {
@@ -81,7 +82,44 @@ local lemonbar = {}
         local stop = bar.colors.bgstop .. bar.colors.fgstop
         local sepstr = stop .. fg .. bg .. "%{" .. "T" .. index .. "}" .. sep .. stop
         return sepstr
+      end,
+
+      ini2lua = function ()
+        local section
+        local prev
+        local indent  = "  "
+        local inifile = bar.settings.init .. "config.ini"
+        local luafile = bar.settings.init .. "config.lua"
+        local of      = assert(io.open(luafile, "w"))
+        local file    = inifile
+
+        for line in io.lines(file) do
+          if string.find(line, "^%[") then
+            section = string.match(line,"%[(.-)%]")
+            if prev ~= section and prev ~= nil then
+              of:write("}\n")
+            end
+            of:write(section .. " = {\n")
+            prev = section
+          else
+            of:write(indent .. line .. ",\n")
+          end
+        end
+        of:write("}")
+        of:close()
+      end,
+
+      mergeconfig = function(dst, src)
+        for k, v in pairs(src) do
+          if type(v) == "table" and type(dst[k] or false) == "table" then
+              bar.func.mergeconfig(dst[k], v)
+          else
+              dst[k] = v
+          end
+        end
+        return dst
       end
+
     }
 
     bar["net"] = {
@@ -525,6 +563,7 @@ local lemonbar = {}
     }
 
     bar.init = function ()
+      bar.func.ini2lua()
       bar.tmp.init()
       bar.net.init()
       bar.fan.init()
@@ -546,10 +585,19 @@ local lemonbar = {}
     end
 
     return bar
+
   end
 
   function lemonbar.init(bar)
+    local conf = {}
     bar.init()
+    local f, err = loadfile(bar.settings.init .. "config.lua", "t", conf )
+    if f then
+      f()
+    end
+
+    bar.func.mergeconfig(bar, conf)
+
   end
 
   function lemonbar.show(bar)
