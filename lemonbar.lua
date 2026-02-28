@@ -374,7 +374,7 @@ local lemonbar = {}
       sfg     = bar.colors.sfg1,
       sbg     = bar.colors.sbg1,
       sep     = bar.seperators.tal,
-      d_fmt   = 'date +"%a %d:%m:Y %H.%M"',
+      d_fmt   = "date +'%a %d:%m:Y %H.%M'",
       getdate = function ()
         return bar.func.getprog(bar.date.d_fmt)
       end,
