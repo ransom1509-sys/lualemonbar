@@ -1,7 +1,7 @@
 package.path = package.path .. ";/home/js/.local/share/modules/lua/?.lua"
-package.loaded["lemonbar"] = nil
 
-local mybar = require("lemonbar")
+local lemonbar = require("lemonbar")
+local mybar = lemonbar.setup()
 
 -- ************ Overwriting defaulta ************
 mybar.colors.bgc5 = "%{B#1a1b26}"
@@ -31,13 +31,12 @@ mybar.load.sbg    = mybar.colors.sbg1
 mybar.load.iv     = 2
 mybar.seperators.tal = ""
 mybar.seperators.tar = ""
-
 -- ************* Conky hooks **************
 
 function conky_init()
-  mybar.init()
+  lemonbar.init(mybar)
 end
 
 function conky_main()
-  print(mybar.show())
+  print(lemonbar.show(mybar))
 end
