@@ -126,9 +126,9 @@ local lemonbar = {}
       mergetables = function(dst, src)
         for k, v in pairs(src) do
           if type(v) == "table" and type(dst[k] or false) == "table" then
-              bar.func.mergetables(dst[k], v)
+            bar.func.mergetables(dst[k], v)
           else
-              dst[k] = v
+            dst[k] = v
           end
         end
         return dst
@@ -658,6 +658,8 @@ local lemonbar = {}
       bar.weather.init()
       bar.date.init()
       bar.volume.init()
+      bar.mail.init()
+      bar.connect.init()
     end
 
     bar.show = function ()
