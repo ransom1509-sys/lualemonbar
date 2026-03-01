@@ -9,13 +9,14 @@ TODO: Movef format codes to bar["formats"]
 -- local posix = require("posix")
 -- local sleep = posix.sleep
 local lemonbar = {}
+  local module_table = {}
 
   function lemonbar.setup()
     local bar = {}
     -- bar = {"func", "colors", "net", "tmp", "fan", "load"}
     bar["settings"] = {
-      timer = 1,
-      init  = os.getenv("HOME") .. "/.config/lualemonbar/",
+      timer   = 1,
+      init    = os.getenv("HOME") .. "/.config/lualemonbar/",
     }
 
     bar["colors"] = {
@@ -356,7 +357,7 @@ local lemonbar = {}
           bar.tmp.secs = bar.tmp.secs + bar.settings.timer
         end
 
-        return string.format("%s%s%s%s  %s%s  %s  %s", sep, bc, c2, icon, c1, bar.tmp.ct_cur, bar.tmp.st_cur, bar.tmp.gt_cur, bs)
+        return string.format("           %s%s%s%s  %s%s  %s  %s", sep, bc, c2, icon, c1, bar.tmp.ct_cur, bar.tmp.st_cur, bar.tmp.gt_cur, bs)
       end
     }
 
@@ -650,16 +651,36 @@ local lemonbar = {}
     }
 
     bar.init = function ()
+
+      local conf = {}
+
       bar.func.ini2lua()
-      bar.tmp.init()
-      bar.net.init()
-      bar.fan.init()
-      bar.load.init()
-      bar.weather.init()
-      bar.date.init()
-      bar.volume.init()
-      bar.mail.init()
-      bar.connect.init()
+      local f, err = loadfile(bar.settings.init .. "config.lua", "t", conf )
+      if f then
+        f()
+      end
+
+      bar.func.mergetables(bar, conf)
+
+      -- module_table = {}
+
+      for w in string.gmatch(bar.settings.modules, "%S+") do
+        table.insert(module_table, w)
+      end
+
+      for key, val in pairs(module_table) do
+        bar[val].init()
+      end
+
+      -- bar.tmp.init()
+      -- bar.net.init()
+      -- bar.fan.init()
+      -- bar.load.init()
+      -- bar.weather.init()
+      -- bar.date.init()
+      -- bar.volume.init()
+      -- bar.mail.init()
+      -- bar.connect.init()
     end
 
     bar.show = function ()
@@ -668,8 +689,15 @@ local lemonbar = {}
       local fc = "%{c}"
       local ml = "%{O20}"
       local mr = "%{O20}"
+      local show = ""
 
-      return string.format("%s%s%s%s%s%s%s%s%s%s%s%s", fl, bar.date.show(), bar.weather.show(), bar.volume.show(), fr, bar.tmp.show(), bar.fan.show(), bar.load.show(), bar.net.show(), bar.mail.show(), bar.connect.show(), bar.colors.bgstop)
+      for key, val in pairs(module_table) do
+        show = show .. bar[val].show()
+      end
+
+      return show
+
+      -- return string.format("%s%s%s%s%s%s%s%s%s%s%s%s", fl, bar.date.show(), bar.weather.show(), bar.volume.show(), fr, bar.tmp.show(), bar.fan.show(), bar.load.show(), bar.net.show(), bar.mail.show(), bar.connect.show(), bar.colors.bgstop)
 
     end
 
@@ -678,14 +706,7 @@ local lemonbar = {}
   end
 
   function lemonbar.init(bar)
-    local conf = {}
     bar.init()
-    local f, err = loadfile(bar.settings.init .. "config.lua", "t", conf )
-    if f then
-      f()
-    end
-
-    bar.func.mergetables(bar, conf)
 
   end
 
