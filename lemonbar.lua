@@ -15,7 +15,7 @@ local lemonbar = {}
     -- bar = {"func", "colors", "net", "tmp", "fan", "load"}
     bar["settings"] = {
       timer = 1,
-      init  = "/home/js/.config/lualemonbar/",
+      init  = os.getenv("HOME") .. "/.config/lualemonbar/",
     }
 
     bar["colors"] = {
@@ -84,6 +84,17 @@ local lemonbar = {}
         return sepstr
       end,
 
+      file_exists = function(filename)
+        local file = io.open(filename, "r")
+        local exist = false
+        if file then
+          file:close()
+          exist = true
+        end
+        return exist
+
+      end,
+
       ini2lua = function ()
         local section
         local prev
@@ -91,9 +102,12 @@ local lemonbar = {}
         local inifile = bar.settings.init .. "config.ini"
         local luafile = bar.settings.init .. "config.lua"
         local of      = assert(io.open(luafile, "w"))
-        local file    = inifile
 
-        for line in io.lines(file) do
+        if bar.func.file_exists(inifile) ~= true then
+          return false
+        end
+
+        for line in io.lines(inifile) do
           if string.find(line, "^%[") then
             section = string.match(line,"%[(.-)%]")
             if prev ~= section and prev ~= nil then
@@ -109,10 +123,10 @@ local lemonbar = {}
         of:close()
       end,
 
-      mergeconfig = function(dst, src)
+      mergetables = function(dst, src)
         for k, v in pairs(src) do
           if type(v) == "table" and type(dst[k] or false) == "table" then
-              bar.func.mergeconfig(dst[k], v)
+              bar.func.mergetables(dst[k], v)
           else
               dst[k] = v
           end
@@ -120,6 +134,56 @@ local lemonbar = {}
         return dst
       end
 
+    }
+
+    bar["connect"] = {
+      fgc1    = bar.colors.fgc1,
+      fgc2    = bar.colors.connected,
+      bgc     = bar.colors.bgc1,
+      sfg     = bar.colors.sfg1,
+      sbg     = bar.colors.sbg2,
+      sep     = bar.seperators.tal,
+      icon    = bar.symbols.con,
+      st_qstr = "nmcli -f STATE -t device status",
+      status  = "",
+      secs    = 0,
+      iv      = 2,
+
+      update = function()
+        --  Get connection status
+        bar.connect.status = bar.func.getprog(bar.connect.st_qstr)
+      end,
+
+      init = function()
+        --  Get connection status
+        bar.connect.status = bar.func.getprog(bar.connect.st_qstr)
+      end,
+
+      show = function ()
+        local c1    = bar.connect.fgc1
+        local c2    = bar.connect.fgc2
+        local ac    = bar.connect.fgc1
+        local bc    = bar.connect.bgc
+        local con   = bar.connect.icon
+        local sep   = bar.func.seperator(bar.connect.sep, bar.connect.sfg, bar.connect.sbg, 3)
+        local delta = bar.connect.iv - bar.connect.secs
+
+        if delta <= 0 then
+          bar.connect.update()
+          bar.connect.secs = 0
+        else
+          bar.connect.secs = bar.connect.secs + 1
+        end
+
+        if bar.connect.status == "connected" then
+          ac = bar.connect.fgc2
+        else
+          ac = bar.connect.fgc1
+        end
+
+        return string.format("%s%s%s%s ", sep, bc, ac, con)
+
+      end,
     }
 
     bar["net"] = {
@@ -136,12 +200,8 @@ local lemonbar = {}
       tx_last = 0,
       rx_qstr = "/sys/class/net/eth1/statistics/rx_bytes",
       tx_qstr = "/sys/class/net/eth1/statistics/tx_bytes",
-      nm_qstr = "claws-mail --status | cut -d ' ' -f 2",
-      st_qstr = "nmcli -f STATE -t device status",
       rx_rate = 0,
       tx_rate = 0,
-      status  = "",
-      mails   = 0,
       secs    = 0,
       iv      = 2,
 
@@ -156,21 +216,14 @@ local lemonbar = {}
         bar.net.tx_rate = string.format("%.1f", ((bar.net.tx_cur - bar.net.tx_last) / 1024) / bar.settings.timer)
         bar.net.tx_last = bar.net.tx_cur
 
-        --  Get connection status
-        bar.net.status = bar.func.getprog(bar.net.st_qstr)
-
-        --   New mails?
-        bar.net.mails = tonumber(bar.func.getprog(bar.net.nm_qstr))
-
       end,
 
       show = function ()
-        local mc, ac, c1, c2, rxstr, txstr
+        local ac, c1, c2, rxstr, txstr
         c1            = bar.net.fgc1
         c2            = bar.net.fgc2
         local icon    = bar.net.icon
         local con     = bar.symbols.con
-        local mail    = bar.symbols.mail
         local bc      = bar.net.bgc
         local sep     = bar.net.sep
         local delta   = bar.net.iv - bar.net.secs
@@ -185,19 +238,7 @@ local lemonbar = {}
         rxstr = bar.net.rx_rate
         txstr = bar.net.tx_rate
 
-        if bar.net.status == "connected" then
-          ac = bar.colors.connected
-        else
-          ac = bar.colors.fgc1
-        end
-
-        if bar.net.mails ~= nil and bar.net.mails > 0 then
-          mc = bar.colors.unread
-        else
-          mc = bar.colors.fgc1
-        end
-
-        return string.format("%s%s%s %s  %s%-7.1f %-7.1f %s%s %s%s ", sep, bc, c2, icon, c1, rxstr, txstr, mc, mail, ac, con)
+        return string.format("%s%s%s %s  %s%-7.1f %-7.1f ", sep, bc, c2, icon, c1, rxstr, txstr)
 
       end,
 
@@ -210,10 +251,56 @@ local lemonbar = {}
         bar.net.sep     = sep
         bar.net.rx_last = bar.func.getval(bar.net.rx_qstr)
         bar.net.tx_last = bar.func.getval(bar.net.tx_qstr)
-        bar.net.status = bar.func.getprog(bar.net.st_qstr)
-        bar.net.mails = tonumber(bar.func.getprog(bar.net.nm_qstr))
 
-      end
+      end,
+    }
+
+    bar["mail"] = {
+      fgc1    = bar.colors.fgc1,
+      fgc2    = bar.colors.unread,
+      bgc     = bar.colors.bgc1,
+      sfg     = bar.colors.sfg1,
+      sbg     = bar.colors.sbg2,
+      sep     = bar.seperators.tal,
+      icon    = bar.symbols.mail,
+      nm_qstr = "claws-mail --status | cut -d ' ' -f 2",
+      secs    = 0,
+      iv      = 2,
+
+      update = function ()
+        --   New mails?
+        bar.mail.mails = tonumber(bar.func.getprog(bar.mail.nm_qstr))
+      end,
+
+      init = function ()
+        bar.mail.mails = tonumber(bar.func.getprog(bar.mail.nm_qstr))
+      end,
+
+      show = function ()
+        local c1    = bar.mail.fgc1
+        local c2    = bar.mail.fgc2
+        local mc    = bar.mail.fgc1
+        local bc    = bar.mail.bgc
+        local mail  = bar.mail.icon
+        local sep   = bar.func.seperator(bar.mail.sep, bar.mail.sfg, bar.mail.sbg, 3)
+        local delta = bar.mail.iv - bar.mail.secs
+
+        if delta <= 0 then
+          bar.mail.update()
+          bar.mail.secs = 0
+        else
+          bar.mail.secs = bar.mail.secs + 1
+        end
+
+        if bar.mail.mails ~= nil and bar.mail.mails > 0 then
+          mc = c2
+        else
+          mc = c1
+        end
+
+        return string.format(" %s%s%s%s ", sep, bc, mc, mail)
+
+      end,
     }
 
     bar["tmp"] = {
@@ -580,7 +667,7 @@ local lemonbar = {}
       local ml = "%{O20}"
       local mr = "%{O20}"
 
-      return string.format("%s%s%s%s%s%s%s%s%s%s", fl, bar.date.show(), bar.weather.show(), bar.volume.show(), fr, bar.tmp.show(), bar.fan.show(), bar.load.show(), bar.net.show(), bar.colors.bgstop)
+      return string.format("%s%s%s%s%s%s%s%s%s%s%s%s", fl, bar.date.show(), bar.weather.show(), bar.volume.show(), fr, bar.tmp.show(), bar.fan.show(), bar.load.show(), bar.net.show(), bar.mail.show(), bar.connect.show(), bar.colors.bgstop)
 
     end
 
@@ -596,7 +683,7 @@ local lemonbar = {}
       f()
     end
 
-    bar.func.mergeconfig(bar, conf)
+    bar.func.mergetables(bar, conf)
 
   end
 
