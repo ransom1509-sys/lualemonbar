@@ -64,7 +64,15 @@ local lemonbar = {}
       vol  = "",
     }
 
-    bar["func"] = {
+    bar["fmt"] = {
+      fl = "%{l}",
+      fr = "%{r}",
+      fc = "%{c}",
+      ml = "%{O20}",
+      mr = "%{O20}",
+    }
+
+    bar["tools"] = {
       getval = function(filename)
         local fp    = assert(io.open(filename, "r"))
         local line  = fp:read("*line")
@@ -104,7 +112,7 @@ local lemonbar = {}
         local luafile = bar.settings.init .. "config.lua"
         local of      = assert(io.open(luafile, "w"))
 
-        if bar.func.file_exists(inifile) ~= true then
+        if bar.tools.file_exists(inifile) ~= true then
           return false
         end
 
@@ -127,7 +135,7 @@ local lemonbar = {}
       mergetables = function(dst, src)
         for k, v in pairs(src) do
           if type(v) == "table" and type(dst[k] or false) == "table" then
-            bar.func.mergetables(dst[k], v)
+            bar.tools.mergetables(dst[k], v)
           else
             dst[k] = v
           end
@@ -152,12 +160,12 @@ local lemonbar = {}
 
       update = function()
         --  Get connection status
-        bar.connect.status = bar.func.getprog(bar.connect.st_qstr)
+        bar.connect.status = bar.tools.getprog(bar.connect.st_qstr)
       end,
 
       init = function()
         --  Get connection status
-        bar.connect.status = bar.func.getprog(bar.connect.st_qstr)
+        bar.connect.status = bar.tools.getprog(bar.connect.st_qstr)
       end,
 
       show = function ()
@@ -166,7 +174,7 @@ local lemonbar = {}
         local ac    = bar.connect.fgc1
         local bc    = bar.connect.bgc
         local con   = bar.connect.icon
-        local sep   = bar.func.seperator(bar.connect.sep, bar.connect.sfg, bar.connect.sbg, 3)
+        local sep   = bar.tools.seperator(bar.connect.sep, bar.connect.sfg, bar.connect.sbg, 3)
         local delta = bar.connect.iv - bar.connect.secs
 
         if delta <= 0 then
@@ -208,12 +216,12 @@ local lemonbar = {}
 
       update = function()
           --   Calculate tx in KiB/s
-        bar.net.rx_cur  = bar.func.getval(bar.net.rx_qstr)
+        bar.net.rx_cur  = bar.tools.getval(bar.net.rx_qstr)
         bar.net.rx_rate = string.format("%.1f", ((bar.net.rx_cur - bar.net.rx_last) / 1024) / bar.settings.timer)
         bar.net.rx_last = bar.net.rx_cur
 
         --   Calculate tx in KiB/s
-        bar.net.tx_cur  = bar.func.getval(bar.net.tx_qstr)
+        bar.net.tx_cur  = bar.tools.getval(bar.net.tx_qstr)
         bar.net.tx_rate = string.format("%.1f", ((bar.net.tx_cur - bar.net.tx_last) / 1024) / bar.settings.timer)
         bar.net.tx_last = bar.net.tx_cur
 
@@ -227,6 +235,7 @@ local lemonbar = {}
         local con     = bar.symbols.con
         local bc      = bar.net.bgc
         local sep     = bar.net.sep
+        local fmt     = bar.fmt.fr
         local delta   = bar.net.iv - bar.net.secs
 
         if delta <= 0 then
@@ -239,7 +248,7 @@ local lemonbar = {}
         rxstr = bar.net.rx_rate
         txstr = bar.net.tx_rate
 
-        return string.format("%s%s%s %s  %s%-7.1f %-7.1f ", sep, bc, c2, icon, c1, rxstr, txstr)
+        return string.format("%s%s%s%s %s  %s%-7.1f %-7.1f ", fmt, sep, bc, c2, icon, c1, rxstr, txstr)
 
       end,
 
@@ -248,10 +257,10 @@ local lemonbar = {}
         local sf        = bar.net.sfg
         local sb        = bar.net.sbg
         local symbol    = bar.seperators.tar
-        local sep       = bar.func.seperator(symbol, sf, sb, 3 )
+        local sep       = bar.tools.seperator(symbol, sf, sb, 3 )
         bar.net.sep     = sep
-        bar.net.rx_last = bar.func.getval(bar.net.rx_qstr)
-        bar.net.tx_last = bar.func.getval(bar.net.tx_qstr)
+        bar.net.rx_last = bar.tools.getval(bar.net.rx_qstr)
+        bar.net.tx_last = bar.tools.getval(bar.net.tx_qstr)
 
       end,
     }
@@ -270,11 +279,11 @@ local lemonbar = {}
 
       update = function ()
         --   New mails?
-        bar.mail.mails = tonumber(bar.func.getprog(bar.mail.nm_qstr))
+        bar.mail.mails = tonumber(bar.tools.getprog(bar.mail.nm_qstr))
       end,
 
       init = function ()
-        bar.mail.mails = tonumber(bar.func.getprog(bar.mail.nm_qstr))
+        bar.mail.mails = tonumber(bar.tools.getprog(bar.mail.nm_qstr))
       end,
 
       show = function ()
@@ -283,7 +292,7 @@ local lemonbar = {}
         local mc    = bar.mail.fgc1
         local bc    = bar.mail.bgc
         local mail  = bar.mail.icon
-        local sep   = bar.func.seperator(bar.mail.sep, bar.mail.sfg, bar.mail.sbg, 3)
+        local sep   = bar.tools.seperator(bar.mail.sep, bar.mail.sfg, bar.mail.sbg, 3)
         local delta = bar.mail.iv - bar.mail.secs
 
         if delta <= 0 then
@@ -322,20 +331,20 @@ local lemonbar = {}
       iv      = 5,
 
       update  = function()
-        bar.tmp.ct_cur  = string.sub(bar.func.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
-        bar.tmp.st_cur  = string.sub(bar.func.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
-        bar.tmp.gt_cur  = string.sub(bar.func.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
+        bar.tmp.ct_cur  = string.sub(bar.tools.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
+        bar.tmp.st_cur  = string.sub(bar.tools.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
+        bar.tmp.gt_cur  = string.sub(bar.tools.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
       end,
 
       init = function()
         local sf       = bar.tmp.sfg
         local sb       = bar.tmp.sbg
         local symbol   = bar.seperators.tar
-        local sep      = bar.func.seperator(symbol, sf, sb, 3 )
+        local sep      = bar.tools.seperator(symbol, sf, sb, 3 )
         bar.tmp.sep    = sep
-        bar.tmp.ct_cur = string.sub(bar.func.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
-        bar.tmp.st_cur = string.sub(bar.func.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
-        bar.tmp.gt_cur = string.sub(bar.func.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
+        bar.tmp.ct_cur = string.sub(bar.tools.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
+        bar.tmp.st_cur = string.sub(bar.tools.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
+        bar.tmp.gt_cur = string.sub(bar.tools.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
       end,
 
       show = function ()
@@ -347,7 +356,8 @@ local lemonbar = {}
         local bs      = bar.colors.bgstop
         local icon    = bar.symbols.temp
         local symbol  = bar.seperators.tar
-        local sep     = bar.func.seperator(symbol, sf, sb, 3 )
+        local sep     = bar.tools.seperator(symbol, sf, sb, 3 )
+        local fmt      = bar.fmt.fc
         local delta   = bar.tmp.iv - bar.tmp.secs
 
         if delta <= 0 then
@@ -357,7 +367,7 @@ local lemonbar = {}
           bar.tmp.secs = bar.tmp.secs + bar.settings.timer
         end
 
-        return string.format("           %s%s%s%s  %s%s  %s  %s", sep, bc, c2, icon, c1, bar.tmp.ct_cur, bar.tmp.st_cur, bar.tmp.gt_cur, bs)
+        return string.format("%s%s%s%s%s  %s%s  %s  %s", fmt, sep, bc, c2, icon, c1, bar.tmp.ct_cur, bar.tmp.st_cur, bar.tmp.gt_cur, bs)
       end
     }
 
@@ -377,18 +387,18 @@ local lemonbar = {}
       secs    = 0,
 
       update = function()
-        bar.fan.cf_cur  = bar.func.getval(bar.fan.cf_qstr)
-        bar.fan.sf_cur  = bar.func.getval(bar.fan.sf_qstr)
+        bar.fan.cf_cur  = bar.tools.getval(bar.fan.cf_qstr)
+        bar.fan.sf_cur  = bar.tools.getval(bar.fan.sf_qstr)
       end,
 
       init = function()
         local sf        = bar.fan.sfg
         local sb        = bar.fan.sbg
         local symbol    = bar.seperators.tar
-        local sep       = bar.func.seperator(symbol, sf, sb, 3 )
+        local sep       = bar.tools.seperator(symbol, sf, sb, 3 )
         bar.fan.sep     = sep
-        bar.fan.cf_cur  = bar.func.getval(bar.fan.cf_qstr)
-        bar.fan.sf_cur  = bar.func.getval(bar.fan.sf_qstr)
+        bar.fan.cf_cur  = bar.tools.getval(bar.fan.cf_qstr)
+        bar.fan.sf_cur  = bar.tools.getval(bar.fan.sf_qstr)
       end,
 
       show = function ()
@@ -435,7 +445,7 @@ local lemonbar = {}
         local cpu_usage = 0
 
        -- get cpu stats
-        cpu = bar.func.getval(bar.load.st_qstr)
+        cpu = bar.tools.getval(bar.load.st_qstr)
 
         -- Convert string to table
         for w in string.gmatch(cpu, "[^%s]+") do
@@ -488,7 +498,7 @@ local lemonbar = {}
         local sf      = bar.load.sfg
         local sb      = bar.load.sbg
         local symbol  = bar.seperators.tar
-        local sep     = bar.func.seperator(symbol, sf, sb, 3 )
+        local sep     = bar.tools.seperator(symbol, sf, sb, 3 )
         bar.load.sep  = sep
       end
     }
@@ -502,14 +512,14 @@ local lemonbar = {}
       sep     = bar.seperators.tal,
       d_fmt   = "date +'%a %d:%m:Y %H.%M'",
       getdate = function ()
-        return bar.func.getprog(bar.date.d_fmt)
+        return bar.tools.getprog(bar.date.d_fmt)
       end,
 
       init = function ()
         local sb      = bar.date.sbg
         local sf      = bar.date.sfg
         local symbol  = bar.seperators.tal
-        local sep     = bar.func.seperator(symbol, sf, sb, 3 )
+        local sep     = bar.tools.seperator(symbol, sf, sb, 3 )
         bar.date.sep  = sep
       end,
 
@@ -539,16 +549,16 @@ local lemonbar = {}
       secs    = 0,
 
       update = function ()
-        bar.weather.cur = bar.func.getprog(bar.weather.w_qstr)
+        bar.weather.cur = bar.tools.getprog(bar.weather.w_qstr)
       end,
 
       init = function ()
         local sf        = bar.weather.sfg
         local sb        = bar.weather.sbg
         local symbol    = bar.seperators.tal
-        local sep       = bar.func.seperator(symbol, sf, sb, 3 )
+        local sep       = bar.tools.seperator(symbol, sf, sb, 3 )
         bar.weather.sep = sep
-        bar.weather.cur = bar.func.getprog(bar.weather.w_qstr)
+        bar.weather.cur = bar.tools.getprog(bar.weather.w_qstr)
       end,
 
       show = function ()
@@ -580,7 +590,7 @@ local lemonbar = {}
 
       show = function()
         local c1 = bar.window.fgc1
-        local wname = bar.func.getprog(bar.window.w_str)
+        local wname = bar.tools.getprog(bar.window.w_str)
         if wname ~= nil then
           return string.format("%s%s", c1, wname)
         else return ''
@@ -602,7 +612,7 @@ local lemonbar = {}
       icon      = bar.symbols.vol,
 
       update = function ()
-        bar.volume.cur_vol  = bar.func.getprog(bar.volume.v_get_str)
+        bar.volume.cur_vol  = bar.tools.getprog(bar.volume.v_get_str)
 
         if bar.volume.cur_vol ~= bar.volume.prev_vol then
           bar.volume.vol_perc = 100 * bar.volume.cur_vol // bar.volume.max_vol
@@ -620,7 +630,7 @@ local lemonbar = {}
       end,
 
       init = function()
-        bar.volume.cur_vol  = bar.func.getprog(bar.volume.v_get_str)
+        bar.volume.cur_vol  = bar.tools.getprog(bar.volume.v_get_str)
         bar.volume.prev_vol = bar.volume.cur_vol
         bar.volume.vol_perc = 100 * bar.volume.cur_vol // bar.volume.max_vol
 
@@ -654,13 +664,14 @@ local lemonbar = {}
 
       local conf = {}
 
-      bar.func.ini2lua()
+      bar.tools.ini2lua()
       local f, err = loadfile(bar.settings.init .. "config.lua", "t", conf )
+
       if f then
         f()
       end
 
-      bar.func.mergetables(bar, conf)
+      bar.tools.mergetables(bar, conf)
 
       -- module_table = {}
 
@@ -672,23 +683,9 @@ local lemonbar = {}
         bar[val].init()
       end
 
-      -- bar.tmp.init()
-      -- bar.net.init()
-      -- bar.fan.init()
-      -- bar.load.init()
-      -- bar.weather.init()
-      -- bar.date.init()
-      -- bar.volume.init()
-      -- bar.mail.init()
-      -- bar.connect.init()
     end
 
     bar.show = function ()
-      local fl = "%{l}"
-      local fr = "%{r}"
-      local fc = "%{c}"
-      local ml = "%{O20}"
-      local mr = "%{O20}"
       local show = ""
 
       for key, val in pairs(module_table) do
@@ -707,7 +704,6 @@ local lemonbar = {}
 
   function lemonbar.init(bar)
     bar.init()
-
   end
 
   function lemonbar.show(bar)
