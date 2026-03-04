@@ -157,42 +157,34 @@ local lemonbar = {}
       status  = "",
       secs    = 0,
       iv      = 2,
+      show    = "";
 
-      update = function()
-        --  Get connection status
-        bar.connect.status = bar.tools.getprog(bar.connect.st_qstr)
-      end,
-
-      init = function()
-        --  Get connection status
-        bar.connect.status = bar.tools.getprog(bar.connect.st_qstr)
-      end,
-
-      show = function ()
+      update = coroutine.create(function()
         local c1    = bar.connect.fgc1
         local c2    = bar.connect.fgc2
         local ac    = bar.connect.fgc1
         local bc    = bar.connect.bgc
         local con   = bar.connect.icon
         local sep   = bar.tools.seperator(bar.connect.sep, bar.connect.sfg, bar.connect.sbg, 3)
-        local delta = bar.connect.iv - bar.connect.secs
+        --  Get connection status
+        while true do
+          bar.connect.status = bar.tools.getprog(bar.connect.st_qstr)
+          if bar.connect.status == "connected" then
+            ac = bar.connect.fgc2
+          else
+            ac = bar.connect.fgc1
+          end
 
-        if delta <= 0 then
-          bar.connect.update()
-          bar.connect.secs = 0
-        else
-          bar.connect.secs = bar.connect.secs + 1
+          bar.connect.show = string.format("%s%s%s%s ", sep, bc, ac, con)
+          coroutine.yield()
         end
+      end),
 
-        if bar.connect.status == "connected" then
-          ac = bar.connect.fgc2
-        else
-          ac = bar.connect.fgc1
-        end
-
-        return string.format("%s%s%s%s ", sep, bc, ac, con)
-
+      init = function()
+        --  Get connection status
+        bar.connect.status = bar.tools.getprog(bar.connect.st_qstr)
       end,
+
     }
 
     bar["net"] = {
@@ -213,21 +205,9 @@ local lemonbar = {}
       tx_rate = 0,
       secs    = 0,
       iv      = 2,
+      show    = "",
 
-      update = function()
-          --   Calculate tx in KiB/s
-        bar.net.rx_cur  = bar.tools.getval(bar.net.rx_qstr)
-        bar.net.rx_rate = string.format("%.1f", ((bar.net.rx_cur - bar.net.rx_last) / 1024) / bar.settings.timer)
-        bar.net.rx_last = bar.net.rx_cur
-
-        --   Calculate tx in KiB/s
-        bar.net.tx_cur  = bar.tools.getval(bar.net.tx_qstr)
-        bar.net.tx_rate = string.format("%.1f", ((bar.net.tx_cur - bar.net.tx_last) / 1024) / bar.settings.timer)
-        bar.net.tx_last = bar.net.tx_cur
-
-      end,
-
-      show = function ()
+      update = coroutine.create(function()
         local ac, c1, c2, rxstr, txstr
         c1            = bar.net.fgc1
         c2            = bar.net.fgc2
@@ -236,21 +216,22 @@ local lemonbar = {}
         local bc      = bar.net.bgc
         local sep     = bar.net.sep
         local fmt     = bar.fmt.fr
-        local delta   = bar.net.iv - bar.net.secs
 
-        if delta <= 0 then
-          bar.net.update()
-          bar.net.secs = 0
-        else
-          bar.net.secs = bar.net.secs + bar.settings.timer
+        while true do
+          --   Calculate tx in keyiB/s
+          bar.net.rx_cur  = bar.tools.getval(bar.net.rx_qstr)
+          bar.net.rx_rate = string.format("%.1f", ((bar.net.rx_cur - bar.net.rx_last) / 1024) / bar.settings.timer)
+          bar.net.rx_last = bar.net.rx_cur
+          --   Calculate tx in KiB/s
+          bar.net.tx_cur  = bar.tools.getval(bar.net.tx_qstr)
+          bar.net.tx_rate = string.format("%.1f", ((bar.net.tx_cur - bar.net.tx_last) / 1024) / bar.settings.timer)
+          bar.net.tx_last = bar.net.tx_cur
+          rxstr = bar.net.rx_rate
+          txstr = bar.net.tx_rate
+          bar.net.show = string.format("%s%s%s%s %s  %s%-7.1f %-7.1f ", fmt, sep, bc, c2, icon, c1, rxstr, txstr)
+          coroutine.yield()
         end
-
-        rxstr = bar.net.rx_rate
-        txstr = bar.net.tx_rate
-
-        return string.format("%s%s%s%s %s  %s%-7.1f %-7.1f ", fmt, sep, bc, c2, icon, c1, rxstr, txstr)
-
-      end,
+      end),
 
       init = function ()
         -- Make sure we start with rx = 0 KiB/s
@@ -276,41 +257,33 @@ local lemonbar = {}
       nm_qstr = "claws-mail --status | cut -d ' ' -f 2",
       secs    = 0,
       iv      = 2,
+      show    = "",
 
-      update = function ()
-        --   New mails?
-        bar.mail.mails = tonumber(bar.tools.getprog(bar.mail.nm_qstr))
-      end,
-
-      init = function ()
-        bar.mail.mails = tonumber(bar.tools.getprog(bar.mail.nm_qstr))
-      end,
-
-      show = function ()
+      update = coroutine.create(function ()
         local c1    = bar.mail.fgc1
         local c2    = bar.mail.fgc2
         local mc    = bar.mail.fgc1
         local bc    = bar.mail.bgc
         local mail  = bar.mail.icon
         local sep   = bar.tools.seperator(bar.mail.sep, bar.mail.sfg, bar.mail.sbg, 3)
-        local delta = bar.mail.iv - bar.mail.secs
+        while true do
+          --   New mails?
+          bar.mail.mails = tonumber(bar.tools.getprog(bar.mail.nm_qstr))
+          if bar.mail.mails ~= nil and bar.mail.mails > 0 then
+            mc = c2
+          else
+            mc = c1
+          end
 
-        if delta <= 0 then
-          bar.mail.update()
-          bar.mail.secs = 0
-        else
-          bar.mail.secs = bar.mail.secs + 1
+          bar.mail.show = string.format(" %s%s%s%s ", sep, bc, mc, mail)
+          coroutine.yield()
         end
+      end),
 
-        if bar.mail.mails ~= nil and bar.mail.mails > 0 then
-          mc = c2
-        else
-          mc = c1
-        end
-
-        return string.format(" %s%s%s%s ", sep, bc, mc, mail)
-
+      init = function ()
+        bar.mail.mails = tonumber(bar.tools.getprog(bar.mail.nm_qstr))
       end,
+
     }
 
     bar["tmp"] = {
@@ -329,12 +302,28 @@ local lemonbar = {}
       gt_cur  = '',
       secs    = 0,
       iv      = 5,
+      show    = "",
 
-      update  = function()
-        bar.tmp.ct_cur  = string.sub(bar.tools.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
-        bar.tmp.st_cur  = string.sub(bar.tools.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
-        bar.tmp.gt_cur  = string.sub(bar.tools.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
-      end,
+      update  = coroutine.create(function()
+        local sf        = bar.fan.sfg
+        local sb        = bar.fan.sbg
+        local c1      = bar.tmp.fgc1
+        local c2      = bar.tmp.fgc2
+        local bc      = bar.tmp.bgc
+        local bs      = bar.colors.bgstop
+        local icon    = bar.symbols.temp
+        local symbol  = bar.seperators.tar
+        local sep     = bar.tools.seperator(symbol, sf, sb, 3 )
+        local fmt      = bar.fmt.fc
+
+        while true do
+          bar.tmp.ct_cur  = string.sub(bar.tools.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
+          bar.tmp.st_cur  = string.sub(bar.tools.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
+          bar.tmp.gt_cur  = string.sub(bar.tools.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
+          bar.tmp.show = string.format("%s%s%s%s%s  %s%s  %s  %s", fmt, sep, bc, c2, icon, c1, bar.tmp.ct_cur, bar.tmp.st_cur, bar.tmp.gt_cur, bs)
+        coroutine.yield()
+        end
+      end),
 
       init = function()
         local sf       = bar.tmp.sfg
@@ -347,28 +336,6 @@ local lemonbar = {}
         bar.tmp.gt_cur = string.sub(bar.tools.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
       end,
 
-      show = function ()
-        local sf        = bar.fan.sfg
-        local sb        = bar.fan.sbg
-        local c1      = bar.tmp.fgc1
-        local c2      = bar.tmp.fgc2
-        local bc      = bar.tmp.bgc
-        local bs      = bar.colors.bgstop
-        local icon    = bar.symbols.temp
-        local symbol  = bar.seperators.tar
-        local sep     = bar.tools.seperator(symbol, sf, sb, 3 )
-        local fmt      = bar.fmt.fc
-        local delta   = bar.tmp.iv - bar.tmp.secs
-
-        if delta <= 0 then
-          bar.tmp.update()
-          bar.tmp.secs    = 0
-        else
-          bar.tmp.secs = bar.tmp.secs + bar.settings.timer
-        end
-
-        return string.format("%s%s%s%s%s  %s%s  %s  %s", fmt, sep, bc, c2, icon, c1, bar.tmp.ct_cur, bar.tmp.st_cur, bar.tmp.gt_cur, bs)
-      end
     }
 
     bar["fan"] = {
@@ -385,11 +352,22 @@ local lemonbar = {}
       sf_cur  = 0,
       iv      = 5,
       secs    = 0,
+      show    = "",
 
-      update = function()
-        bar.fan.cf_cur  = bar.tools.getval(bar.fan.cf_qstr)
-        bar.fan.sf_cur  = bar.tools.getval(bar.fan.sf_qstr)
-      end,
+      update = coroutine.create(function()
+        local c1      = bar.fan.fgc1
+        local c2      = bar.fan.fgc2
+        local bc      = bar.fan.bgc
+        local icon    = bar.symbols.fan
+        local sep     = bar.fan.sep
+
+        while true do
+          bar.fan.cf_cur  = bar.tools.getval(bar.fan.cf_qstr)
+          bar.fan.sf_cur  = bar.tools.getval(bar.fan.sf_qstr)
+          bar.fan.show = string.format("%s%s%s  %s  %s%4d  %4d ", sep, bc, c2, icon, c1, bar.fan.cf_cur, bar.fan.sf_cur)
+        coroutine.yield()
+        end
+      end),
 
       init = function()
         local sf        = bar.fan.sfg
@@ -401,23 +379,6 @@ local lemonbar = {}
         bar.fan.sf_cur  = bar.tools.getval(bar.fan.sf_qstr)
       end,
 
-      show = function ()
-        local c1      = bar.fan.fgc1
-        local c2      = bar.fan.fgc2
-        local bc      = bar.fan.bgc
-        local icon    = bar.symbols.fan
-        local sep     = bar.fan.sep
-        local delta   = bar.fan.iv - bar.fan.secs
-
-        if delta <= 0 then
-          bar.fan.update()
-          bar.fan.secs    = 0
-        else
-          bar.fan.secs = bar.fan.secs + bar.settings.timer
-        end
-
-        return string.format("%s%s%s  %s  %s%4d  %4d ", sep, bc, c2, icon, c1, bar.fan.cf_cur, bar.fan.sf_cur)
-      end
     }
 
     bar["load"] = {
@@ -434,65 +395,59 @@ local lemonbar = {}
       cpu_load      = 0,
       iv            = 5,
       secs          = 0,
+      show          = "",
 
-      update = function ()
+      update = coroutine.create(function ()
         local cpu_now   = {}
         local cpu_sum   = 0
         local cpu_delta = 0
         local cpu_idle  = 0
         local cpu_used  = 0
         local cpu
-        local cpu_usage = 0
-
-       -- get cpu stats
-        cpu = bar.tools.getval(bar.load.st_qstr)
-
-        -- Convert string to table
-        for w in string.gmatch(cpu, "[^%s]+") do
-          table.insert(cpu_now, w)
-        end
-
-        -- Sum up all fields, skip first with "cpu" in it
-        for key, val in pairs(cpu_now) do
-          if key > 1 then
-            cpu_sum = cpu_sum + val
-          end
-        end
-
-        -- Calculate cpu usage
-        cpu_delta   = cpu_sum - bar.load.cpu_last_sum
-        cpu_idle    = cpu_now[5] - bar.load.cpu_last
-        cpu_used    = cpu_delta - cpu_idle
-        cpu_usage   = 100 * cpu_used // cpu_delta
-
-        -- Store values for compare, re-initialize vars for next run
-        bar.load.cpu_last     = cpu_now[5]
-        bar.load.cpu_last_sum = cpu_sum
-        -- cpu_now               = {}
-        -- cpu_sum               = 0
-
-        bar.load.cpu_load = cpu_usage
-
-      end,
-
-      show = function ()
         local c1      = bar.load.fgc1
         local c2      = bar.load.fgc2
         local bc      = bar.load.bgc
         local icon    = bar.load.icon
         local sep     = bar.load.sep
-        local delta   = bar.load.iv - bar.load.secs
+        local cpu_usage = 0
 
-        if delta <= 0 then
-          bar.load.update()
-          bar.load.secs = 0
-        else
-          bar.load.secs = bar.load.secs + bar.settings.timer
+        while true do
+          -- get cpu stats
+          cpu_now = {}
+          cpu_sum   = 0
+          cpu_delta = 0
+          cpu_idle  = 0
+          cpu_used  = 0
+
+          cpu = bar.tools.getval(bar.load.st_qstr)
+          -- Convert string to table
+          for w in string.gmatch(cpu, "[^%s]+") do
+            table.insert(cpu_now, w)
+          end
+          -- Sum up all fields, skip first with "cpu" in it
+          for key, val in pairs(cpu_now) do
+            if key > 1 then
+              cpu_sum = cpu_sum + val
+            end
+          end
+          -- Calculate cpu usage
+          cpu_delta   = cpu_sum - bar.load.cpu_last_sum
+          cpu_idle    = cpu_now[5] - bar.load.cpu_last
+          cpu_used    = cpu_delta - cpu_idle
+          cpu_usage   = 100 * cpu_used // cpu_delta
+          -- Store values for compare, re-initialize vars for next run
+          bar.load.cpu_last     = cpu_now[5]
+          bar.load.cpu_last_sum = cpu_sum
+          -- cpu_now               = {}
+          -- cpu_sum               = 0
+
+          bar.load.cpu_load = cpu_usage
+
+          bar.load.show = string.format("%s%s%s %s %s%3d%% ", sep, bc, c2, icon, c1, bar.load.cpu_load)
+        coroutine.yield()
         end
+      end),
 
-        return string.format("%s%s%s %s %s%3d%% ", sep, bc, c2, icon, c1, bar.load.cpu_load)
-
-      end,
 
       init = function ()
         local sf      = bar.load.sfg
@@ -511,9 +466,21 @@ local lemonbar = {}
       sbg     = bar.colors.sbg1,
       sep     = bar.seperators.tal,
       d_fmt   = "date +'%a %d:%m:Y %H.%M'",
-      getdate = function ()
-        return bar.tools.getprog(bar.date.d_fmt)
-      end,
+      iv      = 60,
+      secs    = 0;
+      show    = "",
+      update  = coroutine.create(function ()
+        local date
+        local action  = "toggle.sh rainlendar2 &"
+        local bc      = bar.date.bgc
+        local c1      = bar.date.fgc1
+        local sep     = bar.date.sep
+        while true do
+          date = bar.tools.getprog(bar.date.d_fmt)
+          bar.date.show = string.format("%%{T4}%s%s %%{A:%s:}%s%%{A} %%{T-}%s", bc, c1, action, date, sep)
+          coroutine.yield()
+        end
+      end),
 
       init = function ()
         local sb      = bar.date.sbg
@@ -522,14 +489,6 @@ local lemonbar = {}
         local sep     = bar.tools.seperator(symbol, sf, sb, 3 )
         bar.date.sep  = sep
       end,
-
-      show = function ()
-        local action  = "toggle.sh rainlendar2 &"
-        local bc      = bar.date.bgc
-        local c1      = bar.date.fgc1
-        local sep     = bar.date.sep
-        return string.format("%%{T4}%s%s %%{A:%s:}%s%%{A} %%{T-}%s", bc, c1, action, bar.date.getdate(), sep)
-      end
 
     }
 
@@ -547,10 +506,21 @@ local lemonbar = {}
       cur     = "",
       iv      = 3600,
       secs    = 0,
+      show    = "",
 
-      update = function ()
-        bar.weather.cur = bar.tools.getprog(bar.weather.w_qstr)
-      end,
+      update = coroutine.create(function ()
+        local action  = "kitty --name 'wetter' --title 'wetter' -o font_size=10 wetter.sh &"
+        local c1      = bar.weather.fgc1
+        local bc      = bar.weather.bgc
+        local w_str   = string.format("%%{A:%s:}%s%%{A}", action, bar.weather.cur)
+        local sep     = bar.weather.sep
+
+        while true do
+          bar.weather.cur = bar.tools.getprog(bar.weather.w_qstr)
+          bar.weather.show = string.format("%s%s %s %s", bc, c1, w_str, sep)
+          coroutine.yield()
+        end
+      end),
 
       init = function ()
         local sf        = bar.weather.sfg
@@ -561,40 +531,29 @@ local lemonbar = {}
         bar.weather.cur = bar.tools.getprog(bar.weather.w_qstr)
       end,
 
-      show = function ()
-        -- local action  = 'notify-send Wetter "$(ansiweather -f 3)" &'
-        -- local action  = 'zenity --info --text="$(ansiweather -f 3)" &'
-        local action  = "kitty --name 'wetter' --title 'wetter' -o font_size=10 wetter.sh &"
-        -- local action  = "curl wttr.in/Berlin_lang=de.png | display"
-        local c1      = bar.weather.fgc1
-        local bc      = bar.weather.bgc
-        local w_str   = string.format("%%{A:%s:}%s%%{A}", action, bar.weather.cur)
-        local sep     = bar.weather.sep
-        local delta   = bar.weather.iv - bar.weather.secs
-
-        if delta <= 0 then
-          bar.weather.update()
-          bar.weather.secs = 0
-        else
-          bar.weather.secs = bar.weather.secs + bar.settings.timer
-        end
-
-        return string.format("%s%s %s %s", bc, c1, w_str, sep)
-
-      end
     }
 
     bar["window"] = {
       fgc1    = bar.colors.fgc8,
       w_str   = "xdotool getactivewindow getwindowname",
+      show    = "",
 
-      show = function()
+      update = coroutine.create(function()
         local c1 = bar.window.fgc1
-        local wname = bar.tools.getprog(bar.window.w_str)
-        if wname ~= nil then
-          return string.format("%s%s", c1, wname)
-        else return ''
+        local wname
+        while true do
+          wname = bar.tools.getprog(bar.window.w_str)
+          if wname ~= nil then
+            bar.window.show = string.format("%s%s", c1, wname)
+          else
+            bar.window.show = ''
+          end
+          coroutine.yield()
         end
+      end),
+
+      init = function ()
+        bar.window.update()
       end
     }
 
@@ -610,13 +569,27 @@ local lemonbar = {}
       vol_perc  = 0,
       step      = 1310,
       icon      = bar.symbols.vol,
+      secs      = 0,
+      iv        = 2,
+      show      = "",
 
-      update = function ()
-        bar.volume.cur_vol  = bar.tools.getprog(bar.volume.v_get_str)
+      update = coroutine.create(function ()
+        local symbol  = bar.volume.icon
+        local c1      = bar.volume.fgc1
+        local percent = bar.volume.vol_perc
+        local action  = "pavucontrol"
+        local up      = tostring(bar.volume.vol_up)
+        local down    = tostring(bar.volume.vol_down)
+        local inc     = bar.volume.v_set_str .. up
+        local dec     = bar.volume.v_set_str .. down
 
-        if bar.volume.cur_vol ~= bar.volume.prev_vol then
+        while true do
+          bar.volume.cur_vol  = bar.tools.getprog(bar.volume.v_get_str)
+
+          -- if bar.volume.cur_vol ~= bar.volume.prev_vol then
           bar.volume.vol_perc = 100 * bar.volume.cur_vol // bar.volume.max_vol
-          bar.volume.prev_vol = bar.volume.cur_vol
+          percent = bar.volume.vol_perc
+          -- bar.volume.prev_vol = bar.volume.cur_vol
 
           if bar.volume.cur_vol + bar.volume.step <= bar.volume.max_vol then
             bar.volume.vol_up   = bar.volume.cur_vol + bar.volume.step
@@ -625,9 +598,16 @@ local lemonbar = {}
           if bar.volume.cur_vol - bar.volume.step >= 0 then
             bar.volume.vol_down = bar.volume.cur_vol - bar.volume.step
           end
-        end
+          -- end
+          up   = tostring(bar.volume.vol_up)
+          down = tostring(bar.volume.vol_down)
+          inc  = bar.volume.v_set_str .. up
+          dec  = bar.volume.v_set_str .. down
 
-      end,
+          bar.volume.show = string.format("%s%s %%{A1:%s:}%%{A4:%s:}%%{A5:%s:}%s%%%%{A}%%{A}%%{A}", c1, symbol, action, inc, dec, percent)
+          coroutine.yield()
+        end
+      end),
 
       init = function()
         bar.volume.cur_vol  = bar.tools.getprog(bar.volume.v_get_str)
@@ -644,20 +624,6 @@ local lemonbar = {}
 
       end,
 
-      show = function()
-        local symbol  = bar.volume.icon
-        local c1      = bar.volume.fgc1
-        local percent = bar.volume.vol_perc
-        local action  = "pavucontrol"
-        local up      = tostring(bar.volume.vol_up)
-        local down    = tostring(bar.volume.vol_down)
-        local inc     = bar.volume.v_set_str .. up
-        local dec     = bar.volume.v_set_str .. down
-
-        bar.volume.update()
-
-        return string.format("%s%s %%{A1:%s:}%%{A4:%s:}%%{A5:%s:}%s%%%%{A}%%{A}%%{A}", c1, symbol, action, inc, dec, percent)
-      end,
     }
 
     bar.init = function ()
@@ -681,15 +647,39 @@ local lemonbar = {}
 
       for key, val in pairs(module_table) do
         bar[val].init()
+        coroutine.resume(bar[val].update)
       end
 
     end
 
     bar.show = function ()
       local show = ""
+      local cmd  = "lemonbar -g 1056+0+0 -p -u 2 -f \'Cousine for Powerline:pixelsize=14\' -f \'Typicons:pixelsiz=14\' -f \'Symbols Nerd Font Mono:pixelsize=14\' -f  \'Cousine for Powerline:style=Bold:pixelsize=14\' -B#ff1a1b26 | /bin/bash"
+
+      local pipe_out = assert(io.popen(cmd, "w"))
+
+      -- local posix = require("posix")
+      local socket = require("socket")
+      local sleep = socket.sleep
+      local n     = bar.settings.timer
+
+      while true do
+        for key, val in pairs(module_table) do
+          if bar[val].iv - bar[val].secs <= 0 then
+            coroutine.resume(bar[val].update)
+            bar[val].secs = 0
+          else
+            bar[val].secs = bar[val].secs + bar.settings.timer
+          end
+          show = show .. bar[val].show
+        end
+        pipe_out:write(show .. "\n")
+        pipe_out:flush()
+        show = ""
+        sleep(n)
+      end
 
       for key, val in pairs(module_table) do
-        show = show .. bar[val].show()
       end
 
       return show
@@ -707,7 +697,7 @@ local lemonbar = {}
   end
 
   function lemonbar.show(bar)
-    return bar.show()
+    bar.show()
   end
 
 return lemonbar
