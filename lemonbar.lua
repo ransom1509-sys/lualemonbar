@@ -160,8 +160,6 @@ local lemonbar = {}
       show    = "";
 
       update = coroutine.create(function()
-        local c1    = bar.connect.fgc1
-        local c2    = bar.connect.fgc2
         local ac    = bar.connect.fgc1
         local bc    = bar.connect.bgc
         local con   = bar.connect.icon
@@ -208,11 +206,10 @@ local lemonbar = {}
       show    = "",
 
       update = coroutine.create(function()
-        local ac, c1, c2, rxstr, txstr
+        local c1, c2, rxstr, txstr
         c1            = bar.net.fgc1
         c2            = bar.net.fgc2
         local icon    = bar.net.icon
-        local con     = bar.symbols.con
         local bc      = bar.net.bgc
         local sep     = bar.net.sep
         local fmt     = bar.fmt.fr
@@ -678,13 +675,6 @@ local lemonbar = {}
         show = ""
         sleep(n)
       end
-
-      for key, val in pairs(module_table) do
-      end
-
-      return show
-
-      -- return string.format("%s%s%s%s%s%s%s%s%s%s%s%s", fl, bar.date.show(), bar.weather.show(), bar.volume.show(), fr, bar.tmp.show(), bar.fan.show(), bar.load.show(), bar.net.show(), bar.mail.show(), bar.connect.show(), bar.colors.bgstop)
 
     end
 
