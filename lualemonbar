@@ -1,0 +1,8 @@
+#!/usr/bin/lua
+package.path = package.path .. ";/home/js/.local/share/modules/lua/?.lua"
+
+local lemonbar = require("lemonbar")
+local mybar    = lemonbar.setup()
+
+lemonbar.init(mybar)
+lemonbar.show(mybar)
