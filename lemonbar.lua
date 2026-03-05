@@ -462,7 +462,7 @@ local lemonbar = {}
       sfg     = bar.colors.sfg1,
       sbg     = bar.colors.sbg1,
       sep     = bar.seperators.tal,
-      d_fmt   = "date +'%a %d:%m:Y %H.%M'",
+      d_fmt   = "date +'%a %d:%m:%Y %H.%M'",
       iv      = 60,
       secs    = 0;
       show    = "",
@@ -626,6 +626,11 @@ local lemonbar = {}
     bar.init = function ()
 
       local conf = {}
+      local mods = {}
+      local pathname = bar.settings.init .. "modules/"
+      local mname
+      local co
+      package.path = package.path .. ";" .. pathname .. "?.lua" 
 
       bar.tools.ini2lua()
       local f, err = loadfile(bar.settings.init .. "config.lua", "t", conf )
@@ -643,6 +648,16 @@ local lemonbar = {}
       end
 
       for key, val in pairs(module_table) do
+        mname = pathname .. val .. ".lua"
+        if bar.tools.file_exists(mname) then
+          mods = require(val)
+          bar.tools.mergetables(bar, mods)
+        end
+        mname = ""
+      end
+
+
+      for key, val in pairs(module_table) do
         bar[val].init()
         coroutine.resume(bar[val].update)
       end
@@ -650,6 +665,7 @@ local lemonbar = {}
     end
 
     bar.show = function ()
+      local co
       local show = ""
       local cmd  = "lemonbar -g 1056+0+0 -p -u 2 -f \'Cousine for Powerline:pixelsize=14\' -f \'Typicons:pixelsiz=14\' -f \'Symbols Nerd Font Mono:pixelsize=14\' -f  \'Cousine for Powerline:style=Bold:pixelsize=14\' -B#ff1a1b26 | /bin/bash"
 
