@@ -664,10 +664,10 @@ local lemonbar = {}
 
     end
 
-    bar.show = function ()
+    bar.show = function (lbcmd)
       local co
       local show = ""
-      local cmd  = "lemonbar -g 1056+0+0 -p -u 2 -f \'Cousine for Powerline:pixelsize=14\' -f \'Typicons:pixelsiz=14\' -f \'Symbols Nerd Font Mono:pixelsize=14\' -f  \'Cousine for Powerline:style=Bold:pixelsize=14\' -B#ff1a1b26 | /bin/bash"
+      local cmd  = lbcmd
 
       local pipe_out = assert(io.popen(cmd, "w"))
 
@@ -702,8 +702,8 @@ local lemonbar = {}
     bar.init()
   end
 
-  function lemonbar.show(bar)
-    bar.show()
+  function lemonbar.show(bar, cmd)
+    bar.show(cmd)
   end
 
 return lemonbar

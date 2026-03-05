@@ -4,5 +4,8 @@ package.path = package.path .. ";/home/js/.local/share/modules/lua/?.lua"
 local lemonbar = require("lemonbar")
 local mybar    = lemonbar.setup()
 
+local cmd  = "lemonbar -g 1056+0+0 -p -u 2 -f \'Cousine for Powerline:pixelsize=14\' -f \'Typicons:pixelsiz=14\' -f \'Symbols Nerd Font Mono:pixelsize=14\' -f  \'Cousine for Powerline:style=Bold:pixelsize=14\' -B#ff1a1b26 | /bin/bash"
+
+
 lemonbar.init(mybar)
-lemonbar.show(mybar)
+lemonbar.show(mybar, cmd)
