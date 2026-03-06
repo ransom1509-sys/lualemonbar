@@ -632,7 +632,7 @@ local lemonbar = {}
       package.path = pathname .. "?.lua" .. ";" .. package.path
 
       bar.tools.ini2lua()
-      local f, err = loadfile(bar.settings.init .. "config.lua", "t", conf )
+      local f = loadfile(bar.settings.init .. "config.lua", "t", conf )
 
       if f then
         f()
@@ -644,7 +644,7 @@ local lemonbar = {}
         table.insert(module_table, w)
       end
 
-      for key, val in pairs(module_table) do
+      for _, val in pairs(module_table) do
         mname = pathname .. val .. ".lua"
         if bar.tools.file_exists(mname) then
           mods = require(val)
@@ -653,7 +653,7 @@ local lemonbar = {}
         mname = ""
       end
 
-      for key, val in pairs(module_table) do
+      for _, val in pairs(module_table) do
         bar[val].init()
         coroutine.resume(bar[val].update)
       end
@@ -672,7 +672,7 @@ local lemonbar = {}
       local n     = bar.settings.timer
 
       while true do
-        for key, val in pairs(module_table) do
+        for _, val in pairs(module_table) do
           if bar[val].iv - bar[val].secs <= 0 then
             coroutine.resume(bar[val].update)
             bar[val].secs = 0
