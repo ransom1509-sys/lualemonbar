@@ -17,6 +17,7 @@ local lemonbar = {}
     bar["settings"] = {
       timer   = 1,
       init    = os.getenv("HOME") .. "/.config/lualemonbar/",
+      modules = "date weather volume tmp fan load net mail connect"
     }
 
     bar["colors"] = {
@@ -104,12 +105,12 @@ local lemonbar = {}
 
       end,
 
-      ini2lua = function ()
+      ini2lua = function (inif, luaf)
         local section
         local prev
         local indent  = "  "
-        local inifile = bar.settings.init .. "config.ini"
-        local luafile = bar.settings.init .. "config.lua"
+        local inifile = bar.settings.init .. inif
+        local luafile = bar.settings.init .. luaf
         local of      = assert(io.open(luafile, "w"))
 
         if bar.tools.file_exists(inifile) ~= true then
@@ -130,6 +131,34 @@ local lemonbar = {}
         end
         of:write("}")
         of:close()
+      end,
+
+      dumptable = function (t, indent)
+        indent = indent or ""
+        local exclusion = {"function", "thread"}
+
+        local function is_excluded(ty)
+          for _, ex in ipairs(exclusion) do
+              if ty == ex then return true end
+          end
+          return false
+        end
+
+        for k, v in pairs(t) do
+          if type(v) == "table" then
+            print(k .. " = " .. "{")
+            bar.tools.dumptable(v, indent)
+            print("}")
+          else
+            if not is_excluded(type(v)) then
+              if type(v) == "string" then
+                print(indent .. k .. " = " .. '"' .. v .. '"' .. ",")
+              else
+                print(indent .. k .. " = " .. v .. ",")
+              end
+            end
+          end
+        end
       end,
 
       mergetables = function(dst, src)
@@ -625,13 +654,17 @@ local lemonbar = {}
 
     bar.init = function ()
 
-      local conf = {}
-      local mods = {}
-      local pathname = bar.settings.init .. "modules/"
+      local conf          = {}
+      local mod           = {}
+      local reload_config = false
+      local path          = bar.settings.init
+      local mpath         = path .. "modules/"
       local mname
-      package.path = pathname .. "?.lua" .. ";" .. package.path
+      package.path = mpath .. "?.lua" .. ";" .. package.path
 
-      bar.tools.ini2lua()
+
+      bar.tools.ini2lua("config.ini", "config.lua")
+
       local f = loadfile(bar.settings.init .. "config.lua", "t", conf )
 
       if f then
@@ -645,12 +678,17 @@ local lemonbar = {}
       end
 
       for _, val in pairs(module_table) do
-        mname = pathname .. val .. ".lua"
+        mname = mpath .. val .. ".lua"
         if bar.tools.file_exists(mname) then
-          mods = require(val)
-          bar.tools.mergetables(bar, mods)
+          mod = require(val)
+          mod.setup(bar)
+          reload_config = true
         end
         mname = ""
+      end
+
+      if reload_config == true then
+        bar.tools.mergetables(bar, conf)
       end
 
       for _, val in pairs(module_table) do
