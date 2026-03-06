@@ -579,7 +579,6 @@ local lemonbar = {}
       end),
 
       init = function ()
-        bar.window.update()
       end
     }
 
