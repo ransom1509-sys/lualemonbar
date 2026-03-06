@@ -629,8 +629,7 @@ local lemonbar = {}
       local mods = {}
       local pathname = bar.settings.init .. "modules/"
       local mname
-      local co
-      package.path = package.path .. ";" .. pathname .. "?.lua" 
+      package.path = pathname .. "?.lua" .. ";" .. package.path
 
       bar.tools.ini2lua()
       local f, err = loadfile(bar.settings.init .. "config.lua", "t", conf )
@@ -640,8 +639,6 @@ local lemonbar = {}
       end
 
       bar.tools.mergetables(bar, conf)
-
-      -- module_table = {}
 
       for w in string.gmatch(bar.settings.modules, "%S+") do
         table.insert(module_table, w)
@@ -656,7 +653,6 @@ local lemonbar = {}
         mname = ""
       end
 
-
       for key, val in pairs(module_table) do
         bar[val].init()
         coroutine.resume(bar[val].update)
@@ -665,7 +661,6 @@ local lemonbar = {}
     end
 
     bar.show = function (lbcmd)
-      local co
       local show = ""
       local cmd  = lbcmd
 
