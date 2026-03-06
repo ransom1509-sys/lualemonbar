@@ -133,34 +133,6 @@ local lemonbar = {}
         of:close()
       end,
 
-      dumptable = function (t, indent)
-        indent = indent or ""
-        local exclusion = {"function", "thread"}
-
-        local function is_excluded(ty)
-          for _, ex in ipairs(exclusion) do
-              if ty == ex then return true end
-          end
-          return false
-        end
-
-        for k, v in pairs(t) do
-          if type(v) == "table" then
-            print(k .. " = " .. "{")
-            bar.tools.dumptable(v, indent)
-            print("}")
-          else
-            if not is_excluded(type(v)) then
-              if type(v) == "string" then
-                print(indent .. k .. " = " .. '"' .. v .. '"' .. ",")
-              else
-                print(indent .. k .. " = " .. v .. ",")
-              end
-            end
-          end
-        end
-      end,
-
       mergetables = function(dst, src)
         for k, v in pairs(src) do
           if type(v) == "table" and type(dst[k] or false) == "table" then
@@ -737,5 +709,40 @@ local lemonbar = {}
   function lemonbar.show(bar, cmd)
     bar.show(cmd)
   end
+
+  function lemonbar.debug(bar)
+    local function dumptable(t, indent)
+      indent = indent or ""
+      local exclusion = {"function", "thread"}
+
+      local function is_excluded(ty)
+        for _, ex in ipairs(exclusion) do
+            if ty == ex then return true end
+        end
+        return false
+      end
+
+      for k, v in pairs(t) do
+        if type(v) == "table" then
+          print(k .. " = " .. "{")
+          bar.tools.dumptable(v, indent)
+          print("}")
+        else
+          if not is_excluded(type(v)) then
+            if type(v) == "string" then
+              print(indent .. k .. " = " .. '"' .. v .. '"' .. ",")
+            else
+              print(indent .. k .. " = " .. v .. ",")
+            end
+          end
+        end
+      end
+    end
+
+    dumptable(bar, "  ")
+
+  end
+
+
 
 return lemonbar
