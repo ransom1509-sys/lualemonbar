@@ -16,11 +16,9 @@ function lemonbar.setup()
   bar.init = function ()
 
     local conf          = {}
-    local mods          = {}
     local mod           = {}
     local look          = {}
     local tools         = {}
-    -- local modules       = {}
     local path          = os.getenv("HOME") .. "/.config/lualemonbar/"
     local mpath         = path .. "modules/"
     local luapath       = path .. "lua/"
