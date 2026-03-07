@@ -26,7 +26,7 @@ function tmp.setup(bar)
       local c2      = bar.tmp.fgc2
       local bc      = bar.tmp.bgc
       local bs      = bar.colors.bgstop
-      local icon    = bar.symbols.temp
+      local icon    = bar.tmp.icon
       local symbol  = bar.seperators.tar
       local sep     = bar.tools.seperator(symbol, sf, sb, 3 )
       local fmt      = bar.fmt.fc
