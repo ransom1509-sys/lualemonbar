@@ -9,9 +9,9 @@ TODO: Movef format codes to bar["formats"]
 -- local posix = require("posix")
 -- local sleep = posix.sleep
 local lemonbar = {}
-local module_table = {}
 
 function lemonbar.setup()
+  local module_table = {}
   local bar = {}
   bar.init = function ()
 
