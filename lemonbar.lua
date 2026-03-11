@@ -8,6 +8,10 @@ TODO: Movef format codes to bar["formats"]
 ]]
 -- local posix = require("posix")
 -- local sleep = posix.sleep
+-- TODO:
+-- Initialize fmt and sep in case they are not present.
+-- Fallback for missing socket. Create timer function as fallback.
+
 local lemonbar = {}
 
 function lemonbar.setup()
