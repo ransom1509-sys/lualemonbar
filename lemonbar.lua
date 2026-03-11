@@ -60,17 +60,25 @@ function lemonbar.setup()
 
     for _, val in pairs(module_table) do
       bar[val].init()
+      if bar[val].fmt == nil then bar[val].fmt = "" end
+      if bar[val].sep == nil then bar[val].sep = "" end
       coroutine.resume(bar[val].update)
     end
 
   end
 
   bar.show = function (lbcmd)
+    local sleep
     local show = ""
     local cmd  = lbcmd
     local pipe_out = assert(io.popen(cmd, "w"))
-    local socket = require("socket")
-    local sleep = socket.sleep
+    local available, socket = pcall(require, "socket")
+    if available then
+      sleep = socket.sleep
+    else
+      sleep = bar.tools.sleep
+    end
+
     local n     = bar.settings.timer
 
     while true do
