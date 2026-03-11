@@ -69,7 +69,11 @@ function tools.setup(bar)
         end
       end
       return dst
-    end
+    end,
+
+    sleep = function (int)
+     os.execute("sleep " .. tonumber(int))
+    end,
 
   }
 
