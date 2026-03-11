@@ -3,7 +3,7 @@ function look.setup(bar)
   bar["settings"] = {
     timer   = 1,
     init    = os.getenv("HOME") .. "/.config/lualemonbar/",
-    modules = "date weather volume tmp fan load net mail connect"
+    modules_l = "date weather volume Window tmp fan load net mail connect"
   }
 
   bar["colors"] = {
@@ -35,8 +35,9 @@ function look.setup(bar)
   }
 
   bar["seperators"] = {
-    tal = "",
-    tar = "",
+    tal   = "",
+    tar   = "",
+    pos   = "right",
   }
 
   bar["symbols"] = {
@@ -57,6 +58,7 @@ function look.setup(bar)
     fc = "%{c}",
     ml = "%{O20}",
     mr = "%{O20}",
+    sp = "  ",
   }
 
 

@@ -6,7 +6,9 @@ function load.setup(bar)
     bgc           = bar.colors.bgc2,
     sfg           = bar.colors.sfg2,
     sbg           = bar.colors.sbg1,
-    sep           = bar.seperators.tar,
+    sep           = "",
+    sp            = bar.fmt.sp,
+    fmt           = "",
     icon          = bar.symbols.cpu,
     st_qstr       = "/proc/stat",
     cpu_last      = 0,
@@ -28,6 +30,7 @@ function load.setup(bar)
       local bc      = bar.load.bgc
       local icon    = bar.load.icon
       local sep     = bar.load.sep
+      local sp      = bar.load.sp
       local cpu_usage = 0
 
       while true do
@@ -62,8 +65,9 @@ function load.setup(bar)
 
         bar.load.cpu_load = cpu_usage
 
-        bar.load.show = string.format("%s%s%s %s %s%3d%% ", sep, bc, c2, icon, c1, bar.load.cpu_load)
-      coroutine.yield()
+        bar.load.show = string.format("%s%s%s %s %s%3d%%%s",
+          bc, sp, c2, icon, c1, bar.load.cpu_load, sp)
+        coroutine.yield()
       end
     end),
 
@@ -71,7 +75,7 @@ function load.setup(bar)
     init = function ()
       local sf      = bar.load.sfg
       local sb      = bar.load.sbg
-      local symbol  = bar.seperators.tar
+      local symbol  = bar.load.sep
       local sep     = bar.tools.seperator(symbol, sf, sb, 3 )
       bar.load.sep  = sep
     end

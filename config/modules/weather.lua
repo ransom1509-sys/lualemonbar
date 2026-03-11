@@ -8,7 +8,9 @@ function weather.setup(bar)
     bgc     = bar.colors.bgc1,
     sfg     = bar.colors.sfg1,
     sbg     = bar.colors.sbg3,
-    sep     = bar.seperators.tal,
+    sep     = bar.seperators.tar,
+    fmt     = "",
+    sp      = "",
     icon    = "",
     w_qstr  = "ansiweather | cut -d ':' -f 2",
     cur     = "",
@@ -21,11 +23,11 @@ function weather.setup(bar)
       local c1      = bar.weather.fgc1
       local bc      = bar.weather.bgc
       local w_str   = string.format("%%{A:%s:}%s%%{A}", action, bar.weather.cur)
-      local sep     = bar.weather.sep
+      local sp      = bar.weather.sp
 
       while true do
         bar.weather.cur = bar.tools.getprog(bar.weather.w_qstr)
-        bar.weather.show = string.format("%s%s %s %s", bc, c1, w_str, sep)
+        bar.weather.show = string.format("%s%s%s %s %s", bc, sp, c1, w_str, sp)
         coroutine.yield()
       end
     end),
@@ -33,7 +35,7 @@ function weather.setup(bar)
     init = function ()
       local sf        = bar.weather.sfg
       local sb        = bar.weather.sbg
-      local symbol    = bar.seperators.tal
+      local symbol    = bar.weather.sep
       local sep       = bar.tools.seperator(symbol, sf, sb, 3 )
       bar.weather.sep = sep
       bar.weather.cur = bar.tools.getprog(bar.weather.w_qstr)

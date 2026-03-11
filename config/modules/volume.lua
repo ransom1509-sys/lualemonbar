@@ -2,6 +2,10 @@ local volume = {}
 function volume.setup(bar)
   bar["volume"] = {
     fgc1      = bar.colors.fgc1,
+    fgc2      = bar.colors.fgc2,
+    bgc       = bar.colors.bgc1,
+    sfg       = bar.colors.sfg1,
+    sbg       = bar.colors.sbg3,
     v_get_str = "pactl get-sink-volume @DEFAULT_SINK@ | cut -d ' ' -f 3",
     v_set_str = "pactl set-sink-volume @DEFAULT_SINK@ ",
     cur_vol   = 0,
@@ -12,6 +16,9 @@ function volume.setup(bar)
     vol_perc  = 0,
     step      = 1310,
     icon      = bar.symbols.vol,
+    sep       = bar.seperators.tar,
+    fmt       = "",
+    sp        = bar.fmt.sp,
     secs      = 0,
     iv        = 2,
     show      = "",
@@ -19,6 +26,8 @@ function volume.setup(bar)
     update = coroutine.create(function ()
       local symbol  = bar.volume.icon
       local c1      = bar.volume.fgc1
+      local bc      = bar.volume.bgc
+      local sp      = bar.volume.sp
       local percent = bar.volume.vol_perc
       local action  = "pavucontrol"
       local up      = tostring(bar.volume.vol_up)
@@ -47,12 +56,19 @@ function volume.setup(bar)
         inc  = bar.volume.v_set_str .. up
         dec  = bar.volume.v_set_str .. down
 
-        bar.volume.show = string.format("%s%s %%{A1:%s:}%%{A2:%s:}%%{A3:%s:}%s%%%%{A}%%{A}%%{A}", c1, symbol, dec, action, inc, percent)
+        bar.volume.show = string.format(
+          "%s%s%s%s %%{A1:%s:}%%{A2:%s:}%%{A3:%s:}%s%%%%{A}%%{A}%%{A}%s",
+          bc, sp, c1, symbol, dec, action, inc, percent, sp)
         coroutine.yield()
       end
     end),
 
     init = function()
+      local sf       = bar.volume.sfg
+      local sb       = bar.volume.sbg
+      local symbol   = bar.volume.sep
+      local sep      = bar.tools.seperator(symbol, sf, sb, 3 )
+      bar.volume.sep = sep
       bar.volume.cur_vol  = bar.tools.getprog(bar.volume.v_get_str)
       bar.volume.prev_vol = bar.volume.cur_vol
       bar.volume.vol_perc = 100 * bar.volume.cur_vol // bar.volume.max_vol

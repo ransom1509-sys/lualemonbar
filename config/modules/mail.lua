@@ -6,8 +6,11 @@ function mail.setup(bar)
     bgc     = bar.colors.bgc1,
     sfg     = bar.colors.sfg1,
     sbg     = bar.colors.sbg2,
-    sep     = bar.seperators.tal,
+    sep     = "",
+    sp      = bar.fmt.sp,
+    fmt     = "",
     icon    = bar.symbols.mail,
+    mails   = 0,
     nm_qstr = "claws-mail --status | cut -d ' ' -f 2",
     secs    = 0,
     iv      = 2,
@@ -18,27 +21,27 @@ function mail.setup(bar)
     local c2    = bar.mail.fgc2
     local mc    = bar.mail.fgc1
     local bc    = bar.mail.bgc
-    local mail  = bar.mail.icon
-    local sep   = bar.tools.seperator(bar.mail.sep, bar.mail.sfg, bar.mail.sbg, 3)
+    local icon  = bar.mail.icon
+    local sp    = bar.mail.sp
     while true do
     --   New mails?
-    bar.mail.mails = tonumber(bar.tools.getprog(bar.mail.nm_qstr))
-    if bar.mail.mails ~= nil and bar.mail.mails > 0 then
-     mc = c2
-    else
-     mc = c1
+      bar.mail.mails = tonumber(bar.tools.getprog(bar.mail.nm_qstr))
+      if bar.mail.mails ~= nil and bar.mail.mails > 0 then
+       mc = c2
+      else
+       mc = c1
+      end
+      bar.mail.show = string.format("%s%s%s%s%s", bc, sp, mc, icon, sp)
+      coroutine.yield()
     end
-
-    bar.mail.show = string.format(" %s%s%s%s ", sep, bc, mc, mail)
-    coroutine.yield()
-    end
-    end),
+  end),
 
     init = function ()
-    bar.mail.mails = tonumber(bar.tools.getprog(bar.mail.nm_qstr))
+      local sep = bar.tools.seperator(bar.mail.sep, bar.mail.sfg, bar.mail.sbg, 3)
+      bar.mail.mails = tonumber(bar.tools.getprog(bar.mail.nm_qstr))
+      bar.mail.sep = sep
     end,
-
-    }
+  }
 
   return bar
 

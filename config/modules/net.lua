@@ -9,6 +9,8 @@ function net.setup(bar)
     sbg     = bar.colors.sbg2,
     sep     = bar.seperators.tal,
     icon    = bar.symbols.net,
+    fmt     = "",
+    sp      = bar.fmt.sp,
     rx_cur  = 0,
     rx_last = 0,
     tx_cur  = 0,
@@ -27,8 +29,7 @@ function net.setup(bar)
       c2            = bar.net.fgc2
       local icon    = bar.net.icon
       local bc      = bar.net.bgc
-      local sep     = bar.net.sep
-      local fmt     = bar.fmt.fr
+      local sp      = bar.net.sp
 
       while true do
         --   Calculate tx in keyiB/s
@@ -41,7 +42,8 @@ function net.setup(bar)
         bar.net.tx_last = bar.net.tx_cur
         rxstr = bar.net.rx_rate
         txstr = bar.net.tx_rate
-        bar.net.show = string.format("%s%s%s%s %s  %s%-7.1f %-7.1f ", fmt, sep, bc, c2, icon, c1, rxstr, txstr)
+        bar.net.show = string.format("%s%s%s %s  %s%-7.1f %-7.1f%s",
+          bc, sp, c2, icon, c1, rxstr, txstr, sp)
         coroutine.yield()
       end
     end),
@@ -50,7 +52,7 @@ function net.setup(bar)
       -- Make sure we start with rx = 0 KiB/s
       local sf        = bar.net.sfg
       local sb        = bar.net.sbg
-      local symbol    = bar.seperators.tar
+      local symbol    = bar.net.sep
       local sep       = bar.tools.seperator(symbol, sf, sb, 3 )
       bar.net.sep     = sep
       bar.net.rx_last = bar.tools.getval(bar.net.rx_qstr)

@@ -25,33 +25,25 @@ function lemonbar.setup()
     local iniconf       = path .. "config.ini"
     local luaconf       = luapath .. "config.lua"
     local mname
-
     local package_path = package.path
-    package.path = luapath .. "?.lua;" .. package_path
 
-    -- modules = require("modules")
-    -- modules.setup(bar)
-    look = require("look")
+    package.path = luapath .. "?.lua;" .. package_path
+    look  = require("look")
     tools = require("tools")
     look.setup(bar)
     tools.setup(bar)
 
     package.path = mpath .. "?.lua;" .. package_path
-
     bar.tools.ini2lua(iniconf, luaconf)
-
     local i = loadfile(luaconf, "t", conf )
-
     if i then
       i()
     end
-
     bar.tools.mergetables(bar, conf)
 
     for w in string.gmatch(bar.settings.modules, "%S+") do
       table.insert(module_table, w)
     end
-
     for _, val in pairs(module_table) do
       mname = mpath .. val .. ".lua"
       if bar.tools.file_exists(mname) then
@@ -60,7 +52,6 @@ function lemonbar.setup()
       end
       mname = ""
     end
-
     bar.tools.mergetables(bar, conf)
 
     for _, val in pairs(module_table) do
@@ -73,10 +64,7 @@ function lemonbar.setup()
   bar.show = function (lbcmd)
     local show = ""
     local cmd  = lbcmd
-
     local pipe_out = assert(io.popen(cmd, "w"))
-
-    -- local posix = require("posix")
     local socket = require("socket")
     local sleep = socket.sleep
     local n     = bar.settings.timer
@@ -89,14 +77,13 @@ function lemonbar.setup()
         else
           bar[val].secs = bar[val].secs + bar.settings.timer
         end
-        show = show .. bar[val].show
+        show = show .. bar[val].fmt .. bar[val].show .. bar[val].sep
       end
       pipe_out:write(show .. "\n")
       pipe_out:flush()
       show = ""
       sleep(n)
     end
-
   end
 
   return bar
@@ -112,6 +99,7 @@ function lemonbar.show(bar, cmd)
 end
 
 function lemonbar.debug(bar)
+
   local function dumptable(t, indent)
     indent = indent or ""
     local exclusion = {"function", "thread"}
