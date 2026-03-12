@@ -1,0 +1,10 @@
+#!/usr/bin/lua
+package.path = package.path .. ";" .. os.getenv("HOME") .. "/.local/share/modules/lua/?.lua"
+local lemonbar = require("lemonbar")
+local mybar    = lemonbar.setup()
+
+local cmd  = "lemonbar -g 1920x16+0+0 -p -f \'Cousine for Powerline:pixelsize=14\' -f \'Typicons:pixelsiz=14\' -f \'Symbols Nerd Font Mono:pixelsize=16\' -f  \'Cousine for Powerline:style=Bold:pixelsize=14\' -B#ff1a1b26 | /bin/sh"
+
+
+lemonbar.init(mybar)
+lemonbar.show(mybar, cmd)
