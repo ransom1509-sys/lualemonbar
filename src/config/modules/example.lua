@@ -44,7 +44,7 @@ function example.setup(bar)
       local sf        = bar.example.sfg
       local sb        = bar.example.sbg
       local symbol    = bar.example.sep
-      local sep       = bar.tools.seperator(symbol, sf, sb, 3 )
+      local sep       = bar.tools.separator(symbol, sf, sb, 3 )
       bar.example.sep = sep
     end,
 

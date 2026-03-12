@@ -4,7 +4,7 @@ function window.setup(bar)
     fgc1    = bar.colors.fgc8,
     bgc     = "",
     fmt     = "",
-    sep     = bar.seperators.tar,
+    sep     = bar.separators.tar,
     sfg     = bar.colors.sfg1,
     sbg     = bar.colors.sbg3,
     sp      = bar.fmt.sp,
@@ -34,7 +34,7 @@ function window.setup(bar)
       local sf         = bar.window.sfg
       local sb         = bar.window.sbg
       local symbol     = bar.window.sep
-      local sep        = bar.tools.seperator(symbol, sf, sb, 3 )
+      local sep        = bar.tools.separator(symbol, sf, sb, 3 )
       bar.window.sep   = sep
     end
   }

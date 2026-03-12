@@ -42,7 +42,7 @@ symbols = {
   vol =  "",
   wthr =  "",
 }
-seperators = {
+separators = {
   tar =  "",
   tal =  "",
 }

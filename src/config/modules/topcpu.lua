@@ -42,7 +42,7 @@ function topcpu.setup(bar)
       local sf        = bar.topcpu.sfg
       local sb        = bar.topcpu.sbg
       local symbol    = bar.topcpu.sep
-      local sep       = bar.tools.seperator(symbol, sf, sb, 3 )
+      local sep       = bar.tools.separator(symbol, sf, sb, 3 )
       bar.topcpu.sep = sep
     end,
 

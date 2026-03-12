@@ -34,7 +34,7 @@ function look.setup(bar)
     fgstop    = "%{F-}",
   }
 
-  bar["seperators"] = {
+  bar["separators"] = {
     tal   = "",
     tar   = "",
     pos   = "right",

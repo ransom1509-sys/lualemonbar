@@ -7,7 +7,7 @@ function tmp.setup(bar)
     bgc     = bar.colors.bgc1,
     sfg     = bar.colors.sfg1,
     sbg     = bar.colors.sbg3,
-    sep     = bar.seperators.tar,
+    sep     = bar.separators.tar,
     icon    = bar.symbols.temp,
     fmt     = "",
     sp      = bar.fmt.sp,
@@ -42,7 +42,7 @@ function tmp.setup(bar)
       local sf       = bar.tmp.sfg
       local sb       = bar.tmp.sbg
       local symbol   = bar.tmp.sep
-      local sep      = bar.tools.seperator(symbol, sf, sb, 3 )
+      local sep      = bar.tools.separator(symbol, sf, sb, 3 )
       bar.tmp.sep    = sep
       bar.tmp.ct_cur = string.sub(bar.tools.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
       bar.tmp.st_cur = string.sub(bar.tools.getval(bar.tmp.st_qstr), 1, 2) .. "°C"

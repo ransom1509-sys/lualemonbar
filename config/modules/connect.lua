@@ -41,7 +41,7 @@ function connect.setup(bar)
     init = function()
       --  Get connection status
       bar.connect.status = bar.tools.getprog(bar.connect.st_qstr)
-      local sep   = bar.tools.seperator(bar.connect.sep, bar.connect.sfg, bar.connect.sbg, 3)
+      local sep   = bar.tools.separator(bar.connect.sep, bar.connect.sfg, bar.connect.sbg, 3)
       bar.connect.sep = sep
     end,
 

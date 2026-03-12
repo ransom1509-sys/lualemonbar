@@ -32,7 +32,7 @@ function date.setup(bar)
       local sb      = bar.date.sbg
       local sf      = bar.date.sfg
       local symbol  = bar.date.sep
-      local sep     = bar.tools.seperator(symbol, sf, sb, 3 )
+      local sep     = bar.tools.separator(symbol, sf, sb, 3 )
       bar.date.sep  = sep
     end,
 

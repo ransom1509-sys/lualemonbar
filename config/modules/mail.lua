@@ -37,7 +37,7 @@ function mail.setup(bar)
   end),
 
     init = function ()
-      local sep = bar.tools.seperator(bar.mail.sep, bar.mail.sfg, bar.mail.sbg, 3)
+      local sep = bar.tools.separator(bar.mail.sep, bar.mail.sfg, bar.mail.sbg, 3)
       bar.mail.mails = tonumber(bar.tools.getprog(bar.mail.nm_qstr))
       bar.mail.sep = sep
     end,

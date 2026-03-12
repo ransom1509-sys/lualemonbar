@@ -76,7 +76,7 @@ function load.setup(bar)
       local sf      = bar.load.sfg
       local sb      = bar.load.sbg
       local symbol  = bar.load.sep
-      local sep     = bar.tools.seperator(symbol, sf, sb, 3 )
+      local sep     = bar.tools.separator(symbol, sf, sb, 3 )
       bar.load.sep  = sep
     end
   }

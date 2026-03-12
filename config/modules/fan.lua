@@ -38,7 +38,7 @@ function fan.setup(bar)
       local sf        = bar.fan.sfg
       local sb        = bar.fan.sbg
       local symbol    = bar.fan.sep
-      local sep       = bar.tools.seperator(symbol, sf, sb, 3 )
+      local sep       = bar.tools.separator(symbol, sf, sb, 3 )
       bar.fan.sep     = sep
       bar.fan.cf_cur  = bar.tools.getval(bar.fan.cf_qstr)
       bar.fan.sf_cur  = bar.tools.getval(bar.fan.sf_qstr)

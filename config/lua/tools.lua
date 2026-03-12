@@ -15,7 +15,7 @@ function tools.setup(bar)
       return line
     end,
 
-    seperator = function (sep, fg, bg, index)
+    separator = function (sep, fg, bg, index)
       local stop = bar.colors.bgstop .. bar.colors.fgstop
       local sepstr = stop .. fg .. bg .. "%{" .. "T" .. index .. "}" .. sep .. stop
       return sepstr
