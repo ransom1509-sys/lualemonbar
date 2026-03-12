@@ -1,17 +1,6 @@
--- #!/usr/bin/lua
--- 
---[[
-Script for lemonbar-xft
-From left to right:
-Date (left click opens calendar)- Weater (left click showa forecast) - Active window - Temp (CPU. system, GPU) - Fan speed - Load - Net KiB/s - New mail - Connect status
-TODO: Movef format codes to bar["formats"]
-]]
--- local posix = require("posix")
--- local sleep = posix.sleep
--- TODO:
--- Initialize fmt and sep in case they are not present.
--- Fallback for missing socket. Create timer function as fallback.
+-- Package for lemonbar-xft
 
+-- main
 local lemonbar = {}
 
 function lemonbar.setup()
