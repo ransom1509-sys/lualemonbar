@@ -17,6 +17,7 @@ function volume.setup(bar)
     step      = 1310,
     icon      = bar.symbols.vol,
     sep       = bar.separators.tar,
+    idx       = bar.symbols.fidx,
     fmt       = "",
     sp        = bar.fmt.sp,
     secs      = 0,
@@ -67,7 +68,8 @@ function volume.setup(bar)
       local sf       = bar.volume.sfg
       local sb       = bar.volume.sbg
       local symbol   = bar.volume.sep
-      local sep      = bar.tools.separator(symbol, sf, sb, 3 )
+      local idx      = bar.volume.idx
+      local sep      = bar.tools.separator(symbol, sf, sb, idx)
       bar.volume.sep = sep
       bar.volume.cur_vol  = bar.tools.getprog(bar.volume.v_get_str)
       bar.volume.prev_vol = bar.volume.cur_vol

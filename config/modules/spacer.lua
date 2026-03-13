@@ -5,6 +5,7 @@ function spacer.setup(bar)
     bgc     = "",
     fmt     = "",
     sep     = bar.separators.tar,
+    idx     = bar.symbols.fidx,
     sfg     = bar.colors.sfg1,
     sbg     = bar.colors.sbg3,
     sp      = bar.fmt.sp,
@@ -31,7 +32,8 @@ function spacer.setup(bar)
       local sf         = bar.spacer.sfg
       local sb         = bar.spacer.sbg
       local symbol     = bar.spacer.sep
-      local sep        = bar.tools.separator(symbol, sf, sb, 3 )
+      local idx        = bar.spacer.idx
+      local sep        = bar.tools.separator(symbol, sf, sb, idx)
       local w    = bar.spacer.width
       local f    = "-"
       local t    = "s"

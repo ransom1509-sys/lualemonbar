@@ -7,6 +7,7 @@ function mail.setup(bar)
     sfg     = bar.colors.sfg1,
     sbg     = bar.colors.sbg2,
     sep     = "",
+    idx     = bar.symbols.fidx,
     sp      = bar.fmt.sp,
     fmt     = "",
     icon    = bar.symbols.mail,
@@ -37,7 +38,8 @@ function mail.setup(bar)
   end),
 
     init = function ()
-      local sep = bar.tools.separator(bar.mail.sep, bar.mail.sfg, bar.mail.sbg, 3)
+      local idx     = bar.mail.idx
+      local sep = bar.tools.separator(bar.mail.sep, bar.mail.sfg, bar.mail.sbg, idx)
       bar.mail.mails = tonumber(bar.tools.getprog(bar.mail.nm_qstr))
       bar.mail.sep = sep
     end,

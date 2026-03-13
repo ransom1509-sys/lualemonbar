@@ -8,6 +8,7 @@ function net.setup(bar)
     sfg     = bar.colors.sfg1,
     sbg     = bar.colors.sbg2,
     sep     = bar.separators.tal,
+    idx     = bar.symbols.fidx,
     icon    = bar.symbols.net,
     fmt     = "",
     sp      = bar.fmt.sp,
@@ -53,7 +54,8 @@ function net.setup(bar)
       local sf        = bar.net.sfg
       local sb        = bar.net.sbg
       local symbol    = bar.net.sep
-      local sep       = bar.tools.separator(symbol, sf, sb, 3 )
+      local idx       = bar.net.idx
+      local sep       = bar.tools.separator(symbol, sf, sb, idx)
       bar.net.sep     = sep
       bar.net.rx_last = bar.tools.getval(bar.net.rx_qstr)
       bar.net.tx_last = bar.tools.getval(bar.net.tx_qstr)

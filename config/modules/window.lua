@@ -2,9 +2,10 @@ local window = {}
 function window.setup(bar)
   bar["window"] = {
     fgc1    = bar.colors.fgc8,
-    bgc     = "",
+    bgc     = bar.colors.bgc1,
     fmt     = "",
     sep     = bar.separators.tar,
+    idx     = bar.symbols.fidx,
     sfg     = bar.colors.sfg1,
     sbg     = bar.colors.sbg3,
     sp      = bar.fmt.sp,
@@ -37,7 +38,8 @@ function window.setup(bar)
       local sf         = bar.window.sfg
       local sb         = bar.window.sbg
       local symbol     = bar.window.sep
-      local sep        = bar.tools.separator(symbol, sf, sb, 3 )
+      local idx        = bar.window.idx
+      local sep        = bar.tools.separator(symbol, sf, sb, idx)
       local w    = bar.window.width
       local l    = bar.window.width - 4
       local f    = "-"

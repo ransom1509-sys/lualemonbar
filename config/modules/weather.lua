@@ -9,6 +9,7 @@ function weather.setup(bar)
     sfg     = bar.colors.sfg1,
     sbg     = bar.colors.sbg3,
     sep     = bar.separators.tar,
+    idx     = bar.symbols.fidx,
     fmt     = "",
     sp      = "",
     icon    = "",
@@ -36,7 +37,8 @@ function weather.setup(bar)
       local sf        = bar.weather.sfg
       local sb        = bar.weather.sbg
       local symbol    = bar.weather.sep
-      local sep       = bar.tools.separator(symbol, sf, sb, 3 )
+      local idx       = bar.weather.idx
+      local sep       = bar.tools.separator(symbol, sf, sb, idx)
       bar.weather.sep = sep
       bar.weather.cur = bar.tools.getprog(bar.weather.w_qstr)
     end,

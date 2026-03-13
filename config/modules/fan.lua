@@ -7,6 +7,7 @@ function fan.setup(bar)
     sfg     = bar.colors.sfg1,
     sbg     = bar.colors.sbg1,
     sep     = "",
+    idx     = bar.symbols.fidx,
     fmt     = "",
     sp      = bar.fmt.sp,
     icon    = bar.symbols.fan,
@@ -38,7 +39,8 @@ function fan.setup(bar)
       local sf        = bar.fan.sfg
       local sb        = bar.fan.sbg
       local symbol    = bar.fan.sep
-      local sep       = bar.tools.separator(symbol, sf, sb, 3 )
+      local idx       = bar.fan.idx
+      local sep       = bar.tools.separator(symbol, sf, sb, idx )
       bar.fan.sep     = sep
       bar.fan.cf_cur  = bar.tools.getval(bar.fan.cf_qstr)
       bar.fan.sf_cur  = bar.tools.getval(bar.fan.sf_qstr)

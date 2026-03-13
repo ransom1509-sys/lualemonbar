@@ -34,10 +34,19 @@ function look.setup(bar)
     fgstop    = "%{F-}",
   }
 
+  -- bar["lb"] = {
+  --   size   = "1920x16+0+0",
+  --   bc     = "#ff1a1b26",
+  --   font_1 = "Cousine for Powerline:pixelsize=14",
+  --   font_2 = "Typicons:pixelsiz=14",
+  --   font_3 = "Symbols Nerd Font Mono:pixelsize=16",
+  --   font_4 = "Cousine for Powerline:style=Bold:pixelsize=14",
+  --   font_5 = "",
+  -- }
+
   bar["separators"] = {
     tal   = "",
     tar   = "",
-    pos   = "right",
   }
 
   bar["symbols"] = {
@@ -51,6 +60,7 @@ function look.setup(bar)
     con  = "",
     wthr = "", -- U+E13B => typicons.ttf
     vol  = "",
+    fidx = 3,
   }
 
   bar["fmt"] = {

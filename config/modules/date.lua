@@ -7,6 +7,7 @@ function date.setup(bar)
     sfg     = bar.colors.sfg1,
     sbg     = bar.colors.sbg1,
     sep     = "",
+    idx     = bar.symbols.fidx,
     sp      = bar.fmt.sp,
     fmt     = "",
     d_fmt   = "date +'%a %d:%m:%Y %H.%M'",
@@ -29,10 +30,11 @@ function date.setup(bar)
     end),
 
     init = function ()
+      local idx     = bar.date.idx
       local sb      = bar.date.sbg
       local sf      = bar.date.sfg
       local symbol  = bar.date.sep
-      local sep     = bar.tools.separator(symbol, sf, sb, 3 )
+      local sep     = bar.tools.separator(symbol, sf, sb, idx)
       bar.date.sep  = sep
     end,
 

@@ -12,6 +12,7 @@ function connect.setup(bar)
     sp      = bar.fmt.sp,
     icon    = bar.symbols.con,
     st_qstr = "nmcli -f STATE -t device status",
+    idx     = bar.symbols.fidx,
     status  = "",
     secs    = 0,
     iv      = 2,
@@ -39,9 +40,10 @@ function connect.setup(bar)
     end),
 
     init = function()
+      local idx = bar.connect.idx
       --  Get connection status
       bar.connect.status = bar.tools.getprog(bar.connect.st_qstr)
-      local sep   = bar.tools.separator(bar.connect.sep, bar.connect.sfg, bar.connect.sbg, 3)
+      local sep   = bar.tools.separator(bar.connect.sep, bar.connect.sfg, bar.connect.sbg, idx)
       bar.connect.sep = sep
     end,
 

@@ -8,6 +8,7 @@ function tmp.setup(bar)
     sfg     = bar.colors.sfg1,
     sbg     = bar.colors.sbg3,
     sep     = bar.separators.tar,
+    idx     = bar.symbols.fidx,
     icon    = bar.symbols.temp,
     fmt     = "",
     sp      = bar.fmt.sp,
@@ -32,7 +33,7 @@ function tmp.setup(bar)
         bar.tmp.ct_cur  = string.sub(bar.tools.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
         bar.tmp.st_cur  = string.sub(bar.tools.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
         bar.tmp.gt_cur  = string.sub(bar.tools.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
-        bar.tmp.show = string.format("%s%s%s%s%s  %s%s  %s  %s",
+        bar.tmp.show = string.format("%s%s%s%s%s  %s  %s  %s %s",
           bc, sp, c2, icon, c1, bar.tmp.ct_cur, bar.tmp.st_cur, bar.tmp.gt_cur, sp)
         coroutine.yield()
       end
@@ -42,7 +43,8 @@ function tmp.setup(bar)
       local sf       = bar.tmp.sfg
       local sb       = bar.tmp.sbg
       local symbol   = bar.tmp.sep
-      local sep      = bar.tools.separator(symbol, sf, sb, 3 )
+      local idx      = bar.tmp.idx
+      local sep      = bar.tools.separator(symbol, sf, sb, idx)
       bar.tmp.sep    = sep
       bar.tmp.ct_cur = string.sub(bar.tools.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
       bar.tmp.st_cur = string.sub(bar.tools.getval(bar.tmp.st_qstr), 1, 2) .. "°C"

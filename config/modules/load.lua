@@ -7,6 +7,7 @@ function load.setup(bar)
     sfg           = bar.colors.sfg2,
     sbg           = bar.colors.sbg1,
     sep           = "",
+    idx           = bar.symbols.fidx,
     sp            = bar.fmt.sp,
     fmt           = "",
     icon          = bar.symbols.cpu,
@@ -76,7 +77,8 @@ function load.setup(bar)
       local sf      = bar.load.sfg
       local sb      = bar.load.sbg
       local symbol  = bar.load.sep
-      local sep     = bar.tools.separator(symbol, sf, sb, 3 )
+      local idx     = bar.load.idx
+      local sep     = bar.tools.separator(symbol, sf, sb, idx )
       bar.load.sep  = sep
     end
   }
