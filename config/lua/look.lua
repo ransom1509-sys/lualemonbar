@@ -41,7 +41,8 @@ function look.setup(bar)
   }
 
   bar["symbols"] = {
-    temp = "",
+    temp = "",
+    -- temp = "",
     fan  = "",
     cpu  = "", --> U+EB03 => Nerd Fonts
     -- cpu  = "",

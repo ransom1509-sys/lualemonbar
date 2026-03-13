@@ -8,16 +8,19 @@ function window.setup(bar)
     sfg     = bar.colors.sfg1,
     sbg     = bar.colors.sbg3,
     sp      = bar.fmt.sp,
+    width   = 64,
+    format  = "",
     w_str   = "xdotool getactivewindow getwindowname",
     show    = "",
     secs    = 0,
     iv      = 0.5,
 
     update = coroutine.create(function()
-      local c1  = bar.window.fgc1
-      local bc  = bar.window.bgc
-      local sp  = bar.window.sp
-      local fmt = bar.window.fmt
+      local c1     = bar.window.fgc1
+      local bc     = bar.window.bgc
+      local sp     = bar.window.sp
+      local fmt    = bar.window.fmt
+      local format = bar.window.format
       local wname
 
       while true do
@@ -25,7 +28,7 @@ function window.setup(bar)
         if wname == nil then
           wname = ''
         end
-          bar.window.show = string.format("%s%s%s%s %-48.48s%s", fmt, sp, c1, bc, wname, sp)
+          bar.window.show = string.format("%s%s%s%s" .. format, fmt, sp, c1, bc, wname, sp)
         coroutine.yield()
       end
     end),
@@ -35,7 +38,14 @@ function window.setup(bar)
       local sb         = bar.window.sbg
       local symbol     = bar.window.sep
       local sep        = bar.tools.separator(symbol, sf, sb, 3 )
-      bar.window.sep   = sep
+      local w    = bar.window.width
+      local l    = bar.window.width - 4
+      local f    = "-"
+      local p    = "."
+      local t    = "s"
+      local form = string.format("%%%s%d%s%d%s", f, w, p, l, t)
+      bar.window.sep    = sep
+      bar.window.format = form
     end
   }
 
