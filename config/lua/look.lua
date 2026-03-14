@@ -29,6 +29,7 @@ function look.setup(bar)
     sfg4      = "%{F#6a6f74}",
     unread    = "%{F#da5f8b}",
     connected = "%{F#99c867}",
+    unconnect = "%{F#444b6a}",
     inv       = "%{F#00b6c0e5}",
     bgstop    = "%{B-}",
     fgstop    = "%{F-}",
@@ -50,17 +51,17 @@ function look.setup(bar)
   }
 
   bar["symbols"] = {
-    temp = "",
+    temp    = "",
     -- temp = "",
-    fan  = "",
-    cpu  = "", --> U+EB03 => Nerd Fonts
+    fan     = "",
+    cpu     = "", --> U+EB03 => Nerd Fonts
     -- cpu  = "",
-    mail = "", -- U+E0E1 => typicons.ttf
-    net  = "", -- U+E059 => typicons.ttf
-    con  = "",
-    wthr = "", -- U+E13B => typicons.ttf
-    vol  = "",
-    fidx = 3,
+    mail    = "", -- U+Eb1c => tNerd Fonts
+    mai_new = "", -- U+Eb1c => tNerd Fonts
+    net     = "", -- U+EB7B => Nerd Fonts
+    wthr    = "", -- UE13B => typicons.ttf
+    vol     = "",
+    fidx    = 3,
   }
 
   bar["fmt"] = {
