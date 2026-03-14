@@ -95,6 +95,11 @@ function lemonbar.init(bar)
   bar.init()
 end
 
+function lemonbar.cmd(bar)
+  local cmd = bar.settings.cmd
+  return cmd
+end
+
 function lemonbar.show(bar, cmd)
   bar.show(cmd)
 end
