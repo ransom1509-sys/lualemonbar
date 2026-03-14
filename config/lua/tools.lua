@@ -2,7 +2,7 @@ local tools = {}
 function tools.setup(bar)
   bar["tools"] = {
     getval = function(filename)
-      local fp    = assert(io.open(filename, "r"))
+      local fp    = assert(io.open(filename, "r"), "no value")
       local line  = fp:read("*line")
       fp:close()
       return line

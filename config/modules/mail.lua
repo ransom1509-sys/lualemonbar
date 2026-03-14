@@ -13,7 +13,7 @@ function mail.setup(bar)
     icon    = bar.symbols.mail,
     new     = bar.symbols.mail_new,
     mails   = 0,
-    nm_qstr = "claws-mail --status | cut -d ' ' -f 2",
+    nm_qstr = "",
     secs    = 0,
     iv      = 2,
     show    = "",

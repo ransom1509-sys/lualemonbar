@@ -11,12 +11,13 @@ function date.setup(bar)
     sp      = bar.fmt.sp,
     fmt     = "",
     d_fmt   = "date +'%a %d:%m:%Y %H.%M'",
+    action  = "",
     iv      = 60,
     secs    = 0;
     show    = "",
     update  = coroutine.create(function ()
       local today
-      local action  = "toggle.sh rainlendar2 &"
+      local action  = bar.date.action
       local bc      = bar.date.bgc
       local c1      = bar.date.fgc1
       local sp      = bar.date.sp

@@ -6,8 +6,9 @@ function volume.setup(bar)
     bgc       = bar.colors.bgc1,
     sfg       = bar.colors.sfg1,
     sbg       = bar.colors.sbg3,
-    v_get_str = "pactl get-sink-volume @DEFAULT_SINK@ | cut -d ' ' -f 3",
-    v_set_str = "pactl set-sink-volume @DEFAULT_SINK@ ",
+    v_get_str = "",
+    v_set_str = "",
+    action    = "",
     cur_vol   = 0,
     prev_vol  = 0,
     vol_up    = 0,
@@ -30,7 +31,7 @@ function volume.setup(bar)
       local bc      = bar.volume.bgc
       local sp      = bar.volume.sp
       local percent = bar.volume.vol_perc
-      local action  = "pavucontrol"
+      local action  = bar.volume.action
       local up      = tostring(bar.volume.vol_up)
       local down    = tostring(bar.volume.vol_down)
       local inc     = bar.volume.v_set_str .. up

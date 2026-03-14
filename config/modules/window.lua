@@ -11,7 +11,7 @@ function window.setup(bar)
     sp      = bar.fmt.sp,
     width   = 64,
     format  = "",
-    w_str   = "xdotool getactivewindow getwindowname",
+    w_str   = "",
     show    = "",
     secs    = 0,
     iv      = 0.5,
@@ -34,16 +34,16 @@ function window.setup(bar)
     end),
 
     init = function ()
-      local sf         = bar.window.sfg
-      local sb         = bar.window.sbg
-      local symbol     = bar.window.sep
-      local idx        = bar.window.idx
-      local sep        = bar.tools.separator(symbol, sf, sb, idx)
-      local w    = bar.window.width
-      local l    = bar.window.width - 4
-      local f    = "-"
-      local p    = "."
-      local t    = "s"
+      local sf     = bar.window.sfg
+      local sb     = bar.window.sbg
+      local symbol = bar.window.sep
+      local idx    = bar.window.idx
+      local sep    = bar.tools.separator(symbol, sf, sb, idx)
+      local w      = bar.window.width
+      local l      = bar.window.width - 4
+      local f      = "-"
+      local p      = "."
+      local t      = "s"
       local form = string.format("%%%s%d%s%d%s", f, w, p, l, t)
       bar.window.sep    = sep
       bar.window.format = form

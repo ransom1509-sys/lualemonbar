@@ -11,7 +11,7 @@ function load.setup(bar)
     sp            = bar.fmt.sp,
     fmt           = "",
     icon          = bar.symbols.cpu,
-    st_qstr       = "/proc/stat",
+    st_qstr       = "",
     cpu_last      = 0,
     cpu_last_sum  = 0,
     cpu_load      = 0,
