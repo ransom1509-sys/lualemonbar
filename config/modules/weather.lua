@@ -14,13 +14,14 @@ function weather.setup(bar)
     sp      = "",
     icon    = "",
     w_qstr  = "ansiweather | cut -d ':' -f 2",
+    action  = "kitty --name 'wetter' --title 'wetter' -o font_size=10 wetter.sh &",
     cur     = "",
     iv      = 3600,
     secs    = 0,
     show    = "",
 
     update = coroutine.create(function ()
-      local action  = "kitty --name 'wetter' --title 'wetter' -o font_size=10 wetter.sh &"
+      local action  = bar.weather.action
       local c1      = bar.weather.fgc1
       local bc      = bar.weather.bgc
       local w_str   = string.format("%%{A:%s:}%s%%{A}", action, bar.weather.cur)
