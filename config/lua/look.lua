@@ -3,7 +3,7 @@ function look.setup(bar)
   bar["settings"] = {
     timer   = 1,
     init    = os.getenv("HOME") .. "/.config/lualemonbar/",
-    modules_l = "date weather volume Window tmp fan load net mail connect"
+    modules_l = "date weather volume Window tmp fan load net mail"
   }
 
   bar["colors"] = {
