@@ -1,7 +1,7 @@
 local date = {}
 function date.setup(bar)
   bar["date"] = {
-    fgc1    = bar.colors.fgc3,
+    fgc1    = bar.colors.fgc1,
     fgc2    = bar.colors.fgc1,
     bgc     = bar.colors.bgc1,
     sfg     = bar.colors.sfg1,
@@ -23,7 +23,7 @@ function date.setup(bar)
 
       while true do
         today = bar.tools.getprog(bar.date.d_fmt)
-        bar.date.show = string.format("%s%s%s %%{A:%s:}%s%%{A} %s",
+        bar.date.show = string.format("%s%s%s %%{A:%s:}%s%%{A}%s",
           bc, sp, c1, action, today, sp)
         coroutine.yield()
       end

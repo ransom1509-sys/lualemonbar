@@ -20,7 +20,6 @@ function window.setup(bar)
       local c1     = bar.window.fgc1
       local bc     = bar.window.bgc
       local sp     = bar.window.sp
-      local fmt    = bar.window.fmt
       local format = bar.window.format
       local wname
 
@@ -29,7 +28,7 @@ function window.setup(bar)
         if wname == nil then
           wname = ''
         end
-          bar.window.show = string.format("%s%s%s%s" .. format, fmt, bc, sp, c1, wname, sp)
+          bar.window.show = string.format("%s%s%s" .. format, bc, sp, c1, wname, sp)
         coroutine.yield()
       end
     end),

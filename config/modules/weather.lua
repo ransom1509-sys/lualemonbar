@@ -29,7 +29,7 @@ function weather.setup(bar)
 
       while true do
         bar.weather.cur = bar.tools.getprog(bar.weather.w_qstr)
-        bar.weather.show = string.format("%s%s%s %s %s", bc, sp, c1, w_str, sp)
+        bar.weather.show = string.format("%s%s%s%s%s", bc, sp, c1, w_str, sp)
         coroutine.yield()
       end
     end),

@@ -19,11 +19,10 @@ function spacer.setup(bar)
       local c1     = bar.spacer.fgc1
       local bc     = bar.spacer.bgc
       local sp     = bar.spacer.sp
-      local fmt    = bar.spacer.fmt
       local format = bar.spacer.format
 
       while true do
-          bar.spacer.show = string.format("%s%s%s%s" .. format, fmt, sp, c1, bc, " ", sp)
+          bar.spacer.show = string.format("%s%s%s" .. format, bc, sp, c1, " ", sp)
         coroutine.yield()
       end
     end),

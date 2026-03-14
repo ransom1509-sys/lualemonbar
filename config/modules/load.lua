@@ -26,12 +26,11 @@ function load.setup(bar)
       local cpu_idle  = 0
       local cpu_used  = 0
       local cpu
-      local c1      = bar.load.fgc1
-      local c2      = bar.load.fgc2
-      local bc      = bar.load.bgc
-      local icon    = bar.load.icon
-      local sep     = bar.load.sep
-      local sp      = bar.load.sp
+      local c1        = bar.load.fgc1
+      local c2        = bar.load.fgc2
+      local bc        = bar.load.bgc
+      local icon      = bar.load.icon
+      local sp        = bar.load.sp
       local cpu_usage = 0
 
       while true do
