@@ -3,7 +3,8 @@ local net = {}
 function net.setup(bar)
   bar["net"] = {
     fgc1    = bar.colors.fgc1,
-    fgc2    = bar.colors.fgc4,
+    fgc2    = bar.colors.connected,
+    fgc3    = bar.colors.unconnect,
     bgc     = bar.colors.bgc1,
     sfg     = bar.colors.sfg1,
     sbg     = bar.colors.sbg2,
@@ -20,6 +21,8 @@ function net.setup(bar)
     tx_qstr = "/sys/class/net/eth1/statistics/tx_bytes",
     rx_rate = 0,
     tx_rate = 0,
+    st_qstr = "nmcli -f STATE -t device status",
+    status  = "",
     secs    = 0,
     iv      = 2,
     show    = "",
@@ -33,6 +36,14 @@ function net.setup(bar)
       local sp      = bar.net.sp
 
       while true do
+        bar.net.status = bar.tools.getprog(bar.net.st_qstr)
+        if bar.net.status == "connected" then
+          c2 = bar.net.fgc2
+          c1 = bar.net.fgc1
+        else
+          c2 = bar.net.fgc3
+          c1 = bar.net.fgc3
+        end
         --   Calculate tx in keyiB/s
         bar.net.rx_cur  = bar.tools.getval(bar.net.rx_qstr)
         bar.net.rx_rate = string.format("%.1f", ((bar.net.rx_cur - bar.net.rx_last) / 1024) / bar.settings.timer)
