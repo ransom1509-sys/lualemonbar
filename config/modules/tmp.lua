@@ -33,7 +33,7 @@ function tmp.setup(bar)
         bar.tmp.ct_cur  = string.sub(bar.tools.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
         bar.tmp.st_cur  = string.sub(bar.tools.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
         bar.tmp.gt_cur  = string.sub(bar.tools.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
-        bar.tmp.show = string.format("%s%s%s%s%s  %s  %s  %s %s",
+        bar.tmp.show = string.format("%s%s%s%s%s %s %s %s %s",
           bc, sp, c2, icon, c1, bar.tmp.ct_cur, bar.tmp.st_cur, bar.tmp.gt_cur, sp)
         coroutine.yield()
       end

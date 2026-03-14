@@ -29,7 +29,7 @@ function fan.setup(bar)
       while true do
         bar.fan.cf_cur  = bar.tools.getval(bar.fan.cf_qstr)
         bar.fan.sf_cur  = bar.tools.getval(bar.fan.sf_qstr)
-        bar.fan.show = string.format("%s%s%s  %s  %s%4d  %4d%s",
+        bar.fan.show = string.format("%s%s%s %s %s%4d  %4d%s",
           bc, sp, c2, icon, c1, bar.fan.cf_cur, bar.fan.sf_cur, sp)
         coroutine.yield()
       end
