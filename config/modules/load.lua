@@ -3,7 +3,7 @@ function load.setup(bar)
   bar["load"] = {
     fgc1          = bar.colors.fgc1,
     fgc2          = bar.colors.fgc6,
-    bgc           = bar.colors.bgc2,
+    bgc           = bar.colors.bgc1,
     sfg           = bar.colors.sfg2,
     sbg           = bar.colors.sbg1,
     sep           = "",
