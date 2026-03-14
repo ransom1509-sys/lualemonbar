@@ -14,6 +14,7 @@ function example.setup(bar)
     secs    = 0;                -- Internal counter, required.
     show    = "",               -- What the module returns, required.
     sep     = "",               -- Character or glyph used as Separator.
+    idx     = bar.symbols.fidx, -- Index symbol font,
     icon    = "Count:",         -- Label or glyph for the modul.
     fmt     = "",               -- Alignmen tleft, center, right), required
                                 -- Impacts all following modules.
@@ -44,7 +45,8 @@ function example.setup(bar)
       local sf        = bar.example.sfg
       local sb        = bar.example.sbg
       local symbol    = bar.example.sep
-      local sep       = bar.tools.separator(symbol, sf, sb, 3 )
+      local idx       = bar.example.idx
+      local sep       = bar.tools.separator(symbol, sf, sb, idx )
       bar.example.sep = sep
     end,
 
