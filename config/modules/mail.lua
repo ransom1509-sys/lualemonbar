@@ -11,6 +11,7 @@ function mail.setup(bar)
     sp      = bar.fmt.sp,
     fmt     = "",
     icon    = bar.symbols.mail,
+    new     = bar.symbols.mail_new,
     mails   = 0,
     nm_qstr = "claws-mail --status | cut -d ' ' -f 2",
     secs    = 0,
@@ -29,6 +30,7 @@ function mail.setup(bar)
       bar.mail.mails = tonumber(bar.tools.getprog(bar.mail.nm_qstr))
       if bar.mail.mails ~= nil and bar.mail.mails > 0 then
        mc = c2
+       icon = bar.mail.new
       else
        mc = c1
       end
