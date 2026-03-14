@@ -33,6 +33,7 @@ function mail.setup(bar)
        icon = bar.mail.new
       else
        mc = c1
+       icon = bar.mail.icon
       end
       bar.mail.show = string.format("%s%s%s%s%s", bc, sp, mc, icon, sp)
       coroutine.yield()
