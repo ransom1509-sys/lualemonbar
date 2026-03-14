@@ -29,7 +29,7 @@ function window.setup(bar)
         if wname == nil then
           wname = ''
         end
-          bar.window.show = string.format("%s%s%s%s" .. format, fmt, sp, c1, bc, wname, sp)
+          bar.window.show = string.format("%s%s%s%s" .. format, fmt, bc, sp, c1, wname, sp)
         coroutine.yield()
       end
     end),
