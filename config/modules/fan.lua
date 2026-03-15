@@ -18,6 +18,7 @@ function fan.setup(bar)
     iv      = 5,
     secs    = 0,
     show    = "",
+    enabled = false,
 
     update = coroutine.create(function()
       local c1      = bar.fan.fgc1
@@ -25,8 +26,9 @@ function fan.setup(bar)
       local bc      = bar.fan.bgc
       local icon    = bar.fan.icon
       local sp      = bar.fan.sp
+      local enabled = bar.fan.enabled
 
-      while true do
+      while enabled do
         bar.fan.cf_cur  = bar.tools.getval(bar.fan.cf_qstr)
         bar.fan.sf_cur  = bar.tools.getval(bar.fan.sf_qstr)
         bar.fan.show = string.format("%s%s%s %s %s%4d  %4d%s",

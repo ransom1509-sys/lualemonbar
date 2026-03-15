@@ -17,6 +17,7 @@ function mail.setup(bar)
     secs    = 0,
     iv      = 2,
     show    = "",
+    enabled = false,
 
     update = coroutine.create(function ()
     local c1    = bar.mail.fgc1
@@ -25,7 +26,9 @@ function mail.setup(bar)
     local bc    = bar.mail.bgc
     local icon  = bar.mail.icon
     local sp    = bar.mail.sp
-    while true do
+    local enabled = bar.mail.enabled
+
+    while enabled do
     --   New mails?
       bar.mail.mails = tonumber(bar.tools.getprog(bar.mail.nm_qstr))
       if bar.mail.mails ~= nil and bar.mail.mails > 0 then

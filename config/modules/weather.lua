@@ -19,6 +19,7 @@ function weather.setup(bar)
     iv      = 3600,
     secs    = 0,
     show    = "",
+    enabled = false,
 
     update = coroutine.create(function ()
       local action  = bar.weather.action
@@ -26,8 +27,10 @@ function weather.setup(bar)
       local bc      = bar.weather.bgc
       local w_str   = string.format("%%{A:%s:}%s%%{A}", action, bar.weather.cur)
       local sp      = bar.weather.sp
+      local enabled = bar.weather.enabled
 
-      while true do
+      while enabled do
+        print("Weather updating")
         bar.weather.cur = bar.tools.getprog(bar.weather.w_qstr)
         bar.weather.show = string.format("%s%s%s%s%s", bc, sp, c1, w_str, sp)
         coroutine.yield()

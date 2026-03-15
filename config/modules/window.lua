@@ -15,15 +15,17 @@ function window.setup(bar)
     show    = "",
     secs    = 0,
     iv      = 0.5,
+    enabled = false,
 
     update = coroutine.create(function()
       local c1     = bar.window.fgc1
       local bc     = bar.window.bgc
       local sp     = bar.window.sp
       local format = bar.window.format
+      local enabled = bar.window.enabled
       local wname
 
-      while true do
+      while enabled do
         wname = bar.tools.getprog(bar.window.w_str)
         if wname == nil then
           wname = ''
@@ -47,6 +49,7 @@ function window.setup(bar)
       local form = string.format("%%%s%d%s%d%s", f, w, p, l, t)
       bar.window.sep    = sep
       bar.window.format = form
+      local test = bar.tools.getprog(bar.window.w_str)
     end
   }
 

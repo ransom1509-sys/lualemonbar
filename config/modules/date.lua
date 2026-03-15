@@ -15,14 +15,16 @@ function date.setup(bar)
     iv      = 60,
     secs    = 0;
     show    = "",
+    enabled = false,
     update  = coroutine.create(function ()
       local today
       local action  = bar.date.action
       local bc      = bar.date.bgc
       local c1      = bar.date.fgc1
       local sp      = bar.date.sp
+      local enabled = bar.date.enabled
 
-      while true do
+      while enabled do
         today = bar.tools.getprog(bar.date.d_fmt)
         bar.date.show = string.format("%s%s%s %%{A:%s:}%s%%{A}%s",
           bc, sp, c1, action, today, sp)
@@ -37,6 +39,7 @@ function date.setup(bar)
       local symbol  = bar.date.sep
       local sep     = bar.tools.separator(symbol, sf, sb, idx)
       bar.date.sep  = sep
+      bar.tools.getprog(bar.date.d_fmt)
     end,
 
   }

@@ -2,17 +2,24 @@ local tools = {}
 function tools.setup(bar)
   bar["tools"] = {
     getval = function(filename)
-      local fp    = assert(io.open(filename, "r"), "no value")
-      local line  = fp:read("*line")
-      fp:close()
-      return line
+      local line
+      local fp = io.open(filename, "r")
+      if fp then
+        line = fp:read("*line")
+        fp:close()
+        return line
+      end
+      error()
     end,
 
     getprog = function(program)
-      local prg   = assert(io.popen(program, "r"))
-      local line  = prg:read("*line")
-      prg:close()
-      return line
+      local line
+      local prg = io.popen(program, "r")
+      if prg then
+        line = prg:read("*line")
+        if line ~= nil then return line end
+      end
+      error()
     end,
 
     separator = function (sep, fg, bg, index)

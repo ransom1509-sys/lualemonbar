@@ -25,6 +25,7 @@ function net.setup(bar)
     status  = "",
     secs    = 0,
     iv      = 2,
+    enabled = false,
     show    = "",
 
     update = coroutine.create(function()
@@ -34,8 +35,9 @@ function net.setup(bar)
       local icon    = bar.net.icon
       local bc      = bar.net.bgc
       local sp      = bar.net.sp
+      local enabled = bar.net.enabled
 
-      while true do
+      while enabled do
         bar.net.status = bar.tools.getprog(bar.net.st_qstr)
         if bar.net.status == "connected" then
           c2 = bar.net.fgc2
@@ -68,6 +70,7 @@ function net.setup(bar)
       local idx       = bar.net.idx
       local sep       = bar.tools.separator(symbol, sf, sb, idx)
       bar.net.sep     = sep
+      bar.net.status = bar.tools.getprog(bar.net.st_qstr)
       bar.net.rx_last = bar.tools.getval(bar.net.rx_qstr)
       bar.net.tx_last = bar.tools.getval(bar.net.tx_qstr)
 

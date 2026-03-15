@@ -48,10 +48,14 @@ function lemonbar.setup()
     bar.tools.mergetables(bar, conf)
 
     for _, val in pairs(module_table) do
-      bar[val].init()
-      if bar[val].fmt == nil then bar[val].fmt = "" end
-      if bar[val].sep == nil then bar[val].sep = "" end
-      coroutine.resume(bar[val].update)
+      if pcall(bar[val].init) then
+        bar[val].enabled = true
+        if bar[val].fmt == nil then bar[val].fmt = "" end
+        if bar[val].sep == nil then bar[val].sep = "" end
+        coroutine.resume(bar[val].update)
+      else
+        bar[val].show = val .. ": error"
+      end
     end
 
   end

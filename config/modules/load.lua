@@ -18,6 +18,7 @@ function load.setup(bar)
     iv            = 5,
     secs          = 0,
     show          = "",
+    enabled       = false,
 
     update = coroutine.create(function ()
       local cpu_now   = {}
@@ -32,8 +33,9 @@ function load.setup(bar)
       local icon      = bar.load.icon
       local sp        = bar.load.sp
       local cpu_usage = 0
+      local enabled   = bar.load.enabled
 
-      while true do
+      while enabled do
         -- get cpu stats
         cpu_now = {}
         cpu_sum   = 0
@@ -79,6 +81,7 @@ function load.setup(bar)
       local idx     = bar.load.idx
       local sep     = bar.tools.separator(symbol, sf, sb, idx )
       bar.load.sep  = sep
+      bar.tools.getval(bar.load.st_qstr)
     end
   }
 

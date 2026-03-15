@@ -24,6 +24,7 @@ function volume.setup(bar)
     secs      = 0,
     iv        = 2,
     show      = "",
+    enabled   = false,
 
     update = coroutine.create(function ()
       local symbol  = bar.volume.icon
@@ -36,8 +37,9 @@ function volume.setup(bar)
       local down    = tostring(bar.volume.vol_down)
       local inc     = bar.volume.v_set_str .. up
       local dec     = bar.volume.v_set_str .. down
+      local enabled = bar.volume.enabled
 
-      while true do
+      while enabled do
         bar.volume.cur_vol  = bar.tools.getprog(bar.volume.v_get_str)
 
         -- if bar.volume.cur_vol ~= bar.volume.prev_vol then

@@ -18,6 +18,7 @@ function example.setup(bar)
     icon    = "Count:",         -- Label or glyph for the modul.
     fmt     = "",               -- Alignmen tleft, center, right), required
                                 -- Impacts all following modules.
+    enabled = false,            -- bar.init() sets this true, if init succeeds                -- 
 
     -- implement update() as coroutine
     -- bar.show() calls coroutine.resume(bar[<module>][update])
@@ -26,8 +27,9 @@ function example.setup(bar)
       local bc    = bar.example.bgc
       local icon  = bar.example.icon
       local i     = 1
+      local enabled = bar.example.enabled
 
-      while true do
+      while enabled do
         -- The actual modul code
         bar.example.show = string.format("%s%s%s %s ", bc, c1, icon, tostring(i))
         if i >= 10 then

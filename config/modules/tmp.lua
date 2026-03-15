@@ -21,15 +21,17 @@ function tmp.setup(bar)
     secs    = 0,
     iv      = 5,
     show    = "",
+    enabled = false,
 
     update  = coroutine.create(function()
       local c1      = bar.tmp.fgc1
       local c2      = bar.tmp.fgc2
       local bc      = bar.tmp.bgc
       local icon    = bar.tmp.icon
-      local sp     = bar.tmp.sp
+      local sp      = bar.tmp.sp
+      local enabled = bar.tmp.enabled
 
-      while true do
+      while enabled do
         bar.tmp.ct_cur  = string.sub(bar.tools.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
         bar.tmp.st_cur  = string.sub(bar.tools.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
         bar.tmp.gt_cur  = string.sub(bar.tools.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
