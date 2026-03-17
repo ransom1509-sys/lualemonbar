@@ -17,7 +17,8 @@ function tools.setup(bar)
       local prg = io.popen(program, "r")
       if prg then
         line = prg:read("*line")
-        if line ~= nil then return line end
+        prg:close()
+        return line
       end
       error()
     end,
