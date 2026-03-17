@@ -1,3 +1,5 @@
+-- CPU load  modul for lualemonbar
+-- (c) 2026 - Jörg stadermann <mail@jstadermann.de>
 local load = {}
 function load.setup(bar)
   bar["load"] = {

@@ -1,3 +1,5 @@
+-- Mail notification modul for lualemonbar
+-- (c) 2026 - Jörg stadermann <mail@jstadermann.de>
 local mail = {}
 function mail.setup(bar)
   bar["mail"] = {

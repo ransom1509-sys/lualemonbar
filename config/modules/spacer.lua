@@ -1,3 +1,5 @@
+-- Spacer modul for lualemonbar
+-- (c) 2026 - Jörg stadermann <mail@jstadermann.de>
 local spacer = {}
 function spacer.setup(bar)
   bar["spacer"] = {

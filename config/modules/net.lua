@@ -1,4 +1,6 @@
 
+-- Net traffic modul for lualemonbar
+-- (c) 2026 - Jörg stadermann <mail@jstadermann.de>
 local net = {}
 function net.setup(bar)
   bar["net"] = {

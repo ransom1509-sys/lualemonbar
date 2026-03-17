@@ -1,3 +1,4 @@
+-- Fan modul for lualemonbar
 local fan = {}
 function fan.setup(bar)
   bar["fan"] = {

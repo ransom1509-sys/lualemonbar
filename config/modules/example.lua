@@ -2,6 +2,7 @@
 -- Edit config.ini and add "example" to [settings] -> modules to see it running.
 -- Add header [example] to config.ini, place some field names (e.g. fgc1 below the
 -- header and play around with the module.
+-- (c) 2026 - Jörg stadermann <mail@jstadermann.de>
 local  example = {}
 function example.setup(bar)
 -- Anything availlable for config.ini must be decalared here

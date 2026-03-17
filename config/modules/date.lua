@@ -1,3 +1,5 @@
+-- Date modul for lualemonbar
+-- (c) 2026 - Jörg stadermann <mail@jstadermann.de>
 local date = {}
 function date.setup(bar)
   bar["date"] = {

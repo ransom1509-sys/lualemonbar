@@ -1,3 +1,5 @@
+-- Volume control modul for lualemonbar
+-- (c) 2026 - Jörg stadermann <mail@jstadermann.de>
 local volume = {}
 function volume.setup(bar)
   bar["volume"] = {

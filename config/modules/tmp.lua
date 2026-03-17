@@ -1,4 +1,6 @@
 
+-- Temperature modul for lualemonbar
+-- (c) 2026 - Jörg stadermann <mail@jstadermann.de>
 local  tmp = {}
 function tmp.setup(bar)
   bar["tmp"] = {

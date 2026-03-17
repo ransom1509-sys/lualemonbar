@@ -1,3 +1,5 @@
+--Active window modul for lualemonbar
+-- (c) 2026 - Jörg stadermann <mail@jstadermann.de>
 local window = {}
 function window.setup(bar)
   bar["window"] = {
