@@ -30,7 +30,6 @@ function weather.setup(bar)
       local enabled = bar.weather.enabled
 
       while enabled do
-        print("Weather updating")
         bar.weather.cur = bar.tools.getprog(bar.weather.w_qstr)
         bar.weather.show = string.format("%s%s%s%s%s", bc, sp, c1, w_str, sp)
         coroutine.yield()
