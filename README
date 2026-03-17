@@ -1,0 +1,221 @@
+Lualemonbar - A lightweight lua wrapper for lemonbar.
+
+About
+
+Lualemonbar is a wrapper for lemonbar that provides a configuration interface for lemonbar or lemonbar-xft, thereby keeping lemonbar as light as possible.
+Lualemonbar allows the configuration of almost every lemonbar feature through a config.ini file. Lualemonbar also allws the configuration of all used modules, if there attributes are exposed to config.ini.
+
+Motivation
+
+I use lemonbar exclusively in my WMs (mostly fluxbox) but the scripts providing the data became larger and larger. Lemonbar's performance sufferd and making changes to settings became increasingly difficult. So I decided to rewrite my script with thee goals in my mind: Make my script modular, make each bar module a self contained, loadable unit and make it easy to configure. As time went by, what started as QoL features for myslf now has become a full blown application, hopefully being useful for others as well. 
+
+Features
+
+With lualemonbar you can
+
+- set the lemonbar start command
+- define colors
+- define glyphs for icons (requires lemonbar-xft and a symbol font)
+- set the modules diisplay order
+- set what modules to load
+- add new modules using a module template
+- set individual update intervals
+- set update intervals < 1s (requires LuaSocket)
+- set lemonbar formating options (left center right)
+- set module padding
+- set a spacer of variable length
+- use different symbol fonts for separators
+- define separators (global or for individual modules)
+- usr themes or create your own
+
+Except for writing modules, all is done through one config.ini file.
+
+Lualemonbar is lightweight.
+Lemonbar running through lualemonbar with an update interval of 0.5 seconds, has a cpu usage of 0.2 - 0.5 percent and uses 9 MB memory. 
+
+Installation
+
+Configuration
+
+Format of config.ini
+
+The config.ini file has the standard .ini file format, looking like this
+
+[section]
+value_1 = "foo"
+value_2 = "bar"
+
+In lualemonbar's config.ini three types of values are supported: strings, numbers and references
+
+[section] 
+string = "this is a string"
+number = 6
+my_string = section.string
+
+Sections and var names do not have quotes or white space in their names.
+Strings are always quoted and may contain spaces.
+References are not quoted.
+
+The options
+
+[settings]
+Head for general options
+
+timer = 1
+The max number of updates per secondTr modules
+Important: Changing the timer value does not change any update interval.
+Update intervals are changed in the individual modules.
+
+modules = "date weather volume spacer window tmp fan load net mail"
+Whhich modules to load and their placement.
+
+cmd = "lemonbar -g 1920x16+0+0 -p -f \'Cousine for Powerline:pixelsize=14\' -f Typicons:pixelsize=16 -f \'Symbols Nerd Font Mono:pixelsize=16\' -f  \'Cousine for Powerline:style=Bold:pixelsize=14\' -B#ff1a1b26 | /bin/sh"
+
+The lemonbar command. Note the escapüing.
+
+[colors]
+bgc1 =  "%{B#1a1b26}"
+fgc1 =  "%{F#b6c0e9}"
+sbg1 =  "%{B#1a1b26}"
+sfg1 =  "%{F#1a1b26}"
+
+Colors can have any name, but the bar modules use the convention
+
+bgc[number] = background color
+fgc[number] = forground color
+sbg[number] = separators background color
+sfg[number] = separators forground color
+
+where fgc1 is the text color and fgc2 is the label/icon color.
+However your own bar modules can use any color names.
+
+[symbols]
+
+Bar modules
+
+Lualemonbar currently provides 12 bar modules (or plugins, if you prefer) and there are more to come.
+
+Available modules:
+
+Cpu:
+- shows cpu usage in percent
+- show average of all cpus combined
+- usage is calculated from /proc/stat
+- only the data source (/proc/stat) can be changed
+
+Date: 
+- shows date and time
+- has a button (e.g. for calling a calendar app) 
+- Dat and timeformat changed in config.ini
+- button action can be changed in config.ini
+
+Example
+- module template
+- shows a simple counter
+- can be used to create your own Modules
+
+Fan:
+- shows current speed of cpu fan and system fan
+- calls used can be adated to your system in config.ini
+
+Mail:
+- innforms about new Mail
+- the program used for new mail notification can be set in config.ini
+
+Net:
+- Shows in/out trafic in KiB/s and connectioon status for wired connections
+- the net interface and data source can be changed in config.ini
+
+Spacer:
+- creates a space of variable length
+- useful for module placing and left side separators (see Configuration)
+
+Tmp:
+- shows current cpu/system/gpu temperature
+- calls used can be adapted to your system in config.ini
+
+Top
+- displays the top cpu/mem process
+- calls can be configured in config.ini
+
+Volume:
+- shows volume in percent
+- has left/middle/right click buttons for volume control (pactl and pavucontrol)
+- commands can be changes in config.ini
+  
+Weather:
+- uses ansiweather for actual weather
+- has a button (e.g. to call wego or wttr.in)
+- weather app and button command can be changed in config.ini
+
+Window:
+. displays the name of the active window (requires xdotool)  
+- xdotool prorbably will be replaced by a native solution
+- command can be changed in config.ini
+- length of window title display can be set in config.ini 
+
+The appearance of each module can be configured in config.ini.
+
+I can not provide modules for WiFi or battery status, my portables are all Android devices, but you are welcome to contribute any wireless, battery or other missing modules (see Contributing).
+
+How does it work
+
+You do not invoke lualmonbar the usual way, like "myscript | lemonbar -p". Lualemonbar is a stanalone executable, using the setup(), init(), cmd() and show() functions provided by lemonbar.lua. After installation and some setup steps (see Installation), put it in your path and run "lualemonbar".
+
+The heavy lifting is done by lemonbar.init(): 
+
+- loading additional required lua modules
+- adapting package.path
+- checking for congfig.ini
+- generating config.lua from config.ini
+- merging config.lua with the defaults
+- building a bar module table 
+- loading the wanted bar modules
+- merge configuration for loaded bar modules
+- testing the bar modules init() functions and enable on succes
+
+Bar modules are loaded from lualemonbar/modules with require()
+and the modules setup() function.
+
+All bar Modules have an update() function, implemented as coroutine:
+
+      local enabled = bar.mymodule.enabledd
+      update = coroutine.create(function()
+
+      while enabled do
+        -- The actual modul code
+        code_to_get_some_data_to_display
+        bar.mymodule.show = string.format(<data>)
+        coroutine.yield()
+      end
+    end),
+
+The bar module's enabled flag is set by lemonbar.init()
+
+      if pcall(bar[mymodule].init) then
+        bar[mymodule].enabled = true
+      else
+        bar[mymodule].show = "mymodule" .. ": error"
+      end
+
+      The pcall() test only works when mymodule.init() contains
+
+        code_to_get_some_data_to_display
+
+      When not, enabled is set to true, regardless, of any errors caused
+      by the code in update() (e.g. program does not exist).
+      Unless something else went wrong in init(), that is.
+
+
+
+The data to display in the bar is piped to lemonbar by lemonbar.show() 
+
+    local pipe_out = assert(io.popen(cmd, "w"))
+      
+    pipe_out:write(<data> .. "\n")
+    pipe_out:flush()
+
+    where "cmd" is the actual lemonbar start command 
+    retrieved from config.ini (e.g. "lemonbar -p")
+
+    <data> is read from bar.mymodule.show
