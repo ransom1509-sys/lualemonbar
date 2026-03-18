@@ -1,13 +1,10 @@
-Lualemonbar - A lightweight lua wrapper for lemonbar.
+LualemoOLua
 
 About
 
+lemonbarnbar - A lightweight lua wrapper for lemonbar.
 Lualemonbar is a wrapper for lemonbar that provides a configuration interface for lemonbar or lemonbar-xft, thereby keeping lemonbar as light as possible.
 Lualemonbar allows the configuration of almost every lemonbar feature through a config.ini file. Lualemonbar also allws the configuration of all used modules, if there attributes are exposed to config.ini.
-
-Motivation
-
-I use lemonbar exclusively in my WMs (mostly fluxbox) but the scripts providing the data became larger and larger. Lemonbar's performance sufferd and making changes to settings became increasingly difficult. So I decided to rewrite my script with thee goals in my mind: Make my script modular, make each bar module a self contained, loadable unit and make it easy to configure. As time went by, what started as QoL features for myslf now has become a full blown application, hopefully being useful for others as well. 
 
 Features
 
@@ -33,7 +30,25 @@ Except for writing modules, all is done through one config.ini file.
 Lualemonbar is lightweight.
 Lemonbar running through lualemonbar with an update interval of 0.5 seconds, has a cpu usage of 0.2% - 0.5% and uses 9 MB memory. 
 
+Motivation
+
+I use lemonbar exclusively in my WMs (mostly fluxbox) but the scripts providing the data became larger and larger. Lemonbar's performance sufferd and making changes to settings became increasingly difficult. So I decided to rewrite my script with thee goals in my mind: Make my script modular, make each bar module a self contained, loadable unit and make it easy to configure. As time went by, what started as QoL features for myslf now has become a full blown application, hopefully being useful for others as well. 
+
 Installation
+
+Clone the repositry
+
+  git clone https://githup.com/ransom1509-sys/lualemonbar
+
+or download the compressed archive and extract
+
+Go to location of the downloaded repositry
+
+  cd /path_to_lualemonbar_src
+
+Copy the lualemonbar folder to $HOME/.config
+  cp -R lualemonbar/ $HOME/.config/
+
 
 Configuration
 
