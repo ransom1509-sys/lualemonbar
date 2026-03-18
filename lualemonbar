@@ -1,5 +1,5 @@
 #!/usr/bin/lua
-package.path = package.path .. ";" .. os.getenv("HOME") .. "/.local/share/modules/lua/?.lua"
+package.path = package.path .. ";" .. os.getenv("HOME") .. "/.config/lualemonbar/lua/?.lua"
 local lemonbar = require("lemonbar")
 local mybar    = lemonbar.setup()
 local cmd
