@@ -42,13 +42,28 @@ Clone the repositry
 
 or download the compressed archive and extract
 
-Go to location of the downloaded repositry
+Go to location of the downloaded repositry.
 
   cd /path_to_lualemonbar_src
 
 Copy the lualemonbar folder to $HOME/.config
   cp -R lualemonbar/ $HOME/.config/
 
+Make lualemonbar executable
+  chmod +x lualemonbar
+
+and copy it to a locatioon in your path.
+
+Run lualemonbar.
+
+Most likely you will see error messages displayed in the bar, but if the
+installation was correct, date, cpu and top should work. If they do not, or 
+nothing is displayed, start lualemonbar from a terminal and look for error messages.
+
+Open $HOME/.config/lualemonbar/config.ini.
+
+Read the Configuration section in this document and adapt the module
+settings to your system.
 
 Configuration
 
@@ -76,7 +91,7 @@ The .ini file
 Most of config.ini is self-explanatory.
 
 [settings]   - General setting
-timer        - number of runs/s. This does NOT change the update interval. 
+timer        - Sets the lowest possible update interval. This does NOT change the update interval. 
                Setting timer lower than 1 requires LuaSockets. 
 modules      - The modules to load.
 cmd          - The lrmonbar command.
@@ -291,4 +306,21 @@ The data to display in the bar is piped to lemonbar by lemonbar.show()
 
     <data> is read from bar.mymodule.show
     
-Contribution
+FAQ
+
+Why does changing the timer value not change the update frequency of my modules?
+The timer calibrates the main loop, setting the lowest update interwal possible.
+To change a module's update frequency, edit the modules iv value in config.ini.
+
+How can I enclose a module / several modules in matching separators, e.g. right and
+left arrow?
+Separators are always on the right side of the module, but you can put a spacer in front
+of the module and give it a separator. See the themes/lualine.ini for an example.
+
+Contributing
+
+PRs are welcome.
+Use examples.lua, if you want to contribute a cool, new module.
+Found a bug? Create an issue.
+
+Contribute
