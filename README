@@ -56,40 +56,96 @@ Sections and var names do not have quotes or white space in their names.
 Strings are always quoted and may contain spaces.
 References are not quoted.
 
-The options
+The .ini file
+
+Most of config.ini is self-explanatory.
+
+[settings]   - General setting
+timer        - number of runs/s. This does NOT change the update interval. 
+               Setting timer lower than 1 requires LuaSockets. 
+modules      - The modules to load.
+cmd          - The lrmonbar command.
+
+[colors]     - Color definitions and lemonbar definitions for starting and stopping colors.
+               See man lemonbar. 
+
+[symbols]    - Definition of symbols used for icons. Must be supported by the installed
+               fonts.
+fidx         - Font index. Number from 1 to 5. The number of the font for the separator symbols.
+               This should be under the separators section, but slipped in here.
+
+[separators] - Charactrers used as separators. Can be unicode glyphs, but then the installation
+               of a symbol font is required. symbols.fidx specifies the symbol font to use.
+
+[fmt]        - Formatters. Note that lemonbar formatters always use the full bar length for calculation.
+fl           - Anything that follows is aligned left until a new formatter is met.
+fr           - Like fl but to the right.
+fc           - Like fl and fr but centered.
+sp           - A string of spaces. Used for padding. Not a lemonbar formatter. Padding set here applies to all
+             - bar modules, unless they have theire own sp value set. 
+
+[spacer]     - A special module. Creates space.
+width        - Width in spaces.
+sep          - Separator to use.
+
+[module]     - Name of a module to configure.
+bgc1         - Background colors.
+fgc1         = Text color.
+fgc2         - Usually the Icon or label color.
+sfg          - Separator forground color.
+sbg          - Separator background color.
+icon         - Symbol used as icon or a text label.
+sep          - The sparator to use.
+fmt          - A lemonbar formater (leftt, center, right).
+iv           - The update intervall. Can not be < settings.timer 
+
+A sample config.ini
 
 [settings]
-Head for general options
-
-timer = 1
-The max number of updates per seconds.
-Important: Changing the timer value does not change any update interval.
-Update intervals are changed in the individual modules.
-
+timer =  0.5
 modules = "date weather volume spacer window tmp fan load net mail"
-Which modules to load and their placement.
-
-cmd = "lemonbar -g 1920x16+0+0 -p -f \'Cousine for Powerline:pixelsize=14\' -f Typicons:pixelsize=16 -f \'Symbols Nerd Font Mono:pixelsize=16\' -f  \'Cousine for Powerline:style=Bold:pixelsize=14\' -B#ff1a1b26 | /bin/sh"
-
-The lemonbar command. Note the escapüing.
-
+cmd = "lemonbar -g 1920x16+0+0 -p -f \'Cousine for Powerline:pixelsize=14\' -f Typicons:pixelsize=16 -f \'Symbols Nerd Font Mono:pixelsize=16\' -B#ff1a1b26 | /bin/sh"
 [colors]
 bgc1 =  "%{B#1a1b26}"
+bgc2 =  "%{B#414447}"
 fgc1 =  "%{F#b6c0e9}"
+fgc2 =  "%{F#826bad}"
 sbg1 =  "%{B#1a1b26}"
+sbg2 =  "%{B#414447}"
 sfg1 =  "%{F#1a1b26}"
-
-Colors can have any name, but the bar modules use the convention
-
-bgc[number] = background color
-fgc[number] = forground color
-sbg[number] = separators background color
-sfg[number] = separators forground color
-
-where fgc1 is the text color and fgc2 is the label/icon color.
-However your own bar modules can use any color names.
-
+sfg2 =  "%{F#414447}"
+bgstop =  "%{B-}"
+fgstop =  "%{F-}"
+connected =  "%{F#99c867}"
+unconnect = "%{F#444b6a}"
+unread =  "%{F#da5f8b}"
 [symbols]
+fan =  ""
+fidx = 3
+[separators]
+tar =  ""
+tal =  ""
+[fmt]
+fl = "%{l}"
+fr = "%{r}"
+fc = "%{c}"
+ml = "%{O20}"
+mr = "%{O20}"
+sp  = " "
+[spacer]
+width = 4
+sep = ""
+[fan]
+bgc =  colors.bgc1
+fgc1 =  colors.fgc1
+fgc2 =  "%{F#7aa2f7}"
+sbg =  colors.sbg2
+sfg =  colors.sfg1
+icon = symbols.fan
+iv =  10
+cf_qstr =  "/sys/class/hwmon/hwmon1/fan1_input"
+sf_qstr =  "/sys/class/hwmon/hwmon1/fan2_input"
+sep =  separators.tar
 
 Bar modules
 
@@ -219,3 +275,5 @@ The data to display in the bar is piped to lemonbar by lemonbar.show()
     retrieved from config.ini (e.g. "lemonbar -p")
 
     <data> is read from bar.mymodule.show
+    
+Contribution
