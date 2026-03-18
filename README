@@ -1,8 +1,8 @@
-LualemoOLua
+Lualemonbar
 
 About
 
-lemonbarnbar - A lightweight lua wrapper for lemonbar.
+Lualemonbar - A lightweight lua wrapper for lemonbar.
 Lualemonbar is a wrapper for lemonbar that provides a configuration interface for lemonbar or lemonbar-xft, thereby keeping lemonbar as light as possible.
 Lualemonbar allows the configuration of almost every lemonbar feature through a config.ini file. Lualemonbar also allws the configuration of all used modules, if there attributes are exposed to config.ini.
 
@@ -33,7 +33,7 @@ Lemonbar running through lualemonbar with an update interval of 0.5 seconds, has
 Motivation
 
 I use lemonbar exclusively in my WMs (mostly fluxbox) but the scripts providing the data became larger and larger. 
-Lemobar's performance sufferd and making changes to settings became increasingly difficult. So I decided to rewrite my script with thee goals in my mind: Make the script modular, make each bar module a self contained, loadable unit and make it easy to configure. As time went by, what started as QoL features for myslf now has become a full blown application, hopefully being useful for others as well. 
+Lemobar's performance suffered and making changes to settings became increasingly difficult. So I decided to rewrite my script with thee goals in my mind: Make the script modular, make each bar module a self contained, loadable unit and make it easy to configure. As time went by, what started as QoL features for myself now has become a full blown application, hopefully being useful for others as well. 
 
 Installation
 
@@ -95,7 +95,7 @@ Most of config.ini is self-explanatory.
 timer        - Sets the lowest possible update interval. This does NOT change the update interval. 
                Setting timer lower than 1 requires LuaSockets. 
 modules      - The modules to load.
-cmd          - The lrmonbar command.
+cmd          - The lemonbar command.
 
 [colors]     - Color definitions and lemonbar definitions for starting and stopping colors.
                See man lemonbar. 

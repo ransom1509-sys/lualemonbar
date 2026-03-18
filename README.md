@@ -1,8 +1,8 @@
-# LualemoOLua
+# Lualemobar
 
 ## About
 
-lemonbarnbar - A lightweight lua wrapper for lemonbar.
+Lualemonbar - A lightweight lua wrapper for lemonbar.
 Lualemonbar is a wrapper for lemonbar that provides a configuration interface for lemonbar or lemonbar-xft, thereby keeping lemonbar as light as possible.
 Lualemonbar allows the configuration of almost every lemonbar feature through a config.ini file. Lualemonbar also allws the configuration of all used modules, if there attributes are exposed to config.ini.
 
@@ -41,7 +41,7 @@ Clone the repositry
 
   git clone https://githup.com/ransom1509-sys/lualemonbar
 
-or download the compressed archive and extract
+or download the compressed archive and extract.
 
 Go to location of the downloaded repositry.
 
@@ -340,8 +340,8 @@ Found a bug? Create an issue.
 Like this project?
 Leave a star, if you think this project is cool.
 
-License
+## License
 MIT
 
-Author
+## Author
 Jörg Stadermann
