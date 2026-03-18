@@ -32,7 +32,8 @@ Lemonbar running through lualemonbar with an update interval of 0.5 seconds, has
 
 Motivation
 
-I use lemonbar exclusively in my WMs (mostly fluxbox) but the scripts providing the data became larger and larger. Lemonbar's performance sufferd and making changes to settings became increasingly difficult. So I decided to rewrite my script with thee goals in my mind: Make my script modular, make each bar module a self contained, loadable unit and make it easy to configure. As time went by, what started as QoL features for myslf now has become a full blown application, hopefully being useful for others as well. 
+I use lemonbar exclusively in my WMs (mostly fluxbox) but the scripts providing the data became larger and larger. 
+Lemobar's performance sufferd and making changes to settings became increasingly difficult. So I decided to rewrite my script with thee goals in my mind: Make the script modular, make each bar module a self contained, loadable unit and make it easy to configure. As time went by, what started as QoL features for myslf now has become a full blown application, hopefully being useful for others as well. 
 
 Installation
 
@@ -177,6 +178,18 @@ cf_qstr =  "/sys/class/hwmon/hwmon1/fan1_input"
 sf_qstr =  "/sys/class/hwmon/hwmon1/fan2_input"
 sep =  separators.tar
 
+Themes
+
+Themes are stylish config.ini files. Five themes are currently available in lualemonbar/themes.
+
+clean.ini - Elegant b/w dark themes
+default.ini - The default config.ini
+lualine.ini - Inspired by NeoVim Lualine status bar
+simple.ini - No icons or symblos. Works without symbol fonts.
+tokyonight.ini - like default.ini, but with icons and left-center-right layout 
+
+To use a theme just copy it to config.ini.           
+
 Bar modules
 
 Lualemonbar currently provides 12 bar modules (or plugins, if you prefer) and there are more to come.
@@ -192,7 +205,7 @@ Cpu:
 Date: 
 - shows date and time
 - has a button (e.g. for calling a calendar app) 
-- Dat and timeformat changed in config.ini
+- date and time format can be changed in config.ini
 - button action can be changed in config.ini
 
 Example
