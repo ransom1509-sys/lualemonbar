@@ -124,7 +124,7 @@ function lemonbar.debug(bar)
     for k, v in pairs(t) do
       if type(v) == "table" then
         print(k .. " = " .. "{")
-        bar.tools.dumptable(v, indent)
+        dumptable(v, indent)
         print("}")
       else
         if not is_excluded(type(v)) then
