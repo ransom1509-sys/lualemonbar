@@ -1,0 +1,9 @@
+#!/usr/bin/lua
+package.path = package.path .. ";" .. os.getenv("HOME") .. "/.config/lualemonbar/lua/?.lua"
+local lemonbar = require("lemonbar")
+local mybar    = lemonbar.setup()
+local cmd
+
+lemonbar.init(mybar)
+cmd = lemonbar.cmd(mybar)
+lemonbar.show(mybar, cmd)

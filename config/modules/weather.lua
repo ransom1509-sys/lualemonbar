@@ -18,7 +18,7 @@ function weather.setup(bar)
     w_qstr  = "",
     action  = "",
     cur     = "",
-    iv      = 1800,
+    iv      = 3600,
     secs    = 0,
     show    = "",
     enabled = false,
