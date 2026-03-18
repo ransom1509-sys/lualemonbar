@@ -57,7 +57,7 @@ and copy it to a locatioon in your path.
 Run lualemonbar.
 
 Most likely you will see error messages displayed in the bar, but if the
-installation was correct, date, cpu and top should work. If they do not, or 
+installation was correct, date, load and top should work. If they do not, or 
 nothing is displayed, start lualemonbar from a terminal and look for error messages.
 
 Open $HOME/.config/lualemonbar/config.ini.
@@ -121,7 +121,7 @@ sep          - Separator to use.
 [module]     - Name of a module to configure.
 bgc1         - Background colors.
 fgc1         = Text color.
-fgc2         - Usually the Icon or label color.
+fgc2         - Usually the icon or label color.
 sfg          - Separator forground color.
 sbg          - Separator background color.
 icon         - Symbol used as icon or a text label.
@@ -261,7 +261,7 @@ The heavy lifting is done by lemonbar.init():
 - testing the bar modules init() functions and enable on succes
 
 Bar modules are loaded from lualemonbar/modules with require()
-and the modules setup() function.
+and the module's setup() function.
 
 All bar Modules have an update() function, implemented as coroutine:
 
