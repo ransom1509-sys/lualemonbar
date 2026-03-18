@@ -1,0 +1,147 @@
+settings = {
+  timer =  1,
+  modules = "date weather volume tmp fan load net mail connect",
+}
+colors = {
+  bgc1 =  "%{B#1a1b26}",
+  bgc2 =  "%{B#414447}",
+  bgc3 =  "%{B#2e3c43}",
+  bgc4 =  "%{B#6a6f74}",
+  bgc5 =  "%{B#1a1b26}",
+  fgc1 =  "%{F#b6c0e9}",
+  fgc2 =  "%{F#826bad}",
+  fgc3 =  "%{F#7aa2f7}",
+  fgc4 =  "%{F#62baad}",
+  fgc5 =  "%{F#99c867}",
+  fgc6 =  "%{F#29bdd7}",
+  fgc7 =  "%{F#02002f}",
+  fgc8 =  "%{F#ff9e64}",
+  sbg1 =  "%{B#1a1b26}",
+  sbg2 =  "%{B#414447}",
+  sbg3 =  "%{B#2e3c43}",
+  sbg4 =  "%{B#6a6f74}",
+  sbg5 =  "%{B#1a1b26}",
+  sfg1 =  "%{F#1a1b26}",
+  sfg2 =  "%{F#414447}",
+  sfg3 =  "%{F#2e3c43}",
+  sfg4 =  "%{F#6a6f74}",
+  sfg5 =  "%{F#1a1b26}",
+  bgstop =  "%{B-}",
+  connected =  "%{F#99c867}",
+  fgstop =  "%{F-}",
+  inv =  "%{F#00b6c0e5}",
+  unread =  "%{F#da5f8b}",
+}
+symbols = {
+  con =  "",
+  cpu =  "",
+  fan =  "",
+  mail =  "",
+  net =  "",
+  temp =  "",
+  vol =  "",
+  wthr =  "",
+}
+separators = {
+  tar =  "",
+  tal =  "",
+}
+net = {
+  iv =  2,
+  bgc =  "%{B#1a1b26}",
+  fgc1 =  "%{F#b6c0e9}",
+  fgc2 =  "%{F#62baad}",
+  sbg =  "%{B#1a1b26}",
+  sfg =  "%{F#1a1b26}",
+  icon =  "",
+  tx_qstr =  "/sys/class/net/eth1/statistics/tx_bytes",
+  st_qstr =  "nmcli -f STATE -t device status",
+  rx_qstr =  "/sys/class/net/eth1/statistics/rx_bytes",
+  sep =  "",
+}
+volume = {
+  fgc1 =  "%{F#b6c0e9}",
+  v_get_str =  "pactl get-sink-volume @DEFAULT_SINK@ | cut -d ' ' -f 3",
+  v_set_str =  "pactl set-sink-volume @DEFAULT_SINK@ ",
+  icon =  "",
+  max_vol =  65536,
+  step =  1310,
+  iv = 1,
+}
+weather = {
+  iv =  3600,
+  bgc =  "%{B#1a1b26}",
+  fgc1 =  "%{F#b6c0e9}",
+  fgc2 =  "%{F#826bad}",
+  sbg =  "%{B#1a1b26}",
+  sfg =  "%{F#1a1b26}",
+  icon =  "",
+  w_qstr =  "ansiweather | cut -d ':' -f 2",
+  sep =  "",
+}
+window = {
+  fgc1 =  "%{F#ff9e64}",
+  w_str =  "xdotool getactivewindow getwindowname",
+}
+date = {
+  bgc =  "%{B#1a1b26}",
+  fgc1 =  "%{F#7aa5f5}",
+  fgc2 =  "%{F#b6c0e9}",
+  sbg =  "%{B#1a1b26}",
+  sfg =  "%{F#1a1b26}",
+  d_fmt =  "date +'%a %d:%m:Y %H.%M'",
+  sep =  "",
+}
+load = {
+  iv =  2,
+  bgc =  "%{B#1a1b26}",
+  fgc1 =  "%{F#b6c0e9}",
+  fgc2 =  "%{F#29bdd7}",
+  sbg =  "%{B#1a1b26}",
+  sfg =  "%{F#1a1b26}",
+  icon =  "",
+  st_qstr =  "/proc/stat",
+  sep =  "",
+}
+fan = {
+  bgc =  "%{B#1a1b26}",
+  fgc1 =  "%{F#b6c0e9}",
+  fgc2 =  "%{F#7aa2f7}",
+  sbg =  "%{B#1a1b26}",
+  sfg =  "%{F#1a1b26}",
+  icon =  "",
+  iv =  10,
+  cf_qstr =  "/sys/class/hwmon/hwmon1/fan1_input",
+  sf_qstr =  "/sys/class/hwmon/hwmon1/fan2_input",
+  sep =  "",
+}
+tmp = {
+  bgc =  "%{B#1a1b26}",
+  fgc1 =  "%{F#b6c0e9}",
+  fgc2 =  "%{F#826bad}",
+  sbg =  "%{B#1a1b26}",
+  sfg =  "%{F#1a1b26}",
+  icon =  "",
+  iv =  10,
+  ct_qstr =  "/sys/bus/pci/drivers/k10temp/0000:00:18.3/hwmon/hwmon0/temp1_input",
+  gt_qstr =  "nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits",
+  st_qstr =  "/sys/class/hwmon/hwmon1/temp1_input",
+  sep =  "",
+}
+mail = {
+  bgc =  "%{B#1a1b26}",
+  fgc1 =  "%{F#b6c0e9}",
+  fgc2 =  colors.unread,
+  sbg =  "%{B#1a1b26}",
+  sfg =  "%{F#1a1b26}",
+  nm_qstr =  "claws-mail --status | cut -d ' ' -f 2",
+  iv = 5,
+}
+connect = {
+  bgc =  "%{B#1a1b26}",
+  fgc1 =  "%{F#b6c0e9}",
+  fgc2 =  colors.connected,
+  sbg =  "%{B#1a1b26}",
+  sfg =  "%{F#1a1b26}",
+  iv = 5,
+}
