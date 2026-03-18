@@ -26,12 +26,12 @@ With lualemonbar you can
 - set a spacer of variable length
 - use different symbol fonts for separators
 - define separators (global or for individual modules)
-- usr themes or create your own
+- use themes or create your own
 
 Except for writing modules, all is done through one config.ini file.
 
 Lualemonbar is lightweight.
-Lemonbar running through lualemonbar with an update interval of 0.5 seconds, has a cpu usage of 0.2 - 0.5 percent and uses 9 MB memory. 
+Lemonbar running through lualemonbar with an update interval of 0.5 seconds, has a cpu usage of 0.2% - 0.5% and uses 9 MB memory. 
 
 Installation
 
@@ -62,12 +62,12 @@ The options
 Head for general options
 
 timer = 1
-The max number of updates per secondTr modules
+The max number of updates per seconds.
 Important: Changing the timer value does not change any update interval.
 Update intervals are changed in the individual modules.
 
 modules = "date weather volume spacer window tmp fan load net mail"
-Whhich modules to load and their placement.
+Which modules to load and their placement.
 
 cmd = "lemonbar -g 1920x16+0+0 -p -f \'Cousine for Powerline:pixelsize=14\' -f Typicons:pixelsize=16 -f \'Symbols Nerd Font Mono:pixelsize=16\' -f  \'Cousine for Powerline:style=Bold:pixelsize=14\' -B#ff1a1b26 | /bin/sh"
 
