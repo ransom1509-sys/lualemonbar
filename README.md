@@ -190,7 +190,9 @@ sep =  separators.tar
 Themes are stylish config.ini files. Five themes are currently available in lualemonbar/themes.
 
 - clean.ini - Elegant b/w dark themes
+  
   ![clean theme](</screenshots/lualemonbar - clean.png>)
+
 - default.ini - The default config.ini
 - lualine.ini - Inspired by NeoVim Lualine status bar
 - simple.ini - No icons or symblos. Works without symbol fonts.
