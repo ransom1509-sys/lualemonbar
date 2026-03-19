@@ -364,7 +364,7 @@ To change a module's update frequency, edit the modules iv value in config.ini.
 How can I enclose a module / several modules in matching separators, e.g. right and
 left arrow?  
 Separators are always on the right side of the module, but you can put a spacer in front
-of the module and give it a separator. See the [lualine theme](/themes/lualine.ini) for an example.
+of the module and give it a separator. See the [lualine theme](/config/themes/lualine.ini) for an example.
 
 ## Contributing
 
