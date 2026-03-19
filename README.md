@@ -70,7 +70,7 @@ nothing is displayed, start lualemonbar from a terminal and look for error messa
 
 Open $HOME/.config/lualemonbar/config.ini.
 
-Read the Configuration section in this document and adapt the module
+Read the [Configuration](#configuration) section in this document and adapt the module
 settings to your system.
 
 ## Configuration
