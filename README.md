@@ -1,12 +1,12 @@
-Lualemonbar
+# Lualemonbar
 
-About
+## About
 
 Lualemonbar - A lightweight lua wrapper for lemonbar.
 Lualemonbar is a wrapper for lemonbar that provides a configuration interface for lemonbar or lemonbar-xft, thereby keeping lemonbar as light as possible.
 Lualemonbar allows the configuration of almost every lemonbar feature through a config.ini file. Lualemonbar also allws the configuration of all used modules, if there attributes are exposed to config.ini.
 
-Features
+## Features
 
 With lualemonbar you can
 
@@ -30,12 +30,12 @@ Except for writing modules, all is done through one config.ini file.
 Lualemonbar is lightweight.
 Lemonbar running through lualemonbar with an update interval of 0.5 seconds, has a cpu usage of 0.2% - 0.5% and uses 9 MB memory. 
 
-Motivation
+## Motivation
 
 I use lemonbar exclusively in my WMs (mostly fluxbox) but the scripts providing the data became larger and larger. 
 Lemobar's performance suffered and making changes to settings became increasingly difficult. So I decided to rewrite my script with thee goals in my mind: Make the script modular, make each bar module a self contained, loadable unit and make it easy to configure. As time went by, what started as QoL features for myself now has become a full blown application, hopefully being useful for others as well. 
 
-Installation
+## Installation
 
 Clone the repository
 
@@ -72,9 +72,9 @@ Open $HOME/.config/lualemonbar/config.ini.
 Read the Configuration section in this document and adapt the module
 settings to your system.
 
-Configuration
+## Configuration
 
-Format of config.ini
+### Format of config.ini
 
 The config.ini file has the standard .ini file format, looking like this
 
@@ -93,7 +93,7 @@ Sections and var names do not have quotes or white space in their names.
 Strings are always quoted and may contain spaces.
 References are not quoted.
 
-The .ini file
+### The .ini file
 
 Most of config.ini is self-explanatory.
 
@@ -136,13 +136,13 @@ sep          - The sparator to use.
 fmt          - A lemonbar formater (leftt, center, right).
 iv           - The update intervall. Can not be < settings.timer 
 
-A sample config.ini
-
+### A sample config.ini
+```
 [settings]
 timer =  0.5
 modules = "date weather volume spacer window tmp fan load net mail"
 cmd = "lemonbar -g 1920x16+0+0 -p -f \'Cousine for Powerline:pixelsize=14\' -f Typicons:pixelsize=16 -f \'Symbols Nerd Font Mono:pixelsize=16\' -B#ff1a1b26 | /bin/sh"
-[colors]
+[colors]>
 bgc1 =  "%{B#1a1b26}"
 bgc2 =  "%{B#414447}"
 fgc1 =  "%{F#b6c0e9}"
@@ -162,7 +162,7 @@ fidx = 3
 [separators]
 tar =  ""
 tal =  ""
-[fmt]
+[fmt]<br>
 fl = "%{l}"
 fr = "%{r}"
 fc = "%{c}"
@@ -183,8 +183,8 @@ iv =  10
 cf_qstr =  "/sys/class/hwmon/hwmon1/fan1_input"
 sf_qstr =  "/sys/class/hwmon/hwmon1/fan2_input"
 sep =  separators.tar
-
-Themes
+```
+### Themes
 
 Themes are stylish config.ini files. Five themes are currently available in lualemonbar/themes.
 
@@ -196,7 +196,7 @@ tokyonight.ini - like default.ini, but with icons and left-center-right layout
 
 To use a theme just copy it to config.ini.           
 
-Bar modules
+## Bar modules
 
 Lualemonbar currently provides 12 bar modules (or plugins, if you prefer) and there are more to come.
 
@@ -263,7 +263,7 @@ The appearance of each module can be configured in config.ini.
 
 I can not provide modules for WiFi or battery status, my portables are all Android devices, but you are welcome to contribute any wireless, battery or other missing modules (see Contributing).
 
-How does it work
+## How does it work
 
 You do not invoke lualmonbar the usual way, like "myscript | lemonbar -p". Lualemonbar is a stanalone executable, using the setup(), init(), cmd() and show() functions provided by lemonbar.lua. After installation and some setup steps (see Installation), put it in your path and run "lualemonbar".
 
@@ -325,7 +325,7 @@ The data to display in the bar is piped to lemonbar by lemonbar.show()
 
     <data> is read from bar.mymodule.show
     
-FAQ
+## FAQ
 
 Why does changing the timer value not change the update frequency of my modules?
 The timer calibrates the main loop, setting the lowest update interwal possible.
@@ -336,18 +336,18 @@ left arrow?
 Separators are always on the right side of the module, but you can put a spacer in front
 of the module and give it a separator. See the themes/lualine.ini for an example.
 
-Contributing
+## Contributing
 
 PRs are welcome.
 Use examples.lua, if you want to contribute a cool, new module.
 Found a bug? Create an issue.
 
-Contribute
+## Contribute
 Like this project?
 Leave a star, if you think this project is cool.
 
-License
+## License
 MIT
 
-Author
+## Author
 Jörg Stadermann
