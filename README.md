@@ -194,12 +194,20 @@ Themes are stylish config.ini files. Five themes are currently available in lual
   ![clean theme](</screenshots/lualemonbar - clean.png>)
 
 - default.ini - The default config.ini
+
+  ![default theme](</screenshots/lualemonbar- default - no icons.png>)
+  
 - lualine.ini - Inspired by NeoVim Lualine status bar
 
-  ![clean theme](</screenshots/lualemonbar- lualine.png>)
+  ![lualine theme](</screenshots/lualemonbar- lualine.png>)
   
 - simple.ini - No icons or symblos. Works without symbol fonts.
-- tokyonight.ini - like default.ini, but with icons and left-center-right layout 
+
+  ![simple theme](</screenshots/lualemonbar- simple clean.png>)
+  
+- tokyonight.ini - like default.ini, but with icons and left-center-right layout
+
+   ![tokyonight theme](</screenshots/lualemonbar- default - formats and icon fonts.png>)
 
 To use a theme just copy it to config.ini.           
 
