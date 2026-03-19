@@ -348,8 +348,6 @@ The data to display in the bar is piped to lemonbar by lemonbar.show()
       pipe_out:write(show .. "\n")
       pipe_out:flush()
       show = ""
-      sleep(n)
-    end
 ```
     where "cmd" is the actual lemonbar start command 
     retrieved from config.ini (e.g. "lemonbar -p")
