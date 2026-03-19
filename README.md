@@ -284,7 +284,7 @@ I can not provide modules for WiFi or battery status, my portables are all Andro
 
 ## How does it work
 
-You do not invoke lualmonbar the usual way, like "myscript | lemonbar -p". Lualemonbar is a stanalone executable, using the setup(), init(), cmd() and show() functions provided by lemonbar.lua. After installation and some setup steps (see Installation), put it in your path and run "lualemonbar".
+You do not invoke lualmonbar the usual way, like "myscript | lemonbar -p". Lualemonbar is a stanalone executable, using the setup(), init(), cmd() and show() functions provided by lemonbar.lua. After installation and some setup steps (see [Installation](#installation)), put it in your path and run "lualemonbar".
 
 The heavy lifting is done by lemonbar.init(): 
 
