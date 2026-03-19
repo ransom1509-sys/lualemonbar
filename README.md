@@ -2,7 +2,7 @@
 
 Lualemonbar - A lightweight lua wrapper for lemonbar.
 Lualemonbar is a wrapper for lemonbar that provides a configuration interface for lemonbar or lemonbar-xft, thereby keeping lemonbar as light as possible.
-Lualemonbar allows the configuration of almost every lemonbar feature through a config.ini file. Lualemonbar also allws the configuration of all used modules, if there attributes are exposed to config.ini.  
+Lualemonbar allows the configuration of almost every lemonbar feature through a config.ini file. Lualemonbar also allows the configuration of all used modules, if there attributes are exposed to config.ini.  
 
 ![configure lemonbar with config.ini](</screenshots/lualemonbar - config.ini file.png>)
 
@@ -115,7 +115,8 @@ fidx         - Font index. Number from 1 to 5. The number of the font for the se
 [separators] - Charactrers used as separators. Can be unicode glyphs, but then the installation
                of a symbol font is required. symbols.fidx specifies the symbol font to use.
 
-[fmt]        - Formatters. Note that lemonbar formatters always use the full bar length for calculation.
+[fmt]        - Formatters. Note that lemonbar formatters always use the full bar length for
+               calculation.
 fl           - Anything that follows is aligned left until a new formatter is met.
 fr           - Like fl but to the right.
 fc           - Like fl and fr but centered.
