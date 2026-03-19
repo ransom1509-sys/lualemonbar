@@ -203,7 +203,7 @@ Themes are stylish config.ini files. Five themes are currently available in lual
   
 - simple.ini - No icons or symblos. Works without symbol fonts
 
-  ![simple theme](</screenshots/lualemonbar-simple clean.png>)
+  ![simple theme](</screenshots/lualemonbar-  simple clean.png>)
   
 - tokyonight.ini - like default.ini, but with icons and left-center-right layout
 
