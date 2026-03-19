@@ -39,25 +39,25 @@ Lemobar's performance suffered and making changes to settings became increasingl
 
 Clone the repository
 
-  git clone https://githup.com/ransom1509-sys/lualemonbar
+  `git clone https://githup.com/ransom1509-sys/lualemonbar`
 
 or download the compressed archive and extract
 
 Create a lualemonbar directory in $HOME/.config
 
-  mkdir <your_account>/.config/lualemonbar
+  `mkdir <your_account>/.config/lualemonbar`
 
 Go to location of the downloaded repository.
 
-  cd /path_to_lualemonbar_src
+  `cd /path_to_lualemonbar_src`
 
 Copy the contents of the config folder to $HOME/.config/lualemonbar/
 
-  cp -R config/*  $HOME/.config/lualemonbar/
+  `cp -R config/*  $HOME/.config/lualemonbar/`
 
 Make lualemonbar executable
 
-  chmod +x lualemonbar
+  `chmod +x lualemonbar`
 
 and copy it to a locatioon in your path.
 
@@ -137,7 +137,7 @@ fmt          - A lemonbar formater (leftt, center, right).
 iv           - The update intervall. Can not be < settings.timer 
 
 ### A sample config.ini
-```
+```dosini
 [settings]
 timer =  0.5
 modules = "date weather volume spacer window tmp fan load net mail"
@@ -188,11 +188,11 @@ sep =  separators.tar
 
 Themes are stylish config.ini files. Five themes are currently available in lualemonbar/themes.
 
-clean.ini - Elegant b/w dark themes
-default.ini - The default config.ini
-lualine.ini - Inspired by NeoVim Lualine status bar
-simple.ini - No icons or symblos. Works without symbol fonts.
-tokyonight.ini - like default.ini, but with icons and left-center-right layout 
+- clean.ini - Elegant b/w dark themes
+- default.ini - The default config.ini
+- lualine.ini - Inspired by NeoVim Lualine status bar
+- simple.ini - No icons or symblos. Works without symbol fonts.
+- tokyonight.ini - like default.ini, but with icons and left-center-right layout 
 
 To use a theme just copy it to config.ini.           
 
@@ -283,7 +283,7 @@ Bar modules are loaded from lualemonbar/modules with require()
 and the module's setup() function.
 
 All bar Modules have an update() function, implemented as coroutine:
-
+```lua
       local enabled = bar.mymodule.enabledd
       update = coroutine.create(function()
 
@@ -294,15 +294,15 @@ All bar Modules have an update() function, implemented as coroutine:
         coroutine.yield()
       end
     end),
-
+```
 The bar module's enabled flag is set by lemonbar.init()
-
+```lua
       if pcall(bar[mymodule].init) then
         bar[mymodule].enabled = true
       else
         bar[mymodule].show = "mymodule" .. ": error"
       end
-
+```
       The pcall() test only works when mymodule.init() contains
 
         code_to_get_some_data_to_display
@@ -313,18 +313,18 @@ The bar module's enabled flag is set by lemonbar.init()
 
 
 
-The data to display in the bar is piped to lemonbar by lemonbar.show() 
-
+The data to display in the bar is piped to lemonbar by lemonbar.show()
+```lua
     local pipe_out = assert(io.popen(cmd, "w"))
       
     pipe_out:write(<data> .. "\n")
     pipe_out:flush()
-
+```
     where "cmd" is the actual lemonbar start command 
     retrieved from config.ini (e.g. "lemonbar -p")
 
     <data> is read from bar.mymodule.show
-    
+
 ## FAQ
 
 Why does changing the timer value not change the update frequency of my modules?
