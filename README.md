@@ -38,27 +38,27 @@ Lemobar's performance suffered and making changes to settings became increasingl
 ## Installation
 
 Clone the repository
-
-  `git clone https://githup.com/ransom1509-sys/lualemonbar`
-
+```bash
+  git clone https://githup.com/ransom1509-sys/lualemonbar
+```
 or download the compressed archive and extract
 
 Create a lualemonbar directory in $HOME/.config
-
-  `mkdir <your_account>/.config/lualemonbar`
-
+```bash
+  mkdir <your_account>/.config/lualemonbar
+```
 Go to location of the downloaded repository.
-
-  `cd /path_to_lualemonbar_src`
-
+```bash
+  cd /path_to_lualemonbar_src
+```
 Copy the contents of the config folder to $HOME/.config/lualemonbar/
-
-  `cp -R config/*  $HOME/.config/lualemonbar/`
-
+```bash
+  cp -R config/*  $HOME/.config/lualemonbar/
+```
 Make lualemonbar executable
-
-  `chmod +x lualemonbar`
-
+```bash
+  chmod +x lualemonbar
+```
 and copy it to a locatioon in your path.
 
 Run lualemonbar.
@@ -77,18 +77,18 @@ settings to your system.
 ### Format of config.ini
 
 The config.ini file has the standard .ini file format, looking like this
-
+```dosini
 [section]
 value_1 = "foo"
 value_2 = "bar"
-
+```
 In lualemonbar's config.ini three types of values are supported: strings, numbers and references
-
+```dosini
 [section] 
 string = "this is a string"
 number = 6
 my_string = section.string
-
+```
 Sections and var names do not have quotes or white space in their names.
 Strings are always quoted and may contain spaces.
 References are not quoted.
@@ -96,7 +96,7 @@ References are not quoted.
 ### The .ini file
 
 Most of config.ini is self-explanatory.
-
+```
 [settings]   - General setting
 timer        - Sets the lowest possible update interval. This does NOT change the update interval. 
                Setting timer lower than 1 requires LuaSockets. 
@@ -135,7 +135,7 @@ icon         - Symbol used as icon or a text label.
 sep          - The sparator to use.
 fmt          - A lemonbar formater (leftt, center, right).
 iv           - The update intervall. Can not be < settings.timer 
-
+```
 ### A sample config.ini
 ```dosini
 [settings]
@@ -338,12 +338,12 @@ of the module and give it a separator. See the themes/lualine.ini for an example
 
 ## Contributing
 
-PRs are welcome.
-Use examples.lua, if you want to contribute a cool, new module.
-Found a bug? Create an issue.
+- PRs are welcome.
+- Use examples.lua, if you want to contribute a cool, new module.
+- Found a bug? Create an issue.
 
 ## Contribute
-Like this project?
+Like this project?<br>
 Leave a star, if you think this project is cool.
 
 ## License
