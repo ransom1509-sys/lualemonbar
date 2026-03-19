@@ -352,8 +352,6 @@ The data to display in the bar is piped to lemonbar by lemonbar.show()
 ```
 where "cmd" is the actual lemonbar start command retrieved from config.ini (e.g. "lemonbar -p").
 
-<data> is read from bar.mymodule.show
-
 ## FAQ
 
 Why does changing the timer value not change the update frequency of my modules?  
