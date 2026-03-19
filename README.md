@@ -30,6 +30,7 @@ Except for writing modules, all is done through one config.ini file.
 Lualemonbar is lightweight.
 Lemonbar running through lualemonbar with an update interval of 0.5 seconds, has a cpu usage of 0.2% - 0.5% and uses 9 MB memory. 
 
+
 ## Motivation
 
 I use lemonbar exclusively in my WMs (mostly fluxbox) but the scripts providing the data became larger and larger. 
@@ -189,7 +190,7 @@ sep =  separators.tar
 Themes are stylish config.ini files. Five themes are currently available in lualemonbar/themes.
 
 - clean.ini - Elegant b/w dark themes
-  ![clean theme](<./sceenshots/lualemonbar - clean.png>)
+  ![clean theme](<https://github.com/ransom1509-sys/lualemonbar/srceenshots/lualemonbar - clean.png>)
 - default.ini - The default config.ini
 - lualine.ini - Inspired by NeoVim Lualine status bar
 - simple.ini - No icons or symblos. Works without symbol fonts.
