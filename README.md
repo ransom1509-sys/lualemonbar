@@ -322,13 +322,13 @@ The bar module's enabled flag is set by lemonbar.init()
         bar[mymodule].show = "mymodule" .. ": error"
       end
 ```
-      The pcall() test only works when mymodule.init() contains
+The pcall() test only works when mymodule.init() contains
 
-        code_to_get_some_data_to_display
+  code_to_get_some_data_to_display
 
-      When not, enabled is set to true, regardless, of any errors caused
-      by the code in update() (e.g. program does not exist).
-      Unless something else went wrong in init(), that is.
+When not, enabled is set to true, regardless, of any errors caused
+by the code in update() (e.g. program does not exist).
+Unless something else went wrong in init(), that is.
 
 
 
@@ -349,10 +349,10 @@ The data to display in the bar is piped to lemonbar by lemonbar.show()
       pipe_out:flush()
       show = ""
 ```
-    where "cmd" is the actual lemonbar start command 
-    retrieved from config.ini (e.g. "lemonbar -p")
+where "cmd" is the actual lemonbar start command 
+retrieved from config.ini (e.g. "lemonbar -p")
 
-    <data> is read from bar.mymodule.show
+<data> is read from bar.mymodule.show
 
 ## FAQ
 
