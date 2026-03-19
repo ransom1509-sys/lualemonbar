@@ -280,7 +280,7 @@ Window:
 
 The appearance of each module can be configured in config.ini.
 
-I can not provide modules for WiFi or battery status, my portables are all Android devices, but you are welcome to contribute any wireless, battery or other missing modules (see Contributing).
+I can not provide modules for WiFi or battery status, my portables are all Android devices, but you are welcome to contribute any wireless, battery or other missing modules (see [Contributing](#contributing](#contributing))).
 
 ## How does it work
 
@@ -334,10 +334,22 @@ The bar module's enabled flag is set by lemonbar.init()
 
 The data to display in the bar is piped to lemonbar by lemonbar.show()
 ```lua
-    local pipe_out = assert(io.popen(cmd, "w"))
+      local pipe_out = assert(io.popen(cmd, "w"))
       
-    pipe_out:write(<data> .. "\n")
-    pipe_out:flush()
+      for _, val in pairs(module_table) do
+        if bar[val].iv - bar[val].secs <= 0 then
+          coroutine.resume(bar[val].update)
+          bar[val].secs = 0
+        else
+          bar[val].secs = bar[val].secs + bar.settings.timer
+        end
+        show = show .. bar[val].fmt .. bar[val].show .. bar[val].sep
+      end
+      pipe_out:write(show .. "\n")
+      pipe_out:flush()
+      show = ""
+      sleep(n)
+    end
 ```
     where "cmd" is the actual lemonbar start command 
     retrieved from config.ini (e.g. "lemonbar -p")
