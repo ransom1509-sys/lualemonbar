@@ -37,20 +37,26 @@ Lemobar's performance suffered and making changes to settings became increasingl
 
 Installation
 
-Clone the repositry
+Clone the repository
 
   git clone https://githup.com/ransom1509-sys/lualemonbar
 
 or download the compressed archive and extract
 
-Go to location of the downloaded repositry.
+Create a lualemonbar directory in $HOME/.config
+
+  mkdir <your_account>/.config/lualemonbar
+
+Go to location of the downloaded repository.
 
   cd /path_to_lualemonbar_src
 
-Copy the lualemonbar folder to $HOME/.config
-  cp -R lualemonbar/ $HOME/.config/
+Copy the contents of the config folder to $HOME/.config/lualemonbar/
+
+  cp -R config/*  $HOME/.config/lualemonbar/
 
 Make lualemonbar executable
+
   chmod +x lualemonbar
 
 and copy it to a locatioon in your path.
