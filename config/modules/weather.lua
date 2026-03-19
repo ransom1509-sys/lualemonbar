@@ -33,7 +33,10 @@ function weather.setup(bar)
 
       while enabled do
         bar.weather.cur = bar.tools.getprog(bar.weather.w_qstr)
+        w_str = string.format("%%{A:%s:}%s%%{A}", action, bar.weather.cur)
         bar.weather.show = string.format("%s%s%s%s%s", bc, sp, c1, w_str, sp)
+      print(enabled)
+      print(bar.weather.show)
         coroutine.yield()
       end
     end),
