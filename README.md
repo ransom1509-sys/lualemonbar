@@ -110,7 +110,8 @@ cmd          - The lemonbar command.
 [symbols]    - Definition of symbols used for icons. Must be supported by the installed
                fonts.
 fidx         - Font index. Number from 1 to 5. The number of the font for the separator
-               symbols. This should be under the separators section, but slipped in here.
+               symbols, e.g. fidx = 3 => third font loaded with the lemonbar command.
+               This should be under the separators section, but slipped in here.
 
 [separators] - Charactrers used as separators. Can be unicode glyphs, but then the installation
                of a symbol font is required. symbols.fidx specifies the symbol font to use.
@@ -121,7 +122,7 @@ fl           - Anything that follows is aligned left until a new formatter is me
 fr           - Like fl but to the right.
 fc           - Like fl and fr but centered.
 sp           - A string of spaces. Used for padding. Not a lemonbar formatter. Padding set here
-               applies to all bar modules, unless they have theire own sp value set. 
+               applies to all bar modules, unless they have their own sp value set. 
 
 [spacer]     - A special module. Creates space.
 width        - Width in spaces.
