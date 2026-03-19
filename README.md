@@ -6,7 +6,7 @@ Lualemonbar - A lightweight lua wrapper for lemonbar.
 Lualemonbar is a wrapper for lemonbar that provides a configuration interface for lemonbar or lemonbar-xft, thereby keeping lemonbar as light as possible.
 Lualemonbar allows the configuration of almost every lemonbar feature through a config.ini file. Lualemonbar also allws the configuration of all used modules, if there attributes are exposed to config.ini.
 
-![configure lemonbar with config.ini](</screenshots/lualemonbar - cofig.ini file.png>)
+![configure lemonbar with config.ini](</screenshots/lualemonbar - config.ini file.png>)
 
 ## Features
 
