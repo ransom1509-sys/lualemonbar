@@ -15,7 +15,7 @@ With lualemonbar you can
 - define glyphs for icons (requires lemonbar-xft and a symbol font)
 - set the modules diisplay order
 - set what modules to load
-- crreate and add new modules using a module template
+- crreate and add your qwn modules using a module template
 - set individual update intervals
 - set update intervals < 1s (requires LuaSocket)
 - set lemonbar formating options (left center right)
