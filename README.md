@@ -99,8 +99,8 @@ References are not quoted.
 Most of config.ini is self-explanatory.
 ```
 [settings]   - General setting
-timer        - Sets the lowest possible update interval. This does NOT change the update interval. 
-               Setting timer lower than 1 requires LuaSockets. 
+timer        - Sets the lowest possible update interval. This does NOT change the update
+               interval. Setting timer lower than 1 requires LuaSockets. 
 modules      - The modules to load.
 cmd          - The lemonbar command.
 
@@ -109,8 +109,8 @@ cmd          - The lemonbar command.
 
 [symbols]    - Definition of symbols used for icons. Must be supported by the installed
                fonts.
-fidx         - Font index. Number from 1 to 5. The number of the font for the separator symbols.
-               This should be under the separators section, but slipped in here.
+fidx         - Font index. Number from 1 to 5. The number of the font for the separator
+               symbols. This should be under the separators section, but slipped in here.
 
 [separators] - Charactrers used as separators. Can be unicode glyphs, but then the installation
                of a symbol font is required. symbols.fidx specifies the symbol font to use.
@@ -119,8 +119,8 @@ fidx         - Font index. Number from 1 to 5. The number of the font for the se
 fl           - Anything that follows is aligned left until a new formatter is met.
 fr           - Like fl but to the right.
 fc           - Like fl and fr but centered.
-sp           - A string of spaces. Used for padding. Not a lemonbar formatter. Padding set here applies to all
-             - bar modules, unless they have theire own sp value set. 
+sp           - A string of spaces. Used for padding. Not a lemonbar formatter. Padding set here
+               applies to all bar modules, unless they have theire own sp value set. 
 
 [spacer]     - A special module. Creates space.
 width        - Width in spaces.
@@ -163,7 +163,7 @@ fidx = 3
 [separators]
 tar =  ""
 tal =  ""
-[fmt]<br>
+[fmt]
 fl = "%{l}"
 fr = "%{r}"
 fc = "%{c}"
@@ -209,8 +209,11 @@ Themes are stylish config.ini files. Five themes are currently available in lual
 
    ![tokyonight theme](</screenshots/lualemonbar- default - formats and icon fonts.png>)
 
-To use a theme just copy it to config.ini.           
-
+To use a theme just copy it to config.ini, (e.g.)
+```bash
+  cd $HOME/.config/lualemonbar/
+  cp themes/simple.ini config.ini
+```  
 ## Bar modules
 
 Lualemonbar currently provides 12 bar modules (or plugins, if you prefer) and there are more to come.
@@ -269,7 +272,7 @@ Weather:
 - weather app and button command can be changed in config.ini
 
 Window:
-. displays the name of the active window (requires xdotool)  
+- displays the name of the active window (requires xdotool)  
 - xdotool prorbably will be replaced by a native solution
 - command can be changed in config.ini
 - length of window title display can be set in config.ini 
