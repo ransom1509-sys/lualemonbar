@@ -256,7 +256,7 @@ Date:
 - shows date and time
 - has a button (e.g. for calling a calendar app) 
 - date and time format can be changed in config.ini
-- button action can be changed in config.ini
+- button action can be changed in `config.ini`
 
 Example
 - module template
@@ -265,15 +265,15 @@ Example
 
 Fan:
 - shows current speed of cpu fan and system fan
-- calls used can be adated to your system in config.ini
+- calls used can be adated to your system in `config.ini`
 
 Mail:
 - innforms about new Mail
-- the program used for new mail notification can be set in config.ini
+- the program used for new mail notification can be set in `config.ini`
 
 Net:
 - Shows in/out trafic in KiB/s and connectioon status for wired connections
-- the net interface and data source can be changed in config.ini
+- the net interface and data source can be changed in `config.ini`
 
 Spacer:
 - creates a space of variable length
@@ -281,27 +281,27 @@ Spacer:
 
 Tmp:
 - shows current cpu/system/gpu temperature
-- calls used can be adapted to your system in config.ini
+- calls used can be adapted to your system in `config.ini`
 
 Top
 - displays the top cpu/mem process
-- calls can be configured in config.ini
+- calls can be configured in `config.ini`
 
 Volume:
 - shows volume in percent
 - has left/middle/right click buttons for volume control (pactl and pavucontrol)
-- commands can be changes in config.ini
+- commands can be changed in `config.ini`
   
 Weather:
 - uses ansiweather for actual weather
 - has a button (e.g. to call wego or wttr.in)
-- weather app and button command can be changed in config.ini
+- weather app and button command can be changed in `config.ini`
 
 Window:
 - displays the name of the active window (requires xdotool)  
 - xdotool prorbably will be replaced by a native solution
-- command can be changed in config.ini
-- length of window title display can be set in config.ini 
+- command can be changed in `config.ini`
+- length of window title display can be set in `config.ini` 
 
 The appearance of each module can be configured in `config.ini`.
 
@@ -309,7 +309,7 @@ I can not provide modules for WiFi or battery status, my portables are all Andro
 
 ## How does it work
 
-You do not invoke lualmonbar the usual way, like `"myscript | lemonbar -p"`. Lualemonbar is a stanalone executable, using the `setup()`, `init()`, `cmd()` and `show()` functions provided by lemonbar.lua. After installation and some setup steps (see [Installation](#installation)), put it in your path and run "lualemonbar".
+You do not invoke lualmonbar the usual way, like `"myscript | lemonbar -p"`. Lualemonbar is a stanalone executable, using the `setup()`, `init()`, `cmd()` and `show()` functions provided by `lemonbar.lua`. After installation and some setup steps (see [Installation](#installation)), put it in your path and run "lualemonbar".
 
 The heavy lifting is done by `lemonbar.init()`: 
 
@@ -349,9 +349,9 @@ The bar module's `enabled` flag is set by `lemonbar.init()`
 ```
 The `pcall()` test only works when `mymodule.init()` contains
 
-  code_to_get_some_data_to_display
+  `code_to_get_some_data_to_display`
 
-When not, `enabled` is set to `true`, regardless, of any errors caused
+If not, `enabled` is set to `true`, regardless, of any errors caused
 by the code in `update()` (e.g. program does not exist).
 Unless something else went wrong in `init()`, that is.
 
