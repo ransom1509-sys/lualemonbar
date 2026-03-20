@@ -68,7 +68,7 @@ Clone the repository
 ```
 or download the compressed archive and extract
 
-Create a lualemonbar directory in $HOME/.config
+Create a lualemonbar directory in `$HOME/.config`
 ```bash
   mkdir <your_account>/.config/lualemonbar
 ```
@@ -76,7 +76,7 @@ Go to location of the downloaded repository.
 ```bash
   cd /path_to_lualemonbar_src
 ```
-Copy the contents of the config folder to $HOME/.config/lualemonbar/
+Copy the contents of the config folder to `$HOME/.config/lualemonbar/`
 ```bash
   cp -R config/*  $HOME/.config/lualemonbar/
 ```
@@ -303,7 +303,7 @@ Window:
 - command can be changed in config.ini
 - length of window title display can be set in config.ini 
 
-The appearance of each module can be configured in config.ini.
+The appearance of each module can be configured in `config.ini`.
 
 I can not provide modules for WiFi or battery status, my portables are all Android devices, but you are welcome to contribute any wireless, battery or other missing modules (see [Contributing](#contributing](#contributing))).
 
@@ -323,7 +323,7 @@ The heavy lifting is done by `lemonbar.init()`:
 - merge configuration for loaded bar modules
 - testing the bar modules `init()` functions and enable on succes
 
-Bar modules are loaded from lualemonbar/modules with `require()`
+Bar modules are loaded from `lualemonbar/modules` with `require()`
 and the module's `setup()` function.
 
 All bar Modules have an `update()` function, implemented as coroutine:
@@ -378,7 +378,7 @@ where `cmd` is the actual lemonbar start command retrieved from `config.ini` (e.
 
 ## Writing your own modules
 
-If you want to write your own bar modules, I recommend that you use example.lua as template. With the template you can create simple modules, even if you don't know lua.
+If you want to write your own bar modules, I recommend that you use `example.lua` as template. With the template you can create simple modules, even if you don't know lua.
 
 Here are some tips:
 
@@ -415,7 +415,7 @@ Put anything you want to configure into `config.ini`:
     sep = ""
     ...
 ```    
-If you want to contribute yor module here, put your data rerieval code in your module's `init()` function, so it can be tested by `lemonbar.init()`.
+If you want to contribute your module here, put your data rerieval code in your module's `init()` function, so it can be tested by `lemonbar.init()`.
 ```lua
     init = function ()
         ...
