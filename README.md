@@ -447,7 +447,7 @@ of the module and give it a separator. See the [lualine theme](/config/themes/lu
 
 ## Contribute
 Like this project?<br>
-Leave a star, if you think this project is cool.
+Leave a :star, if you think this project is cool.
 
 ## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
