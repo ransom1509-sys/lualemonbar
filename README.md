@@ -1,4 +1,5 @@
 # Lualemonbar
+
 
 Lualemonbar - A lightweight lua wrapper for lemonbar.  
 Lualemonbar is a wrapper for lemonbar that provides a configuration interface for lemonbar or lemonbar-xft, thereby keeping lemonbar as light as possible.  
@@ -51,7 +52,7 @@ Soft
 - xdotool for the window module.
 - nvidia-smi or amd-smi for the tmp module.
 - Pulseaudio for volume control.
-- ansiweather for current weather conditions.
+- [ansiweather](https://github.com/fcambus/ansiweather) for current weather conditions.
 - nmcli for connection status
 - [imap-cli](https://github.com/Gentux/imap-cli) or a decent email prog like [claws-mail](https://www.claws-mail.org/) for mail.  
   I use claws-mail, the only email program I know, that supports querying the
