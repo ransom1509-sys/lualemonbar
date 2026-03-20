@@ -391,8 +391,8 @@ Create a new field, e.g "cmd_str" in bar["mymodule_name"] and place it before "u
     cmd_str = "",  -- leave empty, you set it in config.ini
     update = ...
 ```
-Lualemonbar provides two helper functions, bar.tools.getval(filename) and bar.tools.getprog(program).
-Fnction bar.tools.getval() is a wrapper for io.read() and returns the firt line of a file.
+Lualemonbar provides two helper functions, bar.tools.getval(filename) and bar.tools.getprog(program).  
+Function bar.tools.getval() is a wrapper for io.read() and returns the firt line of a file.  
 Function bar.tools.getprog() is a wrapper for io.popen() and returns one line of program output. 
 
 Example
@@ -401,8 +401,8 @@ Example
     bar.tools.getprog("tail -n 1 /proc/stat") --> last line of /proc/stat
     bar.tools,getval("/sys/class/net/eth0/statistics/tx_bytes") --> all transmitted bytes
 ```
-The while loop in update() retrieves the actual data. Use getval(cmd_str) or getprog(cmd_str) for retrieval.
- Do not put anything that needs to be updated in front of the while loop, update() is  only called once on lemonbar.init().
+The while loop in update() retrieves the actual data. Use getval(cmd_str) or getprog(cmd_str) to get the required data.  
+Do not put anything that needs to be updated in front of the while loop, update() is  only called once on lemonbar.init( ).
 
 Put anything you want to configure into config.ini:
 ```dosini
@@ -414,7 +414,16 @@ Put anything you want to configure into config.ini:
     sep = ""
     ...
 ```    
-If you want to contribute yor module here, put your data rerieval code in your module's init() function, so it can be tested by lemonbar.init(). On errors, like missing files or programs, init() will safely disable the module, without crashing the bar.
+If you want to contribute yor module here, put your data rerieval code in your module's init() function, so it can be tested by lemonbar.init().
+```lua
+    init = function ()
+        ...
+        test = bar.tools.getprog(cmd_str)
+        ...
+    end
+
+```    
+On errors, like missing files or programs, init() will safely disable the module, without crashing the bar.
 
 ## FAQ
 
