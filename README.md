@@ -2,7 +2,7 @@
 
 Lualemonbar - A lightweight lua wrapper for lemonbar.
 Lualemonbar is a wrapper for lemonbar that provides a configuration interface for lemonbar or lemonbar-xft, thereby keeping lemonbar as light as possible.
-Lualemonbar allows the configuration of almost every lemonbar feature through a config.ini file. Lualemonbar also allows the configuration of all used modules, if there attributes are exposed to config.ini.  
+Lualemonbar allows the configuration of almost every lemonbar feature through a `config.ini` file. Lualemonbar also allows the configuration of all used modules, if there attributes are exposed to `config.ini`.  
 
 ![configure lemonbar with config.ini](</screenshots/lualemonbar - config.ini file.png>)
 
@@ -25,7 +25,7 @@ With lualemonbar you can
 - define separators (global or for individual modules)
 - use themes or create your own
 
-Except for writing modules, all is done through one config.ini file.
+Except for writing modules, all is done through one `config.ini` file.
 
 Lualemonbar is lightweight.
 Lemonbar running through lualemonbar with an update interval of 0.5 seconds, has a cpu usage of 0.2% - 0.5% and uses 9 MB memory. 
@@ -40,6 +40,8 @@ Lemobar's performance suffered and making changes to settings became increasingl
 
 Requirements
 
+Any of the soft requirements can be replaced by alternatives of your choice. Just edit the coresponding entry in the `config.ini` file.
+
 Hard
 - Lua 5.4 (older versions may work too).
 - Lemonbar or lemonbar-xft.
@@ -51,15 +53,14 @@ Soft
 - Pulseaudio for volume control.
 - ansiweather for current weather conditions.
 - nmcli for connection status
-- [imap-cli](https://github.com/Gentux/imap-cli) or a decent email prog like [claws-mail](https://www.claws-mail.org/) for mail.
+- [imap-cli](https://github.com/Gentux/imap-cli) or a decent email prog like [claws-mail](https://www.claws-mail.org/) for mail.  
   I use claws-mail, the only email program I know, that supports querying the
   number of unread messages across all servers as command line argument.
 
 Lualemonbar probes at startup for LuaSocket and falls back to the internal sleep function, if neccessary.
 
-Any of the soft requirements can be replaced by alternatives of your choice. Just edit the coresponding entry in the config.ini file.
 
-Installing files
+Install lualemonbar
 
 Clone the repository
 ```bash
@@ -91,22 +92,22 @@ Most likely you will see error messages displayed in the bar, but if the
 installation was correct, date, load and top should work. If they do not, or 
 nothing is displayed, start lualemonbar from a terminal and look for error messages.
 
-Open $HOME/.config/lualemonbar/config.ini.
+Open `$HOME/.config/lualemonbar/config.ini`.
 
 Read the [Configuration](#configuration) section in this document and adapt the module
 settings to your system.
 
 ## Configuration
 
-### Format of config.ini
+### Format of `config.ini`
 
-The config.ini file has the standard .ini file format, looking like this
+The `config.ini` file has the standard .ini file format, looking like this
 ```dosini
 [section]
 value_1 = "foo"
 value_2 = "bar"
 ```
-In lualemonbar's config.ini three types of values are supported: strings, numbers and references
+In lualemonbar's `config.ini` three types of values are supported: strings, numbers and references
 ```dosini
 [section] 
 string = "this is a string"
@@ -119,7 +120,7 @@ References are not quoted.
 
 ### The .ini file
 
-Most of config.ini is self-explanatory.
+Most of `config.ini` is self-explanatory.
 ```
 [settings]   - General setting
 timer        - Sets the lowest possible update interval. This does NOT change the update
@@ -162,7 +163,7 @@ sep          - The sparator to use.
 fmt          - A lemonbar formater (leftt, center, right).
 iv           - The update intervall. Can not be < settings.timer 
 ```
-### A sample config.ini
+### A sample `config.ini`
 ```dosini
 [settings]
 timer =  0.5
@@ -212,29 +213,29 @@ sep =  separators.tar
 ```
 ### Themes
 
-Themes are stylish config.ini files. Five themes are currently available in lualemonbar/themes.
+Themes are stylish `config.ini` files. Five themes are currently available in lualemonbar/themes.
 
-- clean.ini - Elegant b/w dark theme
+- `clean.ini` - Elegant b/w dark theme
   
   ![clean theme](</screenshots/lualemonbar - clean.png>)
 
-- default.ini - The default config.ini
+- `default.ini` - The default config.ini
 
   ![default theme](</screenshots/lualemonbar- default - no icons.png>)
   
-- lualine.ini - Inspired by NeoVim Lualine status bar
+- `lualine.ini` - Inspired by NeoVim Lualine status bar
 
   ![lualine theme](</screenshots/lualemonbar- lualine.png>)
   
-- simple.ini - No icons or symblos. Works without symbol fonts
+- `simple.ini` - No icons or symblos. Works without symbol fonts
 
   ![simple theme](</screenshots/lualemonbar-  simple clean.png>)
   
-- tokyonight.ini - like default.ini, but with icons and left-center-right layout
+- `tokyonight.ini` - like default.ini, but with icons and left-center-right layout
 
    ![tokyonight theme](</screenshots/lualemonbar- default - formats and icon fonts.png>)
 
-To use a theme just copy it to config.ini, (e.g.)
+To use a theme just copy it to `config.ini`, e.g.
 ```bash
   cd $HOME/.config/lualemonbar/
   cp themes/simple.ini config.ini
@@ -308,24 +309,24 @@ I can not provide modules for WiFi or battery status, my portables are all Andro
 
 ## How does it work
 
-You do not invoke lualmonbar the usual way, like "myscript | lemonbar -p". Lualemonbar is a stanalone executable, using the setup(), init(), cmd() and show() functions provided by lemonbar.lua. After installation and some setup steps (see [Installation](#installation)), put it in your path and run "lualemonbar".
+You do not invoke lualmonbar the usual way, like `"myscript | lemonbar -p"`. Lualemonbar is a stanalone executable, using the `setup()`, `init()`, `cmd()` and `show()` functions provided by lemonbar.lua. After installation and some setup steps (see [Installation](#installation)), put it in your path and run "lualemonbar".
 
-The heavy lifting is done by lemonbar.init(): 
+The heavy lifting is done by `lemonbar.init()`: 
 
 - loading additional required lua modules
-- adapting package.path
-- checking for congfig.ini
-- generating config.lua from config.ini
-- merging config.lua with the defaults
+- adapting `package.path`
+- checking for `congfig.ini`
+- generating `config.lua` from `config.ini`
+- merging `config.lua` with the defaults
 - building a bar module table 
 - loading the wanted bar modules
 - merge configuration for loaded bar modules
-- testing the bar modules init() functions and enable on succes
+- testing the bar modules `init()` functions and enable on succes
 
-Bar modules are loaded from lualemonbar/modules with require()
-and the module's setup() function.
+Bar modules are loaded from lualemonbar/modules with `require()`
+and the module's `setup()` function.
 
-All bar Modules have an update() function, implemented as coroutine:
+All bar Modules have an `update()` function, implemented as coroutine:
 ```lua
       local enabled = bar.mymodule.enabledd
       update = coroutine.create(function()
@@ -338,7 +339,7 @@ All bar Modules have an update() function, implemented as coroutine:
       end
     end),
 ```
-The bar module's enabled flag is set by lemonbar.init()
+The bar module's `enabled` flag is set by `lemonbar.init()`
 ```lua
       if pcall(bar[mymodule].init) then
         bar[mymodule].enabled = true
@@ -346,17 +347,17 @@ The bar module's enabled flag is set by lemonbar.init()
         bar[mymodule].show = "mymodule" .. ": error"
       end
 ```
-The pcall() test only works when mymodule.init() contains
+The `pcall()` test only works when `mymodule.init()` contains
 
   code_to_get_some_data_to_display
 
-When not, enabled is set to true, regardless, of any errors caused
-by the code in update() (e.g. program does not exist).
-Unless something else went wrong in init(), that is.
+When not, `enabled` is set to `true`, regardless, of any errors caused
+by the code in `update()` (e.g. program does not exist).
+Unless something else went wrong in `init()`, that is.
 
 
 
-The data to display in the bar is piped to lemonbar by lemonbar.show()
+The data to display in the bar is piped to lemonbar by `lemonbar.show()`
 ```lua
       local pipe_out = assert(io.popen(cmd, "w"))
       
@@ -373,7 +374,7 @@ The data to display in the bar is piped to lemonbar by lemonbar.show()
       pipe_out:flush()
       show = ""
 ```
-where "cmd" is the actual lemonbar start command retrieved from config.ini (e.g. "lemonbar -p").
+where `cmd` is the actual lemonbar start command retrieved from `config.ini` (e.g. `"lemonbar -p"`).
 
 ## Writing your own modules
 
@@ -381,9 +382,9 @@ If you want to write your own bar modules, I recommend that you use example.lua 
 
 Here are some tips:
 
-Copy example.lua to mymodule_name.lua.
-In mymodule_name.lua change all occurences of "example" to "mymodule_name".
-Create a new field, e.g "cmd_str" in bar["mymodule_name"] and place it before "update".
+Copy `example.lua` to `mymodule_name.lua`.
+In `mymodule_name.lua` change all occurences of `example` to `mymodule_name`.
+Create a new field, e.g `cmd_str` in `bar["mymodule_name"]` and place it before `update`.
 
 ```lua
     bar["mymodule_name"] = {
@@ -404,7 +405,7 @@ Example
 The `while` loop in `update()` retrieves the actual data. Use `getval(cmd_str)` or `getprog(cmd_str)` to get the required data.  
 Do not put anything that needs to be updated in front of the `while` loop, `update()` is  only called once on `lemonbar.init()`.
 
-Put anything you want to configure into config.ini:
+Put anything you want to configure into `config.ini`:
 ```dosini
     [mymodul_name]
     cmd_str = "my command"
