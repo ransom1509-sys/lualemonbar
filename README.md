@@ -36,7 +36,7 @@ Lemonbar running through lualemonbar with an update interval of 0.5 seconds, has
 ## Motivation
 
 I use lemonbar exclusively in my WMs (mostly fluxbox) but the scripts providing the data became larger and larger. 
-Lemobar's performance suffered and making changes to settings became increasingly difficult. So I decided to rewrite my script with thee goals in my mind: Make the script modular, make each bar module a self contained, loadable unit and make it easy to configure. As time went by, what started as QoL features for myself now has become a full blown application, hopefully being useful for others as well. 
+Lemobar's performance suffered and making changes to settings became increasingly difficult. So I decided to rewrite my script with thee goals in my mind: Make the script modular, make each bar module a self contained, loadable unit and make it easy to configure. As time went by, what started as QoL features for myself now has become a full blown application. 
 
 ## Installation
 
@@ -50,6 +50,8 @@ Hard
 
 Soft
 - [LuaSocket](https://github.com/lunarmodules/luasocket) for update intervals < 1s.
+  Lualemonbar probes at startup for LuaSocket and falls back to the internal sleep function, if neccessary.
+- Symbol fonts for Unicode Glyphs. I use Symbol Nerd Fonts and Typicons.
 - xdotool for the window module.
 - nvidia-smi or amd-smi for the tmp module.
 - Pulseaudio for volume control.
@@ -59,7 +61,6 @@ Soft
   I use claws-mail, the only email program I know, that supports querying the
   number of unread messages across all servers as command line argument.
 
-Lualemonbar probes at startup for LuaSocket and falls back to the internal sleep function, if neccessary.
 
 
 Install lualemonbar
@@ -427,6 +428,10 @@ If you want to contribute your module here, put your data rerieval code in your 
 
 ```    
 On errors, like missing files or programs, `lemonbar.init()` will safely disable the module, without crashing the bar.
+
+## A note aboout unicode in lemonbar
+
+:warning: Some unocode glyphs like arrows or triangles may not render properly in lemonbar. Their alignment is one or two pixel lines off. To fix that issue try playing around with lemonbar's height and the pixelsize of your symbol font. I had succes witha bar height of 16, pixelsize = 16 for the symbol font and pixelsize = 14 for the standard font. Additionally try playing around with lemonbar's -o option. 
 
 ## FAQ
 
