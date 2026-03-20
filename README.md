@@ -392,7 +392,7 @@ Create a new field, e.g "cmd_str" in bar["mymodule_name"] and place it before "u
     update = ...
 ```
 Lualemonbar provides two helper functions, bar.tools.getval(filename) and bar.tools.getprog(program).  
-Function bar.tools.getval() is a wrapper for io.read() and returns the firt line of a file.  
+Function bar.tools.getval() is a wrapper for io.read() and returns the first line of a file.  
 Function bar.tools.getprog() is a wrapper for io.popen() and returns one line of program output. 
 
 Example
