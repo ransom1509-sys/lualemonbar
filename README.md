@@ -415,7 +415,7 @@ Put anything you want to configure into `config.ini`:
     sep = ""
     ...
 ```    
-If you want to contribute yor module here, put your data rerieval code in your module's `init()` function, so it can be tested by 'lemonbar.init()`.
+If you want to contribute yor module here, put your data rerieval code in your module's `init()` function, so it can be tested by `lemonbar.init()`.
 ```lua
     init = function ()
         ...
