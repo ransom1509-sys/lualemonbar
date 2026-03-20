@@ -431,7 +431,7 @@ On errors, like missing files or programs, `lemonbar.init()` will safely disable
 
 ## A note aboout unicode in lemonbar
 
-:warning: Some unocode glyphs like arrows or triangles may not render properly in lemonbar. Their alignment is one or two pixel lines off. To fix that issue try playing around with lemonbar's height and the pixelsize of your symbol font. I had succes witha bar height of 16, pixelsize = 16 for the symbol font and pixelsize = 14 for the standard font. Additionally try playing around with lemonbar's -o option. 
+:warning: Some unocode glyphs like arrows or triangles may not render properly in lemonbar. Their alignment is one or two pixel lines off. To fix that issue try playing around with lemonbar's height and the pixelsize of your symbol font. I had success with a bar height of 16, pixelsize = 16 for the symbol font and pixelsize = 14 for the standard font. Additionally try playing around with lemonbar's -o option. 
 
 ## FAQ
 
