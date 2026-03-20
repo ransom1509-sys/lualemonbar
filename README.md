@@ -402,7 +402,7 @@ Example
     bar.tools,getval("/sys/class/net/eth0/statistics/tx_bytes") --> all transmitted bytes
 ```
 The `while` loop in `update()` retrieves the actual data. Use `getval(cmd_str)` or `getprog(cmd_str)` to get the required data.  
-Do not put anything that needs to be updated in front of the `while loop`, `update()` is  only called once on `lemonbar.init()`.
+Do not put anything that needs to be updated in front of the `while` loop, `update()` is  only called once on `lemonbar.init()`.
 
 Put anything you want to configure into config.ini:
 ```dosini
@@ -414,7 +414,7 @@ Put anything you want to configure into config.ini:
     sep = ""
     ...
 ```    
-If you want to contribute yor module here, put your data rerieval code in your module's init() function, so it can be tested by lemonbar.init().
+If you want to contribute yor module here, put your data rerieval code in your module's `init()` function, so it can be tested by 'lemonbar.init()`.
 ```lua
     init = function ()
         ...
@@ -423,7 +423,7 @@ If you want to contribute yor module here, put your data rerieval code in your m
     end
 
 ```    
-On errors, like missing files or programs, init() will safely disable the module, without crashing the bar.
+On errors, like missing files or programs, `lemonbar.init()` will safely disable the module, without crashing the bar.
 
 ## FAQ
 
