@@ -1,5 +1,5 @@
 # Lualemonbar
-![Linux](https://img.shields.io/badge/Linux-FCC624?style=flat&logo=linux&logoColor=black)
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black)
 
 
 Lualemonbar - A lightweight lua wrapper for lemonbar.  
