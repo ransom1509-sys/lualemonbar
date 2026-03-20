@@ -49,7 +49,7 @@ Hard
 - Lemonbar or lemonbar-xft.
 
 Soft
-- [LuaSocket](https://github.com/lunarmodules/luasocket) for update intervals < 1s.
+- [LuaSocket](https://github.com/lunarmodules/luasocket) for update intervals < 1s.  
   Lualemonbar probes at startup for LuaSocket and falls back to the internal sleep function, if neccessary.
 - Symbol fonts for Unicode Glyphs. I use Symbol Nerd Fonts and Typicons.
 - xdotool for the window module.
