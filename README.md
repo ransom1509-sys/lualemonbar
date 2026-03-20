@@ -1,5 +1,6 @@
 # Lualemonbar
-
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=flat&logo=linux&logoColor=black)
+
 
 Lualemonbar - A lightweight lua wrapper for lemonbar.  
 Lualemonbar is a wrapper for lemonbar that provides a configuration interface for lemonbar or lemonbar-xft, thereby keeping lemonbar as light as possible.  
@@ -452,4 +453,4 @@ Leave a star, if you think this project is cool.
 MIT
 
 ## Author
-Jörg Stadermann
+tJörg Stadermann
