@@ -7,16 +7,18 @@ local  example = {}
 function example.setup(bar)
 -- Anything availlable for config.ini must be decalared here
   bar["example"] = {
-    fgc1    = "%{F#b6c0e9}",    -- Text color See config.ini for availlable colors.
-    bgc     = bar.colors.bgc1,  -- Background colo. 
+    fgc1    = "",               -- Text color See config.ini for availlable colors.
+    fgc2    = "",               -- Text color See config.ini for availlable colors.
+    bgc     = "",               -- Background color
     sfg     = "",               -- Separatot forground, color.
     sbg     = "",               -- Separator background, color.
     iv      = 1,                -- Update intervall, required.
-    secs    = 0;                -- Internal counter, required.
+    secs    = 0,                -- Internal counter, required.
     show    = "",               -- What the module returns, required.
     sep     = "",               -- Character or glyph used as Separator.
     idx     = bar.symbols.fidx, -- Index symbol font,
-    icon    = "Count:",         -- Label or glyph for the modul.
+    icon    = "",               -- Label or glyph for the modul.
+    sp      = bar.fmt.sp,       -- Used for padding.,
     fmt     = "",               -- Alignmen tleft, center, right), required
                                 -- Impacts all following modules.
     enabled = false,            -- bar.init() sets this true, if init succeeds                -- 
@@ -24,7 +26,9 @@ function example.setup(bar)
     -- implement update() as coroutine
     -- bar.show() calls coroutine.resume(bar[<module>][update])
     update = coroutine.create(function()
+      local sp    = bar.example.sp
       local c1    = bar.example.fgc1
+      local c2    = bar.example.fgc2
       local bc    = bar.example.bgc
       local icon  = bar.example.icon
       local i     = 1
@@ -32,7 +36,7 @@ function example.setup(bar)
 
       while enabled do
         -- The actual modul code
-        bar.example.show = string.format("%s%s%s %s ", bc, c1, icon, tostring(i))
+        bar.example.show = string.format("%s%s%s%s%s %3d%s", bc, sp, c1, c2, icon, i, sp)
         if i >= 10 then
           i = 1
         else
