@@ -38,6 +38,29 @@ Lemobar's performance suffered and making changes to settings became increasingl
 
 ## Installation
 
+Requirements
+
+Hard
+- Lua 5.4 (older versions may work too).
+- Lemonbar or lemonbar-xft.
+
+Soft
+- [LuaSocket](https://github.com/lunarmodules/luasocket) for update intervals < 1s.
+- xdotool for the window module.
+- nvidia-smi or amd-smi for the tmp module.
+- Pulseaudio for volume control.
+- ansiweather for current weather conditions.
+- nmcli for connection status
+- [imap-cli](https://github.com/Gentux/imap-cli) or a decent email prog like [claws-mail](https://www.claws-mail.org/) for mail.
+  I use claws-mail, the only email program I know, that supports querying the
+  number of unread messages across all servers as command line argument.
+
+Lualemonbar probes at startup for LuaSocket and falls back to the internal sleep function, if neccessary.
+
+Any of the soft requirements can be replaced by alternatives of your choice. Just edit the coresponding entry in the config.ini file.
+
+Installing files
+
 Clone the repository
 ```bash
   git clone https://githup.com/ransom1509-sys/lualemonbar
@@ -351,6 +374,47 @@ The data to display in the bar is piped to lemonbar by lemonbar.show()
       show = ""
 ```
 where "cmd" is the actual lemonbar start command retrieved from config.ini (e.g. "lemonbar -p").
+
+## Writing your own modules
+
+If you want to write your own bar modules, I recommend that you use example.lua as template. With the template you can create simple modules, even if you don't know lua.
+
+Here are some tips:
+
+Copy example.lua to mymodule_name.lua.
+In mymodule_name.lua change all occurences of "example" to "mymodule_name".
+Create a new field, e.g "cmd_str" in bar["mymodule_name"] and place it before "update".
+
+```lua
+    bar["mymodule_name"] = {
+    ..
+    cmd_str = "",  -- leave empty, you set it in config.ini
+    update = ...
+```
+Lualemonbar provides two helper functions, bar.tools.getval(filename) and bar.tools.getprog(program).
+Fnction bar.tools.getval() is a wrapper for io.read() and returns the firt line of a file.
+Function bar.tools.getprog() is a wrapper for io.popen() and returns one line of program output. 
+
+Example
+```lua
+    bar.tools.getval("/proc/stat") --> first line of /proc/stat
+    bar.tools.getprog("tail -n 1 /proc/stat") --> last line of /proc/stat
+    bar.tools,getval("/sys/class/net/eth0/statistics/tx_bytes") --> all transmitted bytes
+```
+The while loop in update() retrieves the actual data. Use getval(cmd_str) or getprog(cmd_str) for retrieval.
+ Do not put anything that needs to be updated in front of the while loop, update() is  only called once on lemonbar.init().
+
+Put anything you want to configure into config.ini:
+```dosini
+    [mymodul_name]
+    cmd_str = "my command"
+    fgc1 = ""
+    fgc2 = ""
+    sp = ""
+    sep = ""
+    ...
+```    
+If you want to contribute yor module here, put your data rerieval code in your module's init() function, so it can be tested by lemonbar.init(). On errors, like missing files or programs, init() will safely disable the module, without crashing the bar.
 
 ## FAQ
 
