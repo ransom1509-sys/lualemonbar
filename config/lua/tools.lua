@@ -83,6 +83,22 @@ function tools.setup(bar)
      os.execute("sleep " .. tonumber(int))
     end,
 
+    makecmd = function ()
+      local tbl = {}
+      tbl = bar.start
+      local cmdstr = "lemonbar -p"
+      for k, v in pairs(tbl) do
+        if v and v ~= "" then
+          if string.sub(k, 1, 4) == "font" then
+            cmdstr = cmdstr .. " -f" .. " " .. "'" .. v .. "'"
+          else
+            cmdstr = cmdstr .. " -" .. k .. v
+          end
+        end
+      end
+      cmdstr = cmdstr .. " | /bin/sh"
+      return cmdstr
+    end,
   }
 
   return bar
