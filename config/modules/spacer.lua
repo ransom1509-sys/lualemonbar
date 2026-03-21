@@ -4,10 +4,10 @@ local spacer = {}
 function spacer.setup(bar)
   bar["spacer"] = {
     fgc1    = "",
-    bgc     = "",
+    bgc     = "bar.spacer.bgc",
     fmt     = "",
     sep     = "",
-    idx     = "bar.symbols.fidx",
+    idx     = "bar.spacer.idx",
     sfg     = "", 
     sbg     = "";
     sp      = "",
@@ -24,7 +24,7 @@ function spacer.setup(bar)
       local format = bar.spacer.format
 
       while true do
-          bar.spacer.show = string.format("%s%s%s" .. format, bc, sp, c1, " ", sp)
+        bar.spacer.show = string.format("%s%s%s" .. format, bc, sp, c1, " ", sp)
         coroutine.yield()
       end
     end),
@@ -33,7 +33,7 @@ function spacer.setup(bar)
       local sf         = bar.spacer.sfg
       local sb         = bar.spacer.sbg
       local symbol     = bar.spacer.sep
-      local idx        = bar.spacer.idx
+      local idx        = bar.symbols.fidx
       local sep        = bar.tools.separator(symbol, sf, sb, idx)
       local w    = bar.spacer.width
       local f    = "-"

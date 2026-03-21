@@ -26,12 +26,8 @@ function tools.setup(bar)
     separator = function (sep, fg, bg, index)
       sep = sep or ""
       local sepstr
-      if sep ~= "" then
-        local stop = bar.colors.bgstop .. bar.colors.fgstop
-        sepstr = stop .. fg .. bg .. "%{" .. "T" .. index .. "}" .. sep .. stop
-      else 
-        sepstr = ""
-      end
+      local stop = bar.colors.bgstop .. bar.colors.fgstop
+      sepstr = stop .. fg .. bg .. "%{" .. "T" .. index .. "}" .. sep .. stop
       return sepstr
     end,
 
