@@ -36,7 +36,9 @@ Lemonbar running through lualemonbar with an update interval of 0.5 seconds, has
 ## Motivation
 
 I use lemonbar exclusively in my WMs (mostly fluxbox) but the scripts providing the data became larger and larger. 
-Lemobar's performance suffered and making changes to settings became increasingly difficult. So I decided to rewrite my script with thee goals in my mind: Make the script modular, make each bar module a self contained, loadable unit and make it easy to configure. As time went by, what started as QoL features for myself now has become a full blown application. 
+Lemobar's performance suffered and making changes to settings became increasingly difficult. So I decided to rewrite my script with thee goals in my mind: Make the script modular, make each bar module a self contained, loadable unit and make it easy to configure. As time went by, what started as QoL features for myself now has become a full blown application.  
+Why `.ini` and not `.lua`?  
+Well, that*s what lua is good at: Parsing `.ini` files  to any format wanted by the target application- And editing `.lua` config files is not very comfortable and prone to errors. 
 
 ## Installation
 
@@ -432,6 +434,16 @@ On errors, like missing files or programs, `lemonbar.init()` will safely disable
 ## A note aboout unicode in lemonbar
 
 :warning: Some unocode glyphs like arrows or triangles may not render properly in lemonbar. Their alignment is one or two pixel lines off. To fix that issue try playing around with lemonbar's height and the pixelsize of your symbol font. I had success with a bar height of 16, pixelsize = 16 for the symbol font and pixelsize = 14 for the standard font. Additionally try playing around with lemonbar's -o option. 
+
+## What next?
+
+More bar modules. Although I am set for my personal use, I would really love to see what others come up with.
+
+Some generic solutions for things like displaying the active window's name. Maybe I dive into lua-xcb.
+
+Code optimization. 
+
+Mail. Don't get me started here. Apparently it is almost impossible to retrieve a simple statistical information (number of all unred / new mails) without either runnibg a local mail server or sending your credentials to a remote server. Every email client has this information but does not allow you to query this from cli. Claws-mail being the exception here.and probably sylpheed as well.  
 
 ## FAQ
 
