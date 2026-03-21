@@ -16,6 +16,7 @@ function defaults.setup(bar)
     u = "",
     U = "",
     a = "",
+    s = ""
   }
 
   bar["settings"] = {

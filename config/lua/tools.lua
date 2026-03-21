@@ -24,8 +24,14 @@ function tools.setup(bar)
     end,
 
     separator = function (sep, fg, bg, index)
-      local stop = bar.colors.bgstop .. bar.colors.fgstop
-      local sepstr = stop .. fg .. bg .. "%{" .. "T" .. index .. "}" .. sep .. stop
+      sep = sep or ""
+      local sepstr
+      if sep ~= "" then
+        local stop = bar.colors.bgstop .. bar.colors.fgstop
+        sepstr = stop .. fg .. bg .. "%{" .. "T" .. index .. "}" .. sep .. stop
+      else 
+        sepstr = ""
+      end
       return sepstr
     end,
 
@@ -85,19 +91,37 @@ function tools.setup(bar)
 
     makecmd = function ()
       local tbl = {}
-      tbl = bar.start
+      local ot  = {}
       local cmdstr = "lemonbar -p"
+      local optstr = ""
+      local shell  = ""
+
+      local options = {
+        a = function (val) return " - a " .. val end,
+        b = function (val) if val == "true" then return " -b" else return "" end end,
+        d = function (val) if val == "true" then return " -d" else return "" end end,
+        g = function (val) return " -g " .. val end,
+        n = function (val) return " -n " .. val end,
+        o = function (val) return " -o " .. val end,
+        s = function (val) shell =  " | " .. val return "" end,
+        u = function (val) return " -u " .. val end,
+        B = function (val) return " -B" .. val end,
+        F = function (val) return " -F" .. val end,
+        U = function (val) return " -U" .. val end,
+        f = function (val) return " -f " .. "'" .. val .. "'" end,
+      }
+
+      ot = options
+      ot.f_1, ot.f_2, ot.f_3, ot.f_4, ot.f_5 = ot.f, ot.f, ot.f, ot.f, ot.f
+
+      tbl = bar.start
       for k, v in pairs(tbl) do
-        if v and v ~= "" then
-          if string.sub(k, 1, 4) == "font" then
-            cmdstr = cmdstr .. " -f" .. " " .. "'" .. v .. "'"
-          else
-            cmdstr = cmdstr .. " -" .. k .. v
-          end
+        if k and v ~= "" then
+          optstr = ot[k](v)
+          cmdstr = cmdstr .. optstr
         end
       end
-      cmdstr = cmdstr .. " | /bin/sh"
-      return cmdstr
+      return cmdstr .. shell
     end,
   }
 

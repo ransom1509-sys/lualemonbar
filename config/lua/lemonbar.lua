@@ -21,7 +21,7 @@ function lemonbar.setup()
     local package_path = package.path
 
     package.path = luapath .. "?.lua;" .. package_path
-    look  = require("look")
+    look  = require("defaults")
     tools = require("tools")
     look.setup(bar)
     tools.setup(bar)
@@ -100,7 +100,7 @@ function lemonbar.init(bar)
 end
 
 function lemonbar.cmd(bar)
-  local cmd = bar.settings.cmd
+  local cmd = bar.tools.makecmd()
   return cmd
 end
 

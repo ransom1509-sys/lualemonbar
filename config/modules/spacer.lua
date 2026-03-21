@@ -3,14 +3,14 @@
 local spacer = {}
 function spacer.setup(bar)
   bar["spacer"] = {
-    fgc1    = bar.colors.fgc8,
+    fgc1    = "",
     bgc     = "",
     fmt     = "",
-    sep     = bar.separators.tar,
-    idx     = bar.symbols.fidx,
-    sfg     = bar.colors.sfg1,
-    sbg     = bar.colors.sbg3,
-    sp      = bar.fmt.sp,
+    sep     = "",
+    idx     = "bar.symbols.fidx",
+    sfg     = "", 
+    sbg     = "";
+    sp      = "",
     width   = 4,
     format  = "",
     show    = "",
