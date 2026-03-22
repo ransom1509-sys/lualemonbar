@@ -125,7 +125,9 @@ References are not quoted.
 
 ### The .ini file
 
-Most of `config.ini` is self-explanatory.
+Most of `config.ini` is self-explanatory.  
+For the options in `[start]` refer to the lemonbar documentation.  
+All lemonbar options need to be quoted.
 ```
 [start]      - Lemonbar start options.
 g            - The option identifiers. 
@@ -143,7 +145,7 @@ o
 u 
 U 
 a 
-s            - The shell the output of buttons should be piped to.
+s            - The shell the output of buttons should be piped to. Not a lemonbar option
 
 [settings]   - General setting
 timer        - Sets the lowest possible update interval. This does NOT change the update
