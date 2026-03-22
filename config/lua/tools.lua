@@ -109,10 +109,12 @@ function tools.setup(bar)
       }
 
       ot = options
+      -- create font slots.
       ot.f_1, ot.f_2, ot.f_3, ot.f_4, ot.f_5 = ot.f, ot.f, ot.f, ot.f, ot.f
 
       tbl = bar.start
       for k in pairs(ot) do table.insert(idx, k) end
+      -- make sure fonts are always in the same order
       table.sort(idx)
       for _, k in ipairs(idx) do
         if tbl[k] and tbl[k] ~= "" then
