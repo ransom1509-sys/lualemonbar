@@ -527,7 +527,7 @@ of the module and give it a separator. See the [lualine theme](/config/themes/lu
 
 ## Contribute
 Like this project?<br>
-Leave a ![:star:](https://github.com/ransom1509-sys/lualemonbar/stargazers), if you think this project is cool.
+Leave a [:star:](https://github.com/ransom1509-sys/lualemonbar/stargazers), if you think this project is cool.
 
 ## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-62baad.svg?style=flat-square)](https://opensource.org/licenses/MIT)
