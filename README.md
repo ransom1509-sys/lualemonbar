@@ -127,11 +127,28 @@ References are not quoted.
 
 Most of `config.ini` is self-explanatory.
 ```
+[start]      - Lemonbar start options.
+g            - The option identifiers. 
+b            - Set = "true" to eable.     
+d            - Set = "true" to eable.    
+n 
+f_1          - separate font slots for five fonts
+f_2
+f_3
+f_4
+f_5
+B 
+F 
+o 
+u 
+U 
+a 
+s            - The shell the output of buttons should be piped to.
+
 [settings]   - General setting
 timer        - Sets the lowest possible update interval. This does NOT change the update
                interval. Setting timer lower than 1 requires LuaSockets. 
 modules      - The modules to load.
-cmd          - The lemonbar command.
 
 [colors]     - Color definitions and lemonbar definitions for starting and stopping colors.
                See man lemonbar. 
@@ -170,11 +187,27 @@ iv           - The update intervall. Can not be < settings.timer
 ```
 ### A sample `config.ini`
 ```dosini
+[start]
+g = "1920x16+0+0"
+b = ""
+d = ""
+n = ""
+f_1 = "Cousine for Powerline:pixelsize=14"
+f_2 = "Typicons:pixelsize=16"
+f_3 = "Symbols Nerd Font Mono:pixelsize=16"
+f_4 = ""
+f_5 = ""
+B = "#ff1a1b26"
+F = ""
+o = ""
+u = ""
+U = ""
+a = ""
+s = "/bin/sh"
 [settings]
 timer =  0.5
 modules = "date weather volume spacer window tmp fan load net mail"
-cmd = "lemonbar -g 1920x16+0+0 -p -f \'Cousine for Powerline:pixelsize=14\' -f Typicons:pixelsize=16 -f \'Symbols Nerd Font Mono:pixelsize=16\' -B#ff1a1b26 | /bin/sh"
-[colors]>
+[colors]
 bgc1 =  "%{B#1a1b26}"
 bgc2 =  "%{B#414447}"
 fgc1 =  "%{F#b6c0e9}"
@@ -202,6 +235,7 @@ ml = "%{O20}"
 mr = "%{O20}"
 sp  = " "
 [spacer]
+bgc = colors.bgc1
 width = 4
 sep = ""
 [fan]
@@ -379,8 +413,39 @@ The data to display in the bar is piped to lemonbar by `lemonbar.show()`
       pipe_out:flush()
       show = ""
 ```
-where `cmd` is the actual lemonbar start command retrieved from `config.ini` (e.g. `"lemonbar -p"`).
+where `cmd` is the actual lemonbar start command retrieved from `config.ini` (e.g. `"lemonbar -p"`). 
+Building the start command was tricky. The command line options are a mix of flags and options with values. Some values need to be quoted, some not. In addition, we have up to five fonts, all with the same identifier (`-f`).  
+My solution is a kind of switch case table, that handles each option individually:
+```lua
 
+      local options = {
+        a = function (val) return " - a " .. val end,
+        b = function (val) if val == "true" then return " -b" else return "" end end,
+        d = function (val) if val == "true" then return " -d" else return "" end end,
+        g = function (val) return " -g " .. val end,
+        n = function (val) return " -n " .. val end,
+        o = function (val) return " -o " .. val end,
+        s = function (val) shell =  " | " .. val return "" end,
+        u = function (val) return " -u " .. val end,
+        B = function (val) return " -B" .. val end,
+        F = function (val) return " -F" .. val end,
+        U = function (val) return " -U" .. val end,
+        f = function (val) return " -f " .. "'" .. val .. "'" end,
+      }
+
+      ot = options
+      ot.f_1, ot.f_2, ot.f_3, ot.f_4, ot.f_5 = ot.f, ot.f, ot.f, ot.f, ot.f
+
+      tbl = bar.start
+      for k, v in pairs(tbl) do
+        if k and v ~= "" then
+          optstr = ot[k](v)
+          cmdstr = cmdstr .. optstr
+        end
+      end
+      return cmdstr .. shell
+
+```
 ## Writing your own modules
 
 If you want to write your own bar modules, I recommend that you use `example.lua` as template. With the template you can create simple modules, even if you don't know lua.
@@ -434,16 +499,6 @@ On errors, like missing files or programs, `lemonbar.init()` will safely disable
 ## A note aboout unicode in lemonbar
 
 :warning: Some unocode glyphs like arrows or triangles may not render properly in lemonbar. Their alignment is one or two pixel lines off. To fix that issue try playing around with lemonbar's height and the pixelsize of your symbol font. I had success with a bar height of 16, pixelsize = 16 for the symbol font and pixelsize = 14 for the standard font. Additionally try playing around with lemonbar's -o option. 
-
-## What next?
-
-More bar modules. Although I am set for my personal use, I would really love to see what others come up with.
-
-Some generic solutions for things like displaying the active window's name. Maybe I dive into lua-xcb.
-
-Code optimization. 
-
-Mail. Don't get me started here. Apparently it is almost impossible to retrieve a simple statistical information (number of all unred / new mails) without either runnibg a local mail server or sending your credentials to a remote server. Every email client has this information but does not allow you to query this from cli. Claws-mail being the exception here.and probably sylpheed as well.  
 
 ## FAQ
 
