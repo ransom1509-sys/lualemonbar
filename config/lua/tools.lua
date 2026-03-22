@@ -88,6 +88,7 @@ function tools.setup(bar)
     makecmd = function ()
       local tbl = {}
       local ot  = {}
+      local idx = {}
       local cmdstr = "lemonbar -p"
       local optstr = ""
       local shell  = ""
@@ -111,12 +112,15 @@ function tools.setup(bar)
       ot.f_1, ot.f_2, ot.f_3, ot.f_4, ot.f_5 = ot.f, ot.f, ot.f, ot.f, ot.f
 
       tbl = bar.start
-      for k, v in pairs(tbl) do
-        if k and v ~= "" then
-          optstr = ot[k](v)
+      for k in pairs(ot) do table.insert(idx, k) end
+      table.sort(idx)
+      for _, k in ipairs(idx) do
+        if tbl[k] and tbl[k] ~= "" then
+          optstr = ot[k](tbl[k])
           cmdstr = cmdstr .. optstr
         end
       end
+      print(cmdstr)
       return cmdstr .. shell
     end,
   }
