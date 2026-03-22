@@ -69,9 +69,9 @@ Install lualemonbar
 
 Clone the repository
 ```bash
-  git clone https://githup.com/ransom1509-sys/lualemonbar
+  git clone https://githup.com/ransom1509-sys/lualemonbar.git
 ```
-or download the compressed archive and extract
+or download the zip file and extract
 
 Create a lualemonbar directory in `$HOME/.config`
 ```bash
