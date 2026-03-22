@@ -122,7 +122,6 @@ function tools.setup(bar)
           cmdstr = cmdstr .. optstr
         end
       end
-      print(cmdstr)
       return cmdstr .. shell
     end,
   }
