@@ -38,7 +38,7 @@ Lemonbar running through lualemonbar with an update interval of 0.5 seconds, has
 I use lemonbar exclusively in my WMs (mostly fluxbox) but the scripts providing the data became larger and larger. 
 Lemobar's performance suffered and making changes to settings became increasingly difficult. So I decided to rewrite my script with thee goals in my mind: Make the script modular, make each bar module a self contained, loadable unit and make it easy to configure. As time went by, what started as QoL features for myself now has become a full blown application.  
 Why `.ini` and not `.lua`?  
-Well, that*s what lua is good at: Parsing `.ini` files  to any format wanted by the target application- And editing `.lua` config files is not very comfortable and prone to errors. 
+Well, that's what lua is good at: Parsing `.ini` files  to any format wanted by the target application- And editing `.lua` config files is not very comfortable and prone to errors. 
 
 ## Installation
 
@@ -434,16 +434,22 @@ My solution is a kind of switch case table, that handles each option individuall
       }
 
       ot = options
+      -- create the font slots
       ot.f_1, ot.f_2, ot.f_3, ot.f_4, ot.f_5 = ot.f, ot.f, ot.f, ot.f, ot.f
 
       tbl = bar.start
-      for k, v in pairs(tbl) do
-        if k and v ~= "" then
-          optstr = ot[k](v)
+      for k in pairs(ot) do table.insert(idx, k) end
+      -- make sure fonts are always in the same order
+      table.sort(idx)
+      for _, k in ipairs(idx) do
+        if tbl[k] and tbl[k] ~= "" then
+          optstr = ot[k](tbl[k])
           cmdstr = cmdstr .. optstr
         end
       end
+      print(cmdstr)
       return cmdstr .. shell
+    end,
 
 ```
 ## Writing your own modules
@@ -498,7 +504,7 @@ On errors, like missing files or programs, `lemonbar.init()` will safely disable
 
 ## A note aboout unicode in lemonbar
 
-:warning: Some unocode glyphs like arrows or triangles may not render properly in lemonbar. Their alignment is one or two pixel lines off. To fix that issue try playing around with lemonbar's height and the pixelsize of your symbol font. I had success with a bar height of 16, pixelsize = 16 for the symbol font and pixelsize = 14 for the standard font. Additionally try playing around with lemonbar's -o option. 
+:warning: Some unocode glyphs like arrows or triangles may not rendered properly in lemonbar. Their alignment is one or two pixel lines off. To fix that issue try playing around with lemonbar's height and the pixelsize of your symbol font. I had success with a bar height of 16, pixelsize = 16 for the symbol font and pixelsize = 14 for the standard font. But not always, so YMMV. Additionally try playing around with lemonbar's -o option. 
 
 ## FAQ
 
@@ -519,7 +525,7 @@ of the module and give it a separator. See the [lualine theme](/config/themes/lu
 
 ## Contribute
 Like this project?<br>
-Leave a :star, if you think this project is cool.
+Leave a :star:, if you think this project is cool.
 
 ## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-62baad.svg?style=flat-square)](https://opensource.org/licenses/MIT)
