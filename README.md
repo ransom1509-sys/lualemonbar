@@ -456,7 +456,7 @@ My solution is a kind of switch case table, that handles each option individuall
 ```
 ## Writing your own modules
 
-If you want to write your own bar modules, I recommend that you use `example.lua` as template. With the template you can create simple modules, even if you don't know lua. The [top module](/config/modules/top.lua) is a good example.
+If you want to write your own bar modules, I recommend that you use `example.lua` as template. With the template you can create simple modules, even if you don't know lua. 
 
 Here are some tips:
 
@@ -503,6 +503,8 @@ If you want to contribute your module here, put your data rerieval code in your 
 
 ```    
 On errors, like missing files or programs, `lemonbar.init()` will safely disable the module, without crashing the bar.
+
+The [top module](/config/modules/top.lua) is a good example for a simple module.
 
 ## A note aboout unicode in lemonbar
 
