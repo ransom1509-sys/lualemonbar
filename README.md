@@ -456,7 +456,7 @@ My solution is a kind of switch case table, that handles each option individuall
 ```
 ## Writing your own modules
 
-If you want to write your own bar modules, I recommend that you use `example.lua` as template. With the template you can create simple modules, even if you don't know lua.
+If you want to write your own bar modules, I recommend that you use `example.lua` as template. With the template you can create simple modules, even if you don't know lua. The ![top module](/config/modules/top.lua) is a good example.
 
 Here are some tips:
 
