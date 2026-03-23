@@ -35,14 +35,14 @@ function lemonbar.setup()
     bar.tools.mergetables(bar, conf)
 
     for w in string.gmatch(bar.settings.modules, "%S+") do
-      table.insert(module_table, w)
+      mname = mpath .. w .. ".lua"
+      if bar.tools.file_exists(mname) then
+        table.insert(module_table, w)
+      end
     end
     for _, val in pairs(module_table) do
-      mname = mpath .. val .. ".lua"
-      if bar.tools.file_exists(mname) then
-        mod = require(val)
-        mod.setup(bar)
-      end
+      mod = require(val)
+      mod.setup(bar)
       mname = ""
     end
     bar.tools.mergetables(bar, conf)
