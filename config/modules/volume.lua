@@ -31,6 +31,7 @@ function volume.setup(bar)
     update = coroutine.create(function ()
       local symbol  = bar.volume.icon
       local c1      = bar.volume.fgc1
+      local c2      = bar.volume.fgc2
       local bc      = bar.volume.bgc
       local sp      = bar.volume.sp
       local percent = bar.volume.vol_perc
@@ -63,8 +64,8 @@ function volume.setup(bar)
         dec  = bar.volume.v_set_str .. down
 
         bar.volume.show = string.format(
-          "%s%s%s%s %%{A1:%s:}%%{A2:%s:}%%{A3:%s:}%s%%%%{A}%%{A}%%{A}%s",
-          bc, sp, c1, symbol, dec, action, inc, percent, sp)
+          "%s%s%s%s%s %%{A1:%s:}%%{A2:%s:}%%{A3:%s:}%s%%%%{A}%%{A}%%{A}%s",
+          bc, sp, c2, symbol, c1, dec, action, inc, percent, sp)
         coroutine.yield()
       end
     end),
