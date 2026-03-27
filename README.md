@@ -450,11 +450,12 @@ My solution is a kind of switch case table, that handles each option individuall
       for _, k in ipairs(idx) do
         if tbl[k] and tbl[k] ~= "" then
           optstr = ot[k](tbl[k])
-          cmdstr = cmdstr .. optstr
+          optstr = ot[k](tbl[k])
+          cmdstr[#cmdstr+1] = optstr
         end
       end
-      print(cmdstr)
-      return cmdstr .. shell
+      cmdstr[#cmdstr+1] = shell
+      return table.concat(cmdstr)
     end,
 
 ```
