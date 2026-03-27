@@ -17,7 +17,7 @@ function lemonbar.setup()
     local luapath       = path .. "lua/"
     local iniconf       = path .. "config.ini"
     local luaconf       = luapath .. "config.lua"
-    local mname
+    local mname         = {}
     local package_path = package.path
 
     package.path = luapath .. "?.lua;" .. package_path
@@ -35,15 +35,17 @@ function lemonbar.setup()
     bar.tools.mergetables(bar, conf)
 
     for w in string.gmatch(bar.settings.modules, "%S+") do
-      mname = mpath .. w .. ".lua"
-      if bar.tools.file_exists(mname) then
+      mname[#mname + 1] = mpath
+      mname[#mname + 1] = w
+      mname[#mname + 1] = ".lua"
+      if bar.tools.file_exists(table.concat(mname)) then
         table.insert(module_table, w)
       end
+      mname = {}
     end
     for _, val in pairs(module_table) do
       mod = require(val)
       mod.setup(bar)
-      mname = ""
     end
     bar.tools.mergetables(bar, conf)
 

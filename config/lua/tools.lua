@@ -100,7 +100,7 @@ function tools.setup(bar)
       local tbl = {}
       local ot  = {}
       local idx = {}
-      local cmdstr = "lemonbar -p"
+      local cmdstr = {}
       local optstr = ""
       local shell  = ""
 
@@ -119,6 +119,7 @@ function tools.setup(bar)
         f = function (val) return " -f " .. "'" .. val .. "'" end,
       }
 
+      cmdstr[1] = "lemonbar -p"
       ot = options
       -- create font slots.
       ot.f_1, ot.f_2, ot.f_3, ot.f_4, ot.f_5 = ot.f, ot.f, ot.f, ot.f, ot.f
@@ -130,10 +131,11 @@ function tools.setup(bar)
       for _, k in ipairs(idx) do
         if tbl[k] and tbl[k] ~= "" then
           optstr = ot[k](tbl[k])
-          cmdstr = cmdstr .. optstr
+          cmdstr[#cmdstr+1] = optstr
         end
       end
-      return cmdstr .. shell
+      cmdstr[#cmdstr+1] = shell
+      return table.concat(cmdstr)
     end,
   }
 
