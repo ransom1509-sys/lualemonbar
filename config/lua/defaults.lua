@@ -61,7 +61,7 @@ function defaults.setup(bar)
     mai_new = "", -- U+Eb1c => tNerd Fonts
     net     = "", -- U+EB7B => Nerd Fonts
     wthr    = "", -- UE13B => typicons.ttf
-    vol     = "",
+    vol     = "",
     fidx    = 3,
   }
 
