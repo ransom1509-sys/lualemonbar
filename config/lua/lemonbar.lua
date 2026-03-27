@@ -61,8 +61,8 @@ function lemonbar.setup()
   end
 
   bar.show = function (lbcmd)
-    local sleep
-    local show = ""
+    local sleep, i
+    local show = {}
     local cmd  = lbcmd
     local pipe_out = assert(io.popen(cmd, "w"))
     local available, socket = pcall(require, "socket")
@@ -75,6 +75,7 @@ function lemonbar.setup()
     local n     = bar.settings.timer
 
     while true do
+      i = 1
       for _, val in pairs(module_table) do
         if bar[val].iv - bar[val].secs <= 0 then
           coroutine.resume(bar[val].update)
@@ -82,11 +83,16 @@ function lemonbar.setup()
         else
           bar[val].secs = bar[val].secs + bar.settings.timer
         end
-        show = show .. bar[val].fmt .. bar[val].show .. bar[val].sep
+          show[i] = bar[val].fmt
+          i = i + 1
+          show[i] = bar[val].show
+          i = i + 1
+          show[i] = bar[val].sep
+          i = i + 1
       end
-      pipe_out:write(show .. "\n")
+      pipe_out:write(table.concat(show))
+      pipe_out:write("\n")
       pipe_out:flush()
-      show = ""
       sleep(n)
     end
   end
