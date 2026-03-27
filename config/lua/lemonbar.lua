@@ -83,12 +83,12 @@ function lemonbar.setup()
         else
           bar[val].secs = bar[val].secs + bar.settings.timer
         end
-          show[i] = bar[val].fmt
-          i = i + 1
-          show[i] = bar[val].show
-          i = i + 1
-          show[i] = bar[val].sep
-          i = i + 1
+        show[i] = bar[val].fmt
+        i = i + 1
+        show[i] = bar[val].show
+        i = i + 1
+        show[i] = bar[val].sep
+        i = i + 1
       end
       pipe_out:write(table.concat(show))
       pipe_out:write("\n")
