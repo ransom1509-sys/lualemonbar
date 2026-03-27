@@ -409,12 +409,16 @@ The data to display in the bar is piped to lemonbar by `lemonbar.show()`
         else
           bar[val].secs = bar[val].secs + bar.settings.timer
         end
-        show = show .. bar[val].fmt .. bar[val].show .. bar[val].sep
+        show[#show + 1] = bar[val].fmt
+        show[#show + 1] = bar[val].show
+        show[#show + 1] = bar[val].sep
       end
-      pipe_out:write(show .. "\n")
+      pipe_out:write(table.concat(show))
+      pipe_out:write("\n")
       pipe_out:flush()
-      show = ""
-```
+      show = {}
+      sleep(n)
+  ```
 where `cmd` is the actual lemonbar start command retrieved from `config.ini` (e.g. `"lemonbar -p"`). 
 Building the start command was tricky. The command line options are a mix of flags and options with values. Some values need to be quoted, some not. In addition, we have up to five fonts, all with the same identifier (`-f`).  
 My solution is a kind of switch case table, that handles each option individually:
