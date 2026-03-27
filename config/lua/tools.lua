@@ -25,10 +25,21 @@ function tools.setup(bar)
 
     separator = function (sep, fg, bg, index)
       sep = sep or ""
-      local sepstr
-      local stop = bar.colors.bgstop .. bar.colors.fgstop
-      sepstr = stop .. fg .. bg .. "%{" .. "T" .. index .. "}" .. sep .. stop
-      return sepstr
+      local sepstr = {}
+
+      sepstr[#sepstr+1] = bar.colors.bgstop
+      sepstr[#sepstr+1] = bar.colors.fgstop
+      sepstr[#sepstr+1] = fg
+      sepstr[#sepstr+1] = bg
+      sepstr[#sepstr+1] = "%{T"
+      sepstr[#sepstr+1] = index
+      sepstr[#sepstr+1] = "}"
+      sepstr[#sepstr+1] = sep
+      sepstr[#sepstr+1] = bar.colors.bgstop
+      sepstr[#sepstr+1] = bar.colors.fgstop
+
+      return table.concat(sepstr)
+
     end,
 
     file_exists = function(filename)
