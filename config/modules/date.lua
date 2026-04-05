@@ -25,9 +25,10 @@ function date.setup(bar)
       local c1      = bar.date.fgc1
       local sp      = bar.date.sp
       local enabled = bar.date.enabled
+      local getprog = bar.tools.getprog
 
       while enabled do
-        today = bar.tools.getprog(bar.date.d_fmt)
+        today = getprog(bar.date.d_fmt)
         bar.date.show = string.format("%s%s%s %%{A:%s:}%s%%{A}%s",
           bc, sp, c1, action, today, sp)
         coroutine.yield()
@@ -40,8 +41,9 @@ function date.setup(bar)
       local sf      = bar.date.sfg
       local symbol  = bar.date.sep
       local sep     = bar.tools.separator(symbol, sf, sb, idx)
+      local getprog = bar.tools.getprog
       bar.date.sep  = sep
-      bar.tools.getprog(bar.date.d_fmt)
+      getprog(bar.date.d_fmt)
     end,
 
   }

@@ -41,9 +41,10 @@ function volume.setup(bar)
       local inc     = bar.volume.v_set_str .. up
       local dec     = bar.volume.v_set_str .. down
       local enabled = bar.volume.enabled
+      local getprog = bar.tools.getprog
 
       while enabled do
-        bar.volume.cur_vol  = bar.tools.getprog(bar.volume.v_get_str)
+        bar.volume.cur_vol  = getprog(bar.volume.v_get_str)
 
         -- if bar.volume.cur_vol ~= bar.volume.prev_vol then
         bar.volume.vol_perc = 100 * bar.volume.cur_vol // bar.volume.max_vol
@@ -76,8 +77,9 @@ function volume.setup(bar)
       local symbol   = bar.volume.sep
       local idx      = bar.volume.idx
       local sep      = bar.tools.separator(symbol, sf, sb, idx)
+      local getprog = bar.tools.getprog
       bar.volume.sep = sep
-      bar.volume.cur_vol  = bar.tools.getprog(bar.volume.v_get_str)
+      bar.volume.cur_vol  = getprog(bar.volume.v_get_str)
       bar.volume.prev_vol = bar.volume.cur_vol
       bar.volume.vol_perc = 100 * bar.volume.cur_vol // bar.volume.max_vol
 

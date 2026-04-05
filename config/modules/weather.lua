@@ -30,9 +30,10 @@ function weather.setup(bar)
       local w_str   = string.format("%%{A:%s:}%s%%{A}", action, bar.weather.cur)
       local sp      = bar.weather.sp
       local enabled = bar.weather.enabled
+      local getprog = bar.tools.getprog
 
       while enabled do
-        bar.weather.cur = bar.tools.getprog(bar.weather.w_qstr)
+        bar.weather.cur = getprog(bar.weather.w_qstr)
         w_str = string.format("%%{A:%s:}%s%%{A}", action, bar.weather.cur)
         bar.weather.show = string.format("%s%s%s%s%s", bc, sp, c1, w_str, sp)
         coroutine.yield()
@@ -45,8 +46,9 @@ function weather.setup(bar)
       local symbol    = bar.weather.sep
       local idx       = bar.weather.idx
       local sep       = bar.tools.separator(symbol, sf, sb, idx)
+      local getprog   = bar.tools.getprog
       bar.weather.sep = sep
-      bar.weather.cur = bar.tools.getprog(bar.weather.w_qstr)
+      bar.weather.cur = getprog(bar.weather.w_qstr)
     end,
 
   }

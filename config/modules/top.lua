@@ -32,11 +32,12 @@ function top.setup(bar)
       local icon     = bar.top.icon
       local sp       = bar.top.sp
       local enabled  = bar.top.enabled
+      local getprog  = bar.tools.getprog
 
       while enabled do
         -- The actual modul code
-        topc  = bar.tools.getprog(bar.top.tc_str)
-        topm  = bar.tools.getprog(bar.top.tm_str)
+        topc  = getprog(bar.top.tc_str)
+        topm  = getprog(bar.top.tm_str)
         bar.top.show = string.format("%s%s%s%s %s %s%s",
           bc, sp, c1, icon, topc, topm, sp)
         coroutine.yield()
@@ -51,9 +52,10 @@ function top.setup(bar)
       local symbol    = bar.top.sep
       local idx       = bar.top.idx
       local sep       = bar.tools.separator(symbol, sf, sb, idx)
+      local getprog   = bar.tools.getprog
       bar.top.sep = sep
-      bar.tools.getprog(bar.top.tc_str)
-      bar.tools.getprog(bar.top.tm_str)
+      getprog(bar.top.tc_str)
+      getprog(bar.top.tm_str)
     end,
 
   }

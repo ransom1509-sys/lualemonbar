@@ -28,10 +28,11 @@ function fan.setup(bar)
       local icon    = bar.fan.icon
       local sp      = bar.fan.sp
       local enabled = bar.fan.enabled
+      local getval  = bar.tools.getval
 
       while enabled do
-        bar.fan.cf_cur  = bar.tools.getval(bar.fan.cf_qstr)
-        bar.fan.sf_cur  = bar.tools.getval(bar.fan.sf_qstr)
+        bar.fan.cf_cur  = getval(bar.fan.cf_qstr)
+        bar.fan.sf_cur  = getval(bar.fan.sf_qstr)
         bar.fan.show = string.format("%s%s%s %s %s%4d  %4d%s",
           bc, sp, c2, icon, c1, bar.fan.cf_cur, bar.fan.sf_cur, sp)
         coroutine.yield()
@@ -44,9 +45,10 @@ function fan.setup(bar)
       local symbol    = bar.fan.sep
       local idx       = bar.fan.idx
       local sep       = bar.tools.separator(symbol, sf, sb, idx )
+      local getval  = bar.tools.getval
       bar.fan.sep     = sep
-      bar.fan.cf_cur  = bar.tools.getval(bar.fan.cf_qstr)
-      bar.fan.sf_cur  = bar.tools.getval(bar.fan.sf_qstr)
+      bar.fan.cf_cur  = getval(bar.fan.cf_qstr)
+      bar.fan.sf_cur  = getval(bar.fan.sf_qstr)
     end,
 
   }

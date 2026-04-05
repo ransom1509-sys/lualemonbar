@@ -38,9 +38,11 @@ function net.setup(bar)
       local bc      = bar.net.bgc
       local sp      = bar.net.sp
       local enabled = bar.net.enabled
+      local getprog = bar.tools.getprog
+      local getval  = bar.tools.getval
 
       while enabled do
-        bar.net.status = bar.tools.getprog(bar.net.st_qstr)
+        bar.net.status = getprog(bar.net.st_qstr)
         if bar.net.status == "connected" then
           c2 = bar.net.fgc2
           c1 = bar.net.fgc1
@@ -49,11 +51,11 @@ function net.setup(bar)
           c1 = bar.net.fgc3
         end
         --   Calculate tx in keyiB/s
-        bar.net.rx_cur  = bar.tools.getval(bar.net.rx_qstr)
+        bar.net.rx_cur  = getval(bar.net.rx_qstr)
         bar.net.rx_rate = string.format("%.1f", ((bar.net.rx_cur - bar.net.rx_last) / 1024) / bar.settings.timer)
         bar.net.rx_last = bar.net.rx_cur
         --   Calculate tx in KiB/s
-        bar.net.tx_cur  = bar.tools.getval(bar.net.tx_qstr)
+        bar.net.tx_cur  = getval(bar.net.tx_qstr)
         bar.net.tx_rate = string.format("%.1f", ((bar.net.tx_cur - bar.net.tx_last) / 1024) / bar.settings.timer)
         bar.net.tx_last = bar.net.tx_cur
         rxstr = bar.net.rx_rate
@@ -71,10 +73,12 @@ function net.setup(bar)
       local symbol    = bar.net.sep
       local idx       = bar.net.idx
       local sep       = bar.tools.separator(symbol, sf, sb, idx)
+      local getprog   = bar.tools.getprog
+      local getval    = bar.tools.getval
       bar.net.sep     = sep
-      bar.net.status = bar.tools.getprog(bar.net.st_qstr)
-      bar.net.rx_last = bar.tools.getval(bar.net.rx_qstr)
-      bar.net.tx_last = bar.tools.getval(bar.net.tx_qstr)
+      bar.net.status  = getprog(bar.net.st_qstr)
+      bar.net.rx_last = getval(bar.net.rx_qstr)
+      bar.net.tx_last = getval(bar.net.tx_qstr)
 
     end,
   }

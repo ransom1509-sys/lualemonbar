@@ -29,10 +29,11 @@ function mail.setup(bar)
     local icon  = bar.mail.icon
     local sp    = bar.mail.sp
     local enabled = bar.mail.enabled
+    local getprog = bar.tools.getprog
 
     while enabled do
     --   New mails?
-      bar.mail.mails = tonumber(bar.tools.getprog(bar.mail.nm_qstr))
+      bar.mail.mails = tonumber(getprog(bar.mail.nm_qstr))
       if bar.mail.mails ~= nil and bar.mail.mails > 0 then
        mc = c2
        icon = bar.mail.new
@@ -48,7 +49,8 @@ function mail.setup(bar)
     init = function ()
       local idx     = bar.mail.idx
       local sep = bar.tools.separator(bar.mail.sep, bar.mail.sfg, bar.mail.sbg, idx)
-      bar.mail.mails = tonumber(bar.tools.getprog(bar.mail.nm_qstr))
+      local getprog = bar.tools.getprog
+      bar.mail.mails = tonumber(getprog(bar.mail.nm_qstr))
       bar.mail.sep = sep
     end,
   }

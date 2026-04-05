@@ -36,6 +36,7 @@ function load.setup(bar)
       local sp        = bar.load.sp
       local cpu_usage = 0
       local enabled   = bar.load.enabled
+      local getval    = bar.tools.getval
 
       while enabled do
         -- get cpu stats
@@ -45,7 +46,7 @@ function load.setup(bar)
         cpu_idle  = 0
         cpu_used  = 0
 
-        cpu = bar.tools.getval(bar.load.st_qstr)
+        cpu = getval(bar.load.st_qstr)
         -- Convert string to table
         for w in string.gmatch(cpu, "[^%s]+") do
           table.insert(cpu_now, w)
@@ -82,8 +83,9 @@ function load.setup(bar)
       local symbol  = bar.load.sep
       local idx     = bar.load.idx
       local sep     = bar.tools.separator(symbol, sf, sb, idx )
+      local getval    = bar.tools.getval
       bar.load.sep  = sep
-      bar.tools.getval(bar.load.st_qstr)
+      getval(bar.load.st_qstr)
     end
   }
 

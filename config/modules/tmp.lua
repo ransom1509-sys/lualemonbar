@@ -32,11 +32,13 @@ function tmp.setup(bar)
       local icon    = bar.tmp.icon
       local sp      = bar.tmp.sp
       local enabled = bar.tmp.enabled
+      local getval  = bar.tools.getval
+      local getprog = bar.tools.getprog
 
       while enabled do
-        bar.tmp.ct_cur  = string.sub(bar.tools.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
-        bar.tmp.st_cur  = string.sub(bar.tools.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
-        bar.tmp.gt_cur  = string.sub(bar.tools.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
+        bar.tmp.ct_cur  = string.sub(getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
+        bar.tmp.st_cur  = string.sub(getval(bar.tmp.st_qstr), 1, 2) .. "°C"
+        bar.tmp.gt_cur  = string.sub(getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
         bar.tmp.show = string.format("%s%s%s%s%s %s %s %s%s",
           bc, sp, c2, icon, c1, bar.tmp.ct_cur, bar.tmp.st_cur, bar.tmp.gt_cur, sp)
         coroutine.yield()
@@ -49,10 +51,12 @@ function tmp.setup(bar)
       local symbol   = bar.tmp.sep
       local idx      = bar.tmp.idx
       local sep      = bar.tools.separator(symbol, sf, sb, idx)
+      local getval   = bar.tools.getval
+      local getprog  = bar.tools.getprog
       bar.tmp.sep    = sep
-      bar.tmp.ct_cur = string.sub(bar.tools.getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
-      bar.tmp.st_cur = string.sub(bar.tools.getval(bar.tmp.st_qstr), 1, 2) .. "°C"
-      bar.tmp.gt_cur = string.sub(bar.tools.getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
+      bar.tmp.ct_cur = string.sub(getval(bar.tmp.ct_qstr), 1, 2) .. "°C"
+      bar.tmp.st_cur = string.sub(getval(bar.tmp.st_qstr), 1, 2) .. "°C"
+      bar.tmp.gt_cur = string.sub(getprog(bar.tmp.gt_qstr), 1, 2) .. "°C"
     end,
 
   }

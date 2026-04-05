@@ -26,9 +26,10 @@ function window.setup(bar)
       local format = bar.window.format
       local enabled = bar.window.enabled
       local wname
+      local getprog = bar.tools.getprog
 
       while enabled do
-        wname = bar.tools.getprog(bar.window.w_str)
+        wname = getprog(bar.window.w_str)
         if wname == nil then
           wname = ''
         end
@@ -38,20 +39,21 @@ function window.setup(bar)
     end),
 
     init = function ()
-      local sf     = bar.window.sfg
-      local sb     = bar.window.sbg
-      local symbol = bar.window.sep
-      local idx    = bar.window.idx
-      local sep    = bar.tools.separator(symbol, sf, sb, idx)
-      local w      = bar.window.width
-      local l      = bar.window.width - 4
-      local f      = "-"
-      local p      = "."
-      local t      = "s"
+      local sf      = bar.window.sfg
+      local sb      = bar.window.sbg
+      local symbol  = bar.window.sep
+      local idx     = bar.window.idx
+      local sep     = bar.tools.separator(symbol, sf, sb, idx)
+      local getprog = bar.tools.getprog
+      local w       = bar.window.width
+      local l       = bar.window.width - 4
+      local f       = "-"
+      local p       = "."
+      local t       = "s"
       local form = string.format("%%%s%d%s%d%s", f, w, p, l, t)
       bar.window.sep    = sep
       bar.window.format = form
-      local test = bar.tools.getprog(bar.window.w_str)
+      local test = getprog(bar.window.w_str)
     end
   }
 
