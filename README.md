@@ -36,7 +36,7 @@ Lemonbar running through lualemonbar with an update interval of 0.5 seconds, has
 ## Motivation
 
 I use lemonbar exclusively in my WMs (mostly fluxbox) but the scripts providing the data became larger and larger. 
-Lemobar's performance suffered and making changes to settings became increasingly difficult. So I decided to rewrite my script with thee goals in my mind: Make the script modular, make each bar module a self contained, loadable unit and make it easy to configure. As time went by, what started as QoL features for myself now has become a full blown application.  
+Lemobar's performance suffered and making changes to settings became increasingly difficult. So I decided to rewrite my script with three goals in my mind: Make the script modular, make each bar module a self contained, loadable unit and make it easy to configure. As time went by, what started as QoL features for myself now has become a full blown application.  
 Why `.ini` and not `.lua`?  
 Well, that's what lua is good at: Parsing `.ini` files  to any format wanted by the target application- And editing `.lua` config files is not very comfortable and prone to errors. 
 
