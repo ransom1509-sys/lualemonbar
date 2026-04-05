@@ -18,7 +18,7 @@ function lemonbar.setup()
     local iniconf       = path .. "config.ini"
     local luaconf       = luapath .. "config.lua"
     local mname         = {}
-    local package_path = package.path
+    local package_path  = package.path
 
     package.path = luapath .. "?.lua;" .. package_path
     look  = require("defaults")
