@@ -9,6 +9,7 @@ function date.setup(bar)
     sfg     = bar.colors.sfg1,
     sbg     = bar.colors.sbg1,
     sep     = "",
+    f_idx   = "",
     idx     = bar.symbols.fidx,
     sp      = bar.fmt.sp,
     fmt     = "",
@@ -24,13 +25,14 @@ function date.setup(bar)
       local bc      = bar.date.bgc
       local c1      = bar.date.fgc1
       local sp      = bar.date.sp
+      local fidx    = bar.date.f_idx
       local enabled = bar.date.enabled
       local getprog = bar.tools.getprog
 
       while enabled do
         today = getprog(bar.date.d_fmt)
-        bar.date.show = string.format("%s%s%s %%{A:%s:}%s%%{A}%s",
-          bc, sp, c1, action, today, sp)
+        bar.date.show = string.format("%s%s%s %%{T%s}%%{A:%s:}%s%%{A}%%{T1}%s",
+          bc, sp, c1, fidx, action, today, sp)
         coroutine.yield()
       end
     end),
