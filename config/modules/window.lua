@@ -11,6 +11,7 @@ function window.setup(bar)
     sfg     = bar.colors.sfg1,
     sbg     = bar.colors.sbg3,
     sp      = bar.fmt.sp,
+    f_idx   = "",
     width   = 64,
     format  = "",
     w_str   = "",
@@ -20,20 +21,21 @@ function window.setup(bar)
     enabled = false,
 
     update = coroutine.create(function()
-      local c1     = bar.window.fgc1
-      local bc     = bar.window.bgc
-      local sp     = bar.window.sp
-      local format = bar.window.format
-      local enabled = bar.window.enabled
+      local c1       = bar.window.fgc1
+      local bc       = bar.window.bgc
+      local sp       = bar.window.sp
+      local fidx     = bar.window.f_idx
+      local format   = bar.window.format
+      local enabled  = bar.window.enabled
       local wname
-      local getprog = bar.tools.getprog
+      local getprog  = bar.tools.getprog
 
       while enabled do
         wname = getprog(bar.window.w_str)
         if wname == nil then
           wname = ''
         end
-          bar.window.show = string.format("%s%s%s" .. format .."%s", bc, sp, c1, wname, sp)
+          bar.window.show = string.format("%s%s%s%%{T%s}" .. format .."%%{T1}%s", bc, sp, c1, fidx, wname, sp)
         coroutine.yield()
       end
     end),
