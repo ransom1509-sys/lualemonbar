@@ -1,5 +1,5 @@
 -- Template for simple modules.
--- Edit config.ini and add "topcpu" to [settings] -> modules to see it running.
+-- Edit config.ini and add "top" to [settings] -> modules to see it running.
 -- Add header [topcpu] to config.ini, place some field names (e.g. fgc1 below the
 -- header and play around with the module.
 local  top = {}
@@ -15,6 +15,7 @@ function top.setup(bar)
     show    = "",               -- What the module returns, required.
     sep     = "",               -- Character or glyph used as Separator.
     idx     = bar.symbols.fidx, -- Index symbol font
+    f_idx   = "",
     icon    = "Top:",           -- Label or glyph for the modul.
     sp      = "",               -- Space for padding
     fmt     = "",               -- Alignmen tleft, center, right), required
@@ -30,6 +31,7 @@ function top.setup(bar)
       local c1       = bar.top.fgc1
       local bc       = bar.top.bgc
       local icon     = bar.top.icon
+      local fidx     = bar.top.f_idx
       local sp       = bar.top.sp
       local enabled  = bar.top.enabled
       local getprog  = bar.tools.getprog
@@ -38,8 +40,8 @@ function top.setup(bar)
         -- The actual modul code
         topc  = getprog(bar.top.tc_str)
         topm  = getprog(bar.top.tm_str)
-        bar.top.show = string.format("%s%s%s%s %s %s%s",
-          bc, sp, c1, icon, topc, topm, sp)
+        bar.top.show = string.format("%s%s%s%s %%{T%s}%s %s%%{T1]%s",
+          bc, sp, c1, icon, fidx, topc, topm, sp)
         coroutine.yield()
       end
     end),
